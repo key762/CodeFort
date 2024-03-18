@@ -2,7 +2,11 @@ package coffee.lucks.codefort;
 
 import coffee.lucks.codefort.banner.FortBanner;
 import coffee.lucks.codefort.util.FortUtil;
+import coffee.lucks.codefort.util.custom.CustomRegister;
 import coffee.lucks.codefort.util.custom.CustomUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CodeFortMain {
 
@@ -19,8 +23,9 @@ public class CodeFortMain {
         String fileType = FortUtil.getFileType(jarPath);
         String tempFilePath = FortUtil.getTempFilePath(jarPath, fileType);
         System.out.println(tempFilePath);
-        System.out.println(CustomUtil.getInstance().get(fileType).utilName());
+        CustomRegister customRegister = CustomUtil.getInstance().get(fileType);
+        List<String> allFilePath = customRegister.decompression(jarPath, tempFilePath, new ArrayList<>());
+        System.out.println(allFilePath);
     }
-
 
 }

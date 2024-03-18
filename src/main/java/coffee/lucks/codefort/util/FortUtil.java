@@ -1,5 +1,6 @@
 package coffee.lucks.codefort.util;
 
+import java.io.File;
 import java.util.Locale;
 
 public class FortUtil {
@@ -7,7 +8,7 @@ public class FortUtil {
     /**
      * jar解压的目录名后缀
      */
-    public static final String LIB_JAR_DIR = "_jar";
+    public static final String TEMP_DIR = "_temp";
 
     /**
      * 校验文件类型
@@ -50,7 +51,17 @@ public class FortUtil {
      * @return 临时文件目录
      */
     public static String getTempFilePath(String filePath, String fileType) {
-        return filePath.replace("." + fileType, LIB_JAR_DIR);
+        return filePath.replace("." + fileType, TEMP_DIR);
+    }
+
+    /**
+     * 去除文件最后的/号
+     *
+     * @param filePath 文件绝对路径
+     * @return 处理后的文件路径
+     */
+    public static String convertPath(String filePath) {
+        return filePath.endsWith(File.separator) ? filePath.substring(0, filePath.length() - 1) : filePath;
     }
 
 }
