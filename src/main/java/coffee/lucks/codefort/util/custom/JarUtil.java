@@ -36,8 +36,8 @@ public class JarUtil extends CustomRegister {
                     IOUtils.copy(jis, jos0);
                     byte[] bytes = jos0.toByteArray();
                     FileUtil.writeBytes(bytes, fullPath);
-                    if (includeFiles == null || includeFiles.isEmpty() || includeFiles.contains(jarEntry.getName().replace("BOOT-INF" + File.separator + "lib" + File.separator, "").replace("WEB-INF" + File.separator + "lib" + File.separator, ""))) {
-                        List<String> list0 = decompression(targetDir + File.separator + jarEntry.getName(), targetDir + File.separator + jarEntry.getName().replace(".jar", FortUtil.TEMP_DIR), includeFiles);
+                    if (includeFiles != null && includeFiles.contains(FileUtil.getName(entryName))) {
+                        List<String> list0 = decompression(fullPath, fullPath.replace(FileNameUtil.EXT_JAR, FortUtil.TEMP_DIR), includeFiles);
                         list.addAll(list0);
                     }
                 } else if (jarEntry.isDirectory()) {
