@@ -2,16 +2,17 @@ package coffee.lucks.codefort.util.custom;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
+import coffee.lucks.codefort.util.ClassUtil;
 import coffee.lucks.codefort.util.FortUtil;
 import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
 import org.apache.commons.compress.archivers.jar.JarArchiveInputStream;
+import org.apache.commons.compress.archivers.jar.JarArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.CRC32;
 
 public class JarUtil extends CustomRegister {
     @Override
@@ -53,6 +54,84 @@ public class JarUtil extends CustomRegister {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public String compress(String jarDir, String targetJar) {
+        List<File> files = new ArrayList<>();
+        listFile(files, new File(jarDir));
+        JarArchiveOutputStream jos = null;
+        OutputStream out = null;
+
+        try {
+            File jar = new File(targetJar);
+            if (jar.exists()) {
+                jar.delete();
+            }
+
+            out = new FileOutputStream(jar);
+            jos = new JarArchiveOutputStream(out);
+
+            for (File file : files) {
+                if (ClassUtil.isDel(file)) {
+                    continue;
+                }
+                String fileName = file.getAbsolutePath().substring(jarDir.length());
+                fileName = fileName.startsWith(File.separator) ? fileName.substring(1) : fileName;
+
+                if (file.isDirectory()) {
+                    JarArchiveEntry je = new JarArchiveEntry(fileName + File.separator);
+                    je.setTime(System.currentTimeMillis());
+                    jos.putArchiveEntry(je);
+                    jos.closeArchiveEntry();
+                } else if (fileName.endsWith(".jar") || fileName.endsWith(".zip")) {
+                    byte[] bytes = FileUtil.readBytes(file);
+                    JarArchiveEntry je = new JarArchiveEntry(fileName);
+                    je.setMethod(JarArchiveEntry.STORED);
+                    je.setSize(bytes.length);
+                    je.setTime(System.currentTimeMillis());
+                    je.setCrc(crc32(bytes));
+                    jos.putArchiveEntry(je);
+                    jos.write(bytes);
+                    jos.closeArchiveEntry();
+
+                } else {
+                    JarArchiveEntry je = new JarArchiveEntry(fileName);
+                    je.setTime(System.currentTimeMillis());
+                    jos.putArchiveEntry(je);
+                    byte[] bytes = FileUtil.readBytes(file);
+                    jos.write(bytes);
+                    jos.closeArchiveEntry();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                IOUtils.close(jos);
+            }catch (Exception ignore){}
+        }
+        return targetJar;
+    }
+
+    public static long crc32(byte[] bytes) {
+        CRC32 crc = new CRC32();
+        crc.update(bytes);
+        return crc.getValue();
+    }
+
+
+    public static void listFile(List<File> filess, File dir) {
+        if (!dir.exists()) {
+            throw new IllegalArgumentException("目录[" + dir.getAbsolutePath() + "]不存在");
+        }
+        File[] files = dir.listFiles();
+        for (File f : files) {
+            filess.add(f);
+            if (f.isDirectory()) {
+                listFile(filess, f);
+            }
+        }
     }
 
 }

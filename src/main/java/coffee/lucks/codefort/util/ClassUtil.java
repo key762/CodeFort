@@ -27,7 +27,6 @@ public class ClassUtil {
                 name = m.getName();
                 //不是构造方法，在当前类，不是父lei
                 if (!m.getName().contains("<") && m.getLongName().startsWith(cc.getName())) {
-                    //System.out.println(m.getLongName());
                     //m.setBody(null);//清空方法体
                     CodeAttribute ca = m.getMethodInfo().getCodeAttribute();
                     //接口的ca就是null,方法体本来就是空的就是-79

@@ -15,6 +15,9 @@ public abstract class CustomRegister {
      */
     public abstract List<String> decompression(String filePath, String targetDir, List<String> includeFiles);
 
+
+    public abstract String compress(String jarDir, String targetJar);
+
     public void register() {
         CustomUtil.getInstance().register(this);
     }
