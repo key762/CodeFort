@@ -16,6 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class Agent {
+
     public static void premain(String args, Instrumentation inst) throws Exception {
         Options options = new Options();
         options.addOption("data", true, "加密后的文件(多个用,分割)");
