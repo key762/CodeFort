@@ -1,35 +1,62 @@
 package coffee.lucks.codefort.util;
 
+import cn.hutool.core.io.FileUtil;
+import coffee.lucks.codefort.enums.FileType;
 import javassist.*;
 import javassist.bytecode.*;
 import javassist.compiler.CompileError;
 import javassist.compiler.Javac;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ClassUtil {
 
     /**
+     * 清理加密class方法体
+     *
+     * @param jarClasses 加密class集合
+     * @param tempPath   临时地址
+     * @param libPath    lib目录
+     * @param fileType   文件类型
+     */
+    public static void clearClassBody(Map<String, List<String>> jarClasses, String tempPath, String libPath, FileType fileType) {
+        try {
+            for (Map.Entry<String, List<String>> entry : jarClasses.entrySet()) {
+                ClassPool pool = ClassPool.getDefault();
+                ClassUtil.loadClassPath(pool, new String[]{libPath});
+                pool.insertClassPath(tempPath + File.separator + StringUtil.getRealPath(entry.getKey(), null, fileType));
+                for (String classname : entry.getValue()) {
+                    byte[] bts = ClassUtil.rewriteMethod(pool, classname);
+                    if (bts != null) {
+                        String path = tempPath + File.separator + StringUtil.getRealPath(entry.getKey(), classname, fileType);
+                        FileUtil.writeBytes(bts, path);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 清空方法
      *
-     * @param pool
-     * @param classname
+     * @param pool      javassist池
+     * @param classname class全类名
+     * @return 字节码
      */
     public static byte[] rewriteMethod(ClassPool pool, String classname) {
         String name = "";
         try {
             CtClass cc = pool.getCtClass(classname);
             CtMethod[] methods = cc.getDeclaredMethods();
-
             for (CtMethod m : methods) {
                 name = m.getName();
-                //不是构造方法，在当前类，不是父lei
                 if (!m.getName().contains("<") && m.getLongName().startsWith(cc.getName())) {
-                    //m.setBody(null);//清空方法体
                     CodeAttribute ca = m.getMethodInfo().getCodeAttribute();
-                    //接口的ca就是null,方法体本来就是空的就是-79
                     if (ca != null && ca.getCodeLength() != 1 && ca.getCode()[0] != -79) {
                         ClassUtil.setBodyKeepParamInfos(m, null, true);
                     }
@@ -38,46 +65,41 @@ public class ClassUtil {
             }
             return cc.toBytecode();
         } catch (Exception e) {
-            //e.printStackTrace();
-            System.out.println("ERROR:[" + classname + "(" + name + ")]" + e.getMessage());
+            System.out.println("处理class对象时异常(name:" + name + ")");
         }
         return null;
     }
 
     /**
-     * 清空方法体，并且保留参数信息
+     * 清空方法体信息但保留参数信息
      *
-     * @param m
-     * @param src
-     * @param rebuild
-     * @throws CannotCompileException
+     * @param m       方法对象
+     * @param src     方法对象
+     * @param rebuild 是否重构对象
+     * @throws CannotCompileException 不能编译异常
      */
     public static void setBodyKeepParamInfos(CtMethod m, String src, boolean rebuild) throws CannotCompileException {
         CtClass cc = m.getDeclaringClass();
         if (cc.isFrozen()) {
-            throw new RuntimeException(cc.getName() + " class is frozen");
+            throw new RuntimeException(cc.getName() + " 类被冻结");
         }
         CodeAttribute ca = m.getMethodInfo().getCodeAttribute();
         if (ca == null) {
-            throw new CannotCompileException("no method body");
+            throw new RuntimeException("没有方法体");
         } else {
             CodeIterator iterator = ca.iterator();
             Javac jv = new Javac(cc);
-
             try {
                 int nvars = jv.recordParams(m.getParameterTypes(), Modifier.isStatic(m.getModifiers()));
                 jv.recordParamNames(ca, nvars);
                 jv.recordLocalVariables(ca, 0);
                 jv.recordReturnType(Descriptor.getReturnType(m.getMethodInfo().getDescriptor(), cc.getClassPool()), false);
-                //jv.compileStmnt(src);
-                //Bytecode b = jv.getBytecode();
                 Bytecode b = jv.compileBody(m, src);
                 int stack = b.getMaxStack();
                 int locals = b.getMaxLocals();
                 if (stack > ca.getMaxStack()) {
                     ca.setMaxStack(stack);
                 }
-
                 if (locals > ca.getMaxLocals()) {
                     ca.setMaxLocals(locals);
                 }
@@ -96,106 +118,25 @@ public class ClassUtil {
         }
     }
 
-
     /**
-     * 加载jar包路径
+     * 加载指定目录下的所有Jar
      *
-     * @param pool
-     * @param paths
-     * @throws NotFoundException
+     * @param pool  javassist池
+     * @param paths lib路径
      */
-    public static void loadClassPath(ClassPool pool, String[] paths) throws NotFoundException {
+    public static void loadClassPath(ClassPool pool, String[] paths) {
         for (String path : paths) {
-            List<File> jars = new ArrayList<>();
-            File dir = new File(path);
-            if (dir.isDirectory()) {
-                listFile(jars, dir, ".jar");
-                for (File jar : jars) {
+            List<File> jars = FileUtil.loopFiles(path).stream()
+                    .filter(File::isFile)
+                    .filter(x -> FileUtil.extName(x).equalsIgnoreCase(FileType.JAR.getType()))
+                    .collect(Collectors.toList());
+            for (File jar : jars) {
+                try {
                     pool.insertClassPath(jar.getAbsolutePath());
+                } catch (Exception e) {
+                    throw new RuntimeException("加载Jar时异常(file:" + jar.getAbsolutePath() + ")");
                 }
             }
         }
-    }
-
-    /**
-     * 递归查找文件
-     *
-     * @param classes
-     * @param dir
-     * @param endWith
-     */
-    public static void listFile(List<File> classes, File dir, String endWith) {
-        if (!dir.exists()) {
-            throw new IllegalArgumentException("目录[" + dir.getAbsolutePath() + "]不存在");
-        }
-        File[] files = dir.listFiles();
-        for (File f : files) {
-            if (f.isDirectory()) {
-                listFile(classes, f, endWith);
-            } else if (f.isFile() && f.getName().endsWith(endWith)) {
-                classes.add(f);
-            }
-        }
-    }
-
-    /**
-     * 判断是否是某个包名
-     *
-     * @param encryptPackage
-     * @param className
-     * @return
-     */
-    public static boolean isPackage(String encryptPackage, String className) {
-        if (encryptPackage == null || encryptPackage.length() == 0) {
-            return false;
-        }
-
-        String[] packages = encryptPackage.split(",");
-        for (String pkg : packages) {
-            if (className.startsWith(pkg)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 根据类名和jar名还原真是路径
-     *
-     * @param jar
-     * @param className
-     * @return
-     */
-    public static String realPath(String jar, String className, String warOrJar) {
-        String path;
-        String INF = "jar".equals(warOrJar) ? "BOOT-INF" : "WEB-INF";
-        if ("ROOT".equals(jar)) {
-            path = "";
-        } else if ("CLASSES".equals(jar)) {
-            path = INF + File.separator + "classes";
-        } else {
-            path = INF + File.separator + "lib" + File.separator + jar + FortUtil.TEMP_DIR;
-        }
-        if (className == null || className.length() == 0) {
-            return path;
-        }
-        path = path + (path.length() == 0 ? "" : File.separator) + className.replace(".", File.separator) + ".class";
-        return path;
-    }
-
-    /**
-     * 是否垃圾文件
-     *
-     * @param file
-     * @return
-     */
-    public static boolean isDel(File file) {
-        String[] dels = {".DS_Store", "Thumbs.db"};
-        for (String f : dels) {
-            if (file.getAbsolutePath().endsWith(f)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

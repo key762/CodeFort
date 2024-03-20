@@ -1,13 +1,49 @@
 package coffee.lucks.codefort.util;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.hutool.crypto.symmetric.AES;
+import coffee.lucks.codefort.consts.PathConst;
+import coffee.lucks.codefort.enums.FileType;
+import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
+import org.apache.commons.compress.archivers.jar.JarArchiveOutputStream;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.*;
 
 public class EncryptUtil {
+
+    /**
+     * 加密class文件
+     *
+     * @param jarClasses   需加密的class集合
+     * @param tempFilePath 临时文件路径
+     * @param fileType     文件类型
+     * @param password     加密密码
+     */
+    public static void encryptClass(Map<String, List<String>> jarClasses, String tempFilePath, FileType fileType, String password) {
+        try (FileOutputStream out = new FileOutputStream(tempFilePath + File.separator + PathConst.ENCRYPT_NAME);
+             ZipOutputStream zos = new ZipOutputStream(out)) {
+            for (Map.Entry<String, List<String>> entry : jarClasses.entrySet()) {
+                for (String classname : entry.getValue()) {
+                    String classPath = tempFilePath + File.separator + StringUtil.getRealPath(entry.getKey(), classname, fileType);
+                    zos.putNextEntry(new ZipEntry(classname));
+                    byte[] bytes = FileUtil.readBytes(classPath);
+                    bytes = EncryptUtil.encrypt(bytes, password);
+                    zos.write(bytes, 0, bytes.length);
+                    zos.closeEntry();
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("加密Jar/War的class文件时出现异常", e);
+        }
+    }
+
 
     /**
      * 根据名称解密出一个文件
@@ -45,7 +81,7 @@ public class EncryptUtil {
             return bytes;
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             EncryptUtil.close(zipFile);
         }
         return null;
@@ -133,6 +169,79 @@ public class EncryptUtil {
                         e.printStackTrace();
                     }
                 }
+            }
+        }
+    }
+
+
+    public static String compress(String jarDir, String targetJar) {
+        List<File> files = new ArrayList<>();
+        listFile(files, new File(jarDir));
+        FileUtil.del(targetJar);
+        try (OutputStream out = Files.newOutputStream(new File(targetJar).toPath());
+             JarArchiveOutputStream jos = new JarArchiveOutputStream(out);
+        ) {
+            for (File file : files) {
+                if (StringUtil.isDel(file.getAbsolutePath())) {
+                    continue;
+                }
+                String fileName = file.getAbsolutePath().substring(jarDir.length());
+                fileName = fileName.startsWith(File.separator) ? fileName.substring(1) : fileName;
+                if (file.isDirectory()) {
+                    JarArchiveEntry je = new JarArchiveEntry(fileName + File.separator);
+                    je.setTime(System.currentTimeMillis());
+                    jos.putArchiveEntry(je);
+                    jos.closeArchiveEntry();
+                } else if (StrUtil.endWithAnyIgnoreCase(fileName, ".zip", ".jar")) {
+                    byte[] bytes = FileUtil.readBytes(file);
+                    JarArchiveEntry je = new JarArchiveEntry(fileName);
+                    je.setMethod(JarArchiveEntry.STORED);
+                    je.setSize(bytes.length);
+                    je.setTime(System.currentTimeMillis());
+                    je.setCrc(crc32(bytes));
+                    jos.putArchiveEntry(je);
+                    jos.write(bytes);
+                    jos.closeArchiveEntry();
+                } else {
+                    JarArchiveEntry je = new JarArchiveEntry(fileName);
+                    je.setTime(System.currentTimeMillis());
+                    jos.putArchiveEntry(je);
+                    byte[] bytes = FileUtil.readBytes(file);
+                    jos.write(bytes);
+                    jos.closeArchiveEntry();
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("打包Jar/War文件时出现异常", e);
+        }
+        return targetJar;
+    }
+
+    /**
+     * crc32算法
+     *
+     * @param bytes 字节码
+     * @return 加密值
+     */
+    public static long crc32(byte[] bytes) {
+        CRC32 crc = new CRC32();
+        crc.update(bytes);
+        return crc.getValue();
+    }
+
+
+    /**
+     * 递归收集文件夹信息
+     *
+     * @param fileList 文件集合
+     * @param dir      目录地址
+     */
+    public static void listFile(List<File> fileList, File dir) {
+        File[] files = dir.listFiles();
+        for (File f : files) {
+            fileList.add(f);
+            if (f.isDirectory()) {
+                listFile(fileList, f);
             }
         }
     }

@@ -1,8 +1,8 @@
 package coffee.lucks.codefort.agent;
 
 import cn.hutool.core.io.FileUtil;
+import coffee.lucks.codefort.consts.PathConst;
 import coffee.lucks.codefort.util.EncryptUtil;
-import coffee.lucks.codefort.util.FortUtil;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -51,12 +51,12 @@ public class Agent {
                         continue;
                     }
                     zipFile = new ZipFile(zip);
-                    ZipEntry zipEntry = zipFile.getEntry(FortUtil.ENCRYPT_NAME);
+                    ZipEntry zipEntry = zipFile.getEntry(PathConst.ENCRYPT_NAME);
                     if (zipEntry == null) {
                         continue;
                     }
                     InputStream is = zipFile.getInputStream(zipEntry);
-                    File classesDat = new File(files[i].substring(0, files[i].length() - 4) + "." + FortUtil.ENCRYPT_NAME);
+                    File classesDat = new File(files[i].substring(0, files[i].length() - 4) + "." + PathConst.ENCRYPT_NAME);
                     FileUtil.writeBytes(EncryptUtil.toByteArray(is), classesDat);
                     files[i] = classesDat.getAbsolutePath();
                 } catch (IOException e) {
