@@ -1,40 +1,29 @@
 package coffee.lucks.codefort;
 
 import cn.hutool.core.io.FileUtil;
-import coffee.lucks.codefort.unit.FortBanner;
-import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
+import coffee.lucks.codefort.unit.FortUnit;
+import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.util.ClassUtil;
 import coffee.lucks.codefort.util.EncryptUtil;
 import coffee.lucks.codefort.util.HandleUtil;
 import coffee.lucks.codefort.util.StringUtil;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-/**
- * java -javaagent:codefort-agent-1.0.0.jar='-data demo-encrypted.jar -pwd 123456' -jar demo-encrypted.jar
- */
-public class CodeFortMain {
+public class CodeFort {
 
-    private static final String packages = "host.skiree.springdemo";
-
-    private static final String excludeClass = "";
-
-    private static final String jarPath = "/Users/anorak/Documents/JavaProject/standalone/codefort/codefort-core/src/main/resources/demo.jar";
-
-    private static String password = "123456";
-
-    private static final List<String> includeFiles = Arrays.asList("hutool-setting-5.8.26.jar");
-
-    public static void main(String[] args) {
-        FortBanner.banner();
-        FileType fileType = StringUtil.getFileType(jarPath);
-        password = StringUtil.checkStrWithDef(password, "000000");
+    public String doEncryptJar(FortUnit fortUnit) {
+        String jarPath = fortUnit.getUnitPath();
+        List<String> includeFiles = StringUtil.getList(fortUnit.getLibs());
+        String packages = fortUnit.getPackages();
+        String excludeClass = fortUnit.getExcludes();
+        FileType fileType = StringUtil.getFileType(fortUnit.getUnitPath());
+        String password = fortUnit.getPassword();
         // 获取临时目录
-        String tempFilePath = StringUtil.getTmpDirPath(jarPath, fileType);
+        String tempFilePath = StringUtil.getTmpDirPath(fortUnit.getUnitPath(), fileType);
         // 解压原执行文件
         List<String> allFilePath = HandleUtil.decompression(jarPath, tempFilePath, includeFiles);
         // 收集所有需加密的class
@@ -57,7 +46,7 @@ public class CodeFortMain {
         // 最终打包
         String result = EncryptUtil.compress(tempFilePath, jarPath.replace(fileType.getFullType(), "-encrypted" + fileType.getFullType()));
         FileUtil.del(tempFilePath);
-        System.out.println(result);
+        return result;
     }
 
 }

@@ -1,7 +1,7 @@
 package coffee.lucks.codefort.util;
 
 import cn.hutool.core.io.FileUtil;
-import coffee.lucks.codefort.enums.FileType;
+import coffee.lucks.codefort.unit.FileType;
 import javassist.*;
 import javassist.bytecode.*;
 import javassist.compiler.CompileError;

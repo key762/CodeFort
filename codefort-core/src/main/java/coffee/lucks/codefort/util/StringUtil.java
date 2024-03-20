@@ -1,10 +1,13 @@
 package coffee.lucks.codefort.util;
 
 import cn.hutool.core.util.StrUtil;
-import coffee.lucks.codefort.consts.PathConst;
-import coffee.lucks.codefort.enums.FileType;
+import coffee.lucks.codefort.unit.PathConst;
+import coffee.lucks.codefort.unit.FileType;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class StringUtil {
 
@@ -103,4 +106,16 @@ public class StringUtil {
         return filePath.replace(fileType.getFullType(), PathConst.TEMP_DIR);
     }
 
+    /**
+     * 获取字符分割集合
+     *
+     * @param libs 字符串
+     * @return 集合
+     */
+    public static List<String> getList(String libs) {
+        if (StrUtil.isEmpty(libs)) {
+            return new ArrayList<>();
+        }
+        return Arrays.asList(libs.split(","));
+    }
 }

@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.consts;
+package coffee.lucks.codefort.unit;
 
 public class PathConst {
     /**
