@@ -103,6 +103,14 @@ public class EncryptUtil {
     }
 
 
+    /**
+     * 根据名称解密出一个文件
+     *
+     * @param encryptPath classes目录
+     * @param fileName    加密生成的zip
+     * @param password    密码
+     * @return
+     */
     public static byte[] decryptFile(String encryptPath, String fileName, String password) {
         return decryptFile(encryptPath, fileName, password, true);
     }

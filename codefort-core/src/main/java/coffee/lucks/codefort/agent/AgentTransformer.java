@@ -13,9 +13,9 @@ public class AgentTransformer implements ClassFileTransformer {
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
-                            ProtectionDomain protectionDomain, byte[] classfileBuffer) {
+                            ProtectionDomain protectionDomain, byte[] classFileBuffer) {
         if (getFiles() == null || getFiles().length == 0) {
-            return classfileBuffer;
+            return classFileBuffer;
         }
         //遍历所有的文件
         for (int i = 0; i < files.length; i++) {
@@ -29,7 +29,7 @@ public class AgentTransformer implements ClassFileTransformer {
                 }
             }
         }
-        return classfileBuffer;
+        return classFileBuffer;
 
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * java -javaagent:codefort-1.0-SNAPSHOT.jar='-data demo-encrypted.jar -pwd 123456' -jar demo-encrypted.jar
+ * java -javaagent:codefort-agent-1.0.0.jar='-data demo-encrypted.jar -pwd 123456' -jar demo-encrypted.jar
  */
 public class CodeFortMain {
 
