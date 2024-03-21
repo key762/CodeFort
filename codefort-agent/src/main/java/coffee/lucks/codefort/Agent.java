@@ -2,17 +2,15 @@ package coffee.lucks.codefort;
 
 import cn.hutool.core.io.FileUtil;
 import coffee.lucks.codefort.agent.AgentTransformer;
+import coffee.lucks.codefort.unit.FileType;
 import coffee.lucks.codefort.unit.FortBanner;
 import coffee.lucks.codefort.unit.PathConst;
-import coffee.lucks.codefort.util.EncryptUtil;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.instrument.Instrumentation;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -41,28 +39,20 @@ public class Agent {
             throw new RuntimeException("加密文件和密码个数不一致");
         }
         for (int i = 0; i < files.length; i++) {
-            //解压出classes.dat
-            if (files[i].endsWith(".jar") || files[i].endsWith(".war")) {
-                ZipFile zipFile = null;
-                try {
-                    File zip = new File(files[i]);
-                    if (!zip.exists()) {
-                        continue;
-                    }
-                    zipFile = new ZipFile(zip);
+            File zip = new File(files[i]);
+            try (ZipFile zipFile = new ZipFile(zip)) {
+                if (FileUtil.extName(zip).equalsIgnoreCase(FileType.JAR.getType())) {
                     ZipEntry zipEntry = zipFile.getEntry(PathConst.ENCRYPT_NAME);
-                    if (zipEntry == null) {
-                        continue;
-                    }
-                    InputStream is = zipFile.getInputStream(zipEntry);
+                    zipFile.getInputStream(zipEntry);
                     File classesDat = new File(files[i].substring(0, files[i].length() - 4) + "." + PathConst.ENCRYPT_NAME);
-                    FileUtil.writeBytes(EncryptUtil.toByteArray(is), classesDat);
+                    FileUtil.writeFromStream(zipFile.getInputStream(zipEntry), classesDat, false);
                     files[i] = classesDat.getAbsolutePath();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    EncryptUtil.close(zipFile);
                 }
+                if (FileUtil.extName(zip).equalsIgnoreCase(FileType.WAR.getType())) {
+                    files[i] = files[i].substring(0, files[i].length() - 4) + File.separator + "META-INF" + File.separator + PathConst.ENCRYPT_NAME;
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Agent运行时获取加密块时异常");
             }
         }
         AgentTransformer tran = new AgentTransformer();
