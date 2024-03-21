@@ -59,6 +59,9 @@ public class ClassUtil {
                     CodeAttribute ca = m.getMethodInfo().getCodeAttribute();
                     if (ca != null && ca.getCodeLength() != 1 && ca.getCode()[0] != -79) {
                         ClassUtil.setBodyKeepParamInfos(m, null, true);
+                        if ("void".equalsIgnoreCase(m.getReturnType().getName()) && m.getLongName().endsWith(".main(java.lang.String[])") && m.getMethodInfo().getAccessFlags() == 9) {
+                            m.insertBefore("System.out.println(\"\\n启动💰校验失败,请联系开发者或管理员处理.\\n\");");
+                        }
                     }
 
                 }

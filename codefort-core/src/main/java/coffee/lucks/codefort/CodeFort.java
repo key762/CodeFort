@@ -36,7 +36,7 @@ public class CodeFort {
         // 先打包lib路径下的jar
         for (Map.Entry<String, List<String>> entry : jarClasses.entrySet()) {
             if (!"CLASSES".equals(entry.getKey()) && !"ROOT".equals(entry.getKey())) {
-                EncryptUtil.compress(libPath + entry.getKey() + PathConst.TEMP_DIR, libPath + entry.getKey() + FileType.JAR.getFullType());
+                HandleUtil.compress(libPath + entry.getKey() + PathConst.TEMP_DIR, libPath + entry.getKey() + FileType.JAR.getFullType());
             }
         }
         // 删除lib路径下的jar解压出的临时文件
@@ -44,7 +44,7 @@ public class CodeFort {
             FileUtil.del(libPath + file.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR));
         }
         // 最终打包
-        String result = EncryptUtil.compress(tempFilePath, jarPath.replace(fileType.getFullType(), "-encrypted" + fileType.getFullType()));
+        String result = HandleUtil.compress(tempFilePath, jarPath.replace(fileType.getFullType(), "-encrypted" + fileType.getFullType()));
         FileUtil.del(tempFilePath);
         return result;
     }

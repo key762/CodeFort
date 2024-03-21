@@ -22,7 +22,6 @@
         <cli.version>1.6.0</cli.version>
         <bcprov.version>1.77</bcprov.version>
         <hutool.version>5.8.26</hutool.version>
-        <commons.version>1.26.1</commons.version>
         <javassist.version>3.30.2-GA</javassist.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -40,11 +39,6 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-compress</artifactId>
-                <version>${commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
