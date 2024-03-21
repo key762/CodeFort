@@ -111,6 +111,7 @@ public class HandleUtil {
                     continue;
                 }
                 String fileName = file.getAbsolutePath().substring(jarDir.length());
+                fileName = fileName.replace(File.separator, "/");
                 fileName = fileName.startsWith(File.separator) ? fileName.substring(1) : fileName;
                 if (file.isDirectory()) {
                     ZipEntry ze = new ZipEntry(fileName + File.separator);
