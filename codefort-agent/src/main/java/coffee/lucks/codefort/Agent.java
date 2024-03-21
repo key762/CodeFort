@@ -2,6 +2,7 @@ package coffee.lucks.codefort;
 
 import cn.hutool.core.io.FileUtil;
 import coffee.lucks.codefort.agent.AgentTransformer;
+import coffee.lucks.codefort.unit.FortBanner;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.util.EncryptUtil;
 import org.apache.commons.cli.CommandLine;
@@ -19,10 +20,10 @@ import java.util.zip.ZipFile;
 public class Agent {
 
     public static void premain(String args, Instrumentation inst) throws Exception {
+        FortBanner.banner();
         Options options = new Options();
         options.addOption("data", true, "加密后的文件(多个用,分割)");
         options.addOption("pwd", true, "密码(多个用,分割)");
-
         String file = null;
         String pwd = null;
         if (args != null) {
@@ -31,14 +32,11 @@ public class Agent {
             file = cmd.getOptionValue("data");
             pwd = cmd.getOptionValue("pwd");
         }
-
         if (file == null || file.isEmpty() || pwd == null || pwd.isEmpty()) {
             return;
         }
-
         String[] files = file.split(",");
         String[] pwds = pwd.split(",");
-
         if (files.length != pwds.length) {
             throw new RuntimeException("加密文件和密码个数不一致");
         }

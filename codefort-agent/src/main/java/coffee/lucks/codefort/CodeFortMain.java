@@ -56,7 +56,7 @@ public class CodeFortMain {
         }
         // 最终打包
         String result = HandleUtil.compress(tempFilePath, jarPath.replace(fileType.getFullType(), "-encrypted" + fileType.getFullType()));
-        FileUtil.del(tempFilePath);
+//        FileUtil.del(tempFilePath);
         System.out.println(result);
     }
 

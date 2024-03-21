@@ -32,6 +32,7 @@ public class HandleUtil {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
                 String entryName = entry.getName();
                 String fullPath = targetDir + File.separator + entryName;
+                list.add(fullPath);
                 if (entryName.endsWith(FileType.JAR.getFullType())) {
                     FileUtil.writeFromStream(zipFile.getInputStream(entry), new File(fullPath), false);
                     if (includeFiles != null && includeFiles.contains(FileUtil.getName(entryName))) {
