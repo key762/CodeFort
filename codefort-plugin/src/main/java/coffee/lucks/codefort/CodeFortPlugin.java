@@ -5,8 +5,6 @@ import cn.hutool.core.io.FileUtil;
 import coffee.lucks.codefort.unit.FortUnit;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -70,7 +68,7 @@ public class CodeFortPlugin extends AbstractMojo {
     @Parameter(property = "excludes")
     private String excludes;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() {
         Log logger = getLog();
         logger.info("\u001B[34m" + "CodeFort 致力于保卫您的代码安全" + "\u001B[0m");
         TimeInterval interval = new TimeInterval();

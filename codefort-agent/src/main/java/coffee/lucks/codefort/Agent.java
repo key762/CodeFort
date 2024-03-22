@@ -11,6 +11,8 @@ import java.lang.instrument.Instrumentation;
 
 public class Agent {
 
+    public static String GLOBAL_VAR = "";
+
     public static void premain(String args, Instrumentation inst) throws Exception {
         FortBanner.banner();
         Options options = new Options();
@@ -21,23 +23,7 @@ public class Agent {
             CommandLine cmd = parser.parse(options, args.split(" "));
             pwd = cmd.getOptionValue("pwd");
         }
-//        for (int i = 0; i < files.length; i++) {
-//            File zip = new File(files[i]);
-//            try (ZipFile zipFile = new ZipFile(zip)) {
-//                if (FileUtil.extName(zip).equalsIgnoreCase(FileType.JAR.getType())) {
-//                    ZipEntry zipEntry = zipFile.getEntry(PathConst.ENCRYPT_NAME);
-//                    zipFile.getInputStream(zipEntry);
-//                    File classesDat = new File(files[i].substring(0, files[i].length() - 4) + "." + PathConst.ENCRYPT_NAME);
-//                    FileUtil.writeFromStream(zipFile.getInputStream(zipEntry), classesDat, false);
-//                    files[i] = classesDat.getAbsolutePath();
-//                }
-//                if (FileUtil.extName(zip).equalsIgnoreCase(FileType.WAR.getType())) {
-//                    files[i] = files[i].substring(0, files[i].length() - 4) + File.separator + "META-INF" + File.separator + PathConst.ENCRYPT_NAME;
-//                }
-//            } catch (Exception e) {
-//                throw new RuntimeException("Agent运行时获取加密块时异常");
-//            }
-//        }
+        GLOBAL_VAR = "成功设置了数据";
         AgentTransformer tran = new AgentTransformer(pwd);
         inst.addTransformer(tran);
     }
