@@ -1,8 +1,5 @@
 package coffee.lucks.codefort.unit;
 
-import coffee.lucks.codefort.unit.FortBanner;
-import coffee.lucks.codefort.unit.PathConst;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
