@@ -1,6 +1,10 @@
 package coffee.lucks.codefort.util;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IORuntimeException;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.hutool.crypto.symmetric.AES;
 import coffee.lucks.codefort.unit.PathConst;
@@ -22,64 +26,21 @@ public class EncryptUtil {
      * @param password     加密密码
      */
     public static void encryptClass(Map<String, List<String>> jarClasses, String tempFilePath, FileType fileType, String password) {
-        try (FileOutputStream out = new FileOutputStream(tempFilePath + File.separator + PathConst.ENCRYPT_NAME);
-             ZipOutputStream zos = new ZipOutputStream(out)) {
+        File metaDir = new File(tempFilePath, "META-INF" + File.separator + PathConst.ENCRYPT_NAME);
+        FileUtil.mkdir(metaDir);
+        try {
             for (Map.Entry<String, List<String>> entry : jarClasses.entrySet()) {
                 for (String classname : entry.getValue()) {
-                    String classPath = tempFilePath + File.separator + StringUtil.getRealPath(entry.getKey(), classname, fileType);
-                    zos.putNextEntry(new ZipEntry(classname));
-                    byte[] bytes = FileUtil.readBytes(classPath);
+                    String classPath = StringUtil.getRealPath(entry.getKey(), classname, fileType);
+                    String allPath = tempFilePath + File.separator + classPath;
+                    byte[] bytes = FileUtil.readBytes(allPath);
                     bytes = EncryptUtil.encrypt(bytes, password);
-                    zos.write(bytes, 0, bytes.length);
-                    zos.closeEntry();
+                    FileUtil.writeBytes(bytes, new File(metaDir, classname));
                 }
             }
         } catch (Exception e) {
             throw new RuntimeException("加密Jar/War的class文件时出现异常", e);
         }
-    }
-
-
-    /**
-     * 根据名称解密出一个文件
-     *
-     * @param encryptPath classes目录
-     * @param fileName    加密生成的zip
-     * @param password    密码
-     * @param isZip       是否压缩
-     * @return
-     */
-    public static byte[] decryptFile(String encryptPath, String fileName, String password, boolean isZip) {
-        if (!isZip) {
-            File file = new File(encryptPath + File.separator + fileName + ".clazz");
-            if (!file.exists()) {
-                return null;
-            }
-            byte[] bytes = FileUtil.readBytes(file);
-            bytes = de(bytes, password);
-            return bytes;
-        }
-        ZipFile zipFile = null;
-        try {
-            File zip = new File(encryptPath);
-            if (!zip.exists()) {
-                return null;
-            }
-            zipFile = new ZipFile(zip);
-            ZipEntry zipEntry = zipFile.getEntry(fileName);
-            if (zipEntry == null) {
-                return null;
-            }
-            InputStream is = zipFile.getInputStream(zipEntry);
-            byte[] bytes = toByteArray(is);
-            bytes = de(bytes, password);
-            return bytes;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            EncryptUtil.close(zipFile);
-        }
-        return null;
     }
 
     public static byte[] toByteArray(InputStream input) throws IOException {
@@ -101,16 +62,69 @@ public class EncryptUtil {
     /**
      * 根据名称解密出一个文件
      *
-     * @param encryptPath classes目录
-     * @param fileName    加密生成的zip
+     * @param projectPath 项目路径
+     * @param fileName    类名称
      * @param password    密码
-     * @return
+     * @return 字节码
      */
-    public static byte[] decryptFile(String encryptPath, String fileName, String password) {
-        return decryptFile(encryptPath, fileName, password, true);
+    public static byte[] decryptFile(String projectPath, String fileName, String password) {
+        File workDir = new File(projectPath);
+        byte[] bytes = readEncryptedFile(workDir, fileName);
+        if (bytes == null) {
+            return null;
+        }
+        return decrypt(bytes, password);
     }
 
-    public static byte[] de(byte[] msg, String key) {
+    /**
+     * 在jar文件或目录中读取文件字节
+     *
+     * @param workDir jar文件或目录
+     * @param name    文件名
+     * @return 文件字节数组
+     */
+    public static byte[] readEncryptedFile(File workDir, String name) {
+        byte[] bytes = null;
+        String fileName = PathConst.ENCRYPT_PATH + name;
+        if (workDir.isFile()) {
+            bytes = ByteUtil.getFileFromJar(workDir, fileName);
+        } else {//war解压的目录
+            File file = new File(workDir, fileName);
+            if (file.exists()) {
+                bytes = ByteUtil.readBytes(file);
+            }
+        }
+        return bytes;
+    }
+
+    /**
+     * 在压缩文件中获取一个文件的字节
+     *
+     * @param zip      压缩文件
+     * @param fileName 文件名
+     * @return 文件的字节
+     */
+    public static byte[] getFileFromZip(File zip, String fileName) {
+        if (zip.exists()) {
+            try (ZipFile zipFile = new ZipFile(zip)) {
+                InputStream inputStream = zipFile.getInputStream(zipFile.getEntry("META-INF" + File.separator + PathConst.ENCRYPT_NAME + File.separator + fileName));
+                return IoUtil.readBytes(inputStream);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("在压缩文件中获取字节时异常");
+            }
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        byte[] bytes = getFileFromZip(new File("/Users/anorak/Documents/JavaProject/standalone/codefort/codefort-core/src/main/resources/demo-encrypted.jar"), "host.skiree.springdemo.SpringdemoApplication");
+        if (bytes == null) {
+            System.out.println("err");
+        }
+    }
+
+    public static byte[] decrypt(byte[] msg, String key) {
         AES aes = new AES(
                 "CBC",
                 "PKCS7Padding",
@@ -159,21 +173,6 @@ public class EncryptUtil {
         }
         inflater.end();
         return outputStream.toByteArray();
-    }
-
-
-    public static void close(Closeable... outs) {
-        if (outs != null) {
-            for (Closeable out : outs) {
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
     }
 
     /**

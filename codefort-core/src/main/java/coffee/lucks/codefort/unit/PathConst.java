@@ -12,5 +12,16 @@ public class PathConst {
     /**
      * class加密后的文件
      */
-    public static final String ENCRYPT_NAME = "classes.dat";
+    public static final String ENCRYPT_NAME = ".classes";
+
+    /**
+     * 加密后文件存放位置
+     */
+    public static final String ENCRYPT_PATH = "META-INF/" + ENCRYPT_NAME + "/";
+
+    /**
+     * 环境模式
+     */
+    public static boolean DEBUG = false;
+
 }

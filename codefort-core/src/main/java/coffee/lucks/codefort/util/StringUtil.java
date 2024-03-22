@@ -5,6 +5,7 @@ import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -118,4 +119,39 @@ public class StringUtil {
         }
         return Arrays.asList(libs.split(","));
     }
+
+
+    /**
+     * 获取class运行的classes目录或所在的jar包目录
+     *
+     * @return 路径字符串
+     */
+    public static String getRootPath(String path) {
+        if (path == null) {
+            path = StringUtil.class.getResource("").getPath();
+        }
+        try {
+            path = java.net.URLDecoder.decode(path, "utf-8");
+        } catch (UnsupportedEncodingException ignored) {
+        }
+        if (path.startsWith("jar:") || path.startsWith("war:")) {
+            path = path.substring(4);
+        }
+        if (path.startsWith("file:")) {
+            path = path.substring(5);
+        }
+        if (path.contains("*")) {
+            return path.substring(0, path.indexOf("*"));
+        } else if (path.contains("WEB-INF")) {
+            return path.substring(0, path.indexOf("WEB-INF"));
+        } else if (path.contains("!")) {
+            return path.substring(0, path.indexOf("!"));
+        } else if (path.endsWith(".jar") || path.endsWith(".war")) {
+            return path;
+        } else if (path.contains("/classes/")) {
+            return path.substring(0, path.indexOf("/classes/") + 9);
+        }
+        return null;
+    }
+
 }

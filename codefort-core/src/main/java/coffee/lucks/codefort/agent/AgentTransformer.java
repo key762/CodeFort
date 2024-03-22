@@ -1,51 +1,38 @@
 package coffee.lucks.codefort.agent;
 
 import coffee.lucks.codefort.util.EncryptUtil;
+import coffee.lucks.codefort.unit.FortLog;
+import coffee.lucks.codefort.util.StrUtil;
+import coffee.lucks.codefort.util.StringUtil;
 
-import java.io.File;
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
 
 public class AgentTransformer implements ClassFileTransformer {
 
-    private String[] files = null;//加密后生成的文件路径
-    private String[] pwds = null;//密码
+    private String pwd;
+
+    public AgentTransformer(String pwd) {
+        this.pwd = pwd;
+    }
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
-                            ProtectionDomain protectionDomain, byte[] classFileBuffer) {
-        if (getFiles() == null || getFiles().length == 0) {
-            return classFileBuffer;
+                            ProtectionDomain domain, byte[] classBuffer) {
+        if (className == null || domain == null || loader == null) return classBuffer;
+        String projectPath = domain.getCodeSource().getLocation().getPath();
+        FortLog.info("项目运行路径 : " + projectPath);
+        projectPath = StringUtil.getRootPath(projectPath);
+        FortLog.info("项目运行真实路径 : " + projectPath);
+        if (StrUtil.isEmpty(projectPath)) return classBuffer;
+        className = className.replace("/", ".").replace("\\", ".");
+        FortLog.info("当前还原的class名称 : " + className);
+        byte[] bytes = EncryptUtil.decryptFile(projectPath, className, this.pwd);
+        // CAFE BABE,表示解密成功
+        if (bytes != null && bytes[0] == -54 && bytes[1] == -2 && bytes[2] == -70 && bytes[3] == -66) {
+            return bytes;
         }
-        //遍历所有的文件
-        for (int i = 0; i < files.length; i++) {
-            String file = files[i];
-            String pwd = pwds[i];
-            byte[] bytes = EncryptUtil.decryptFile(file, className.replace(File.separator, "."), pwd);
-            if (bytes != null) {
-                //CAFEBABE,表示解密成功
-                if (bytes[0] == -54 && bytes[1] == -2 && bytes[2] == -70 && bytes[3] == -66) {
-                    return bytes;
-                }
-            }
-        }
-        return classFileBuffer;
-
+        return classBuffer;
     }
 
-    public String[] getFiles() {
-        return files;
-    }
-
-    public void setFiles(String[] files) {
-        this.files = files;
-    }
-
-    public String[] getPwds() {
-        return pwds;
-    }
-
-    public void setPwds(String[] pwds) {
-        this.pwds = pwds;
-    }
 }
