@@ -6,9 +6,7 @@ import coffee.lucks.codefort.unit.FileType;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class StringUtil {
 
@@ -153,5 +151,33 @@ public class StringUtil {
         }
         return null;
     }
+
+
+    /**
+     * 根据class的绝对路径解析出class名称或class包所在的路径
+     *
+     * @param fileName    class绝对路径
+     * @param classOrPath true|false
+     * @return class名称|包所在的路径
+     */
+    public static String resolveClassPath(String fileName, boolean classOrPath) {
+        String K_LIB = File.separator + "lib" + File.separator;
+        String K_CLASSES = File.separator + "classes" + File.separator;
+        String file = fileName.substring(0, fileName.length() - 6);
+        String clsPath;
+        String clsName;
+        if (file.contains(K_LIB)) {
+            clsName = file.substring(file.indexOf(PathConst.TEMP_DIR, file.indexOf(K_LIB)) + PathConst.TEMP_DIR.length() + 1);
+            clsPath = file.substring(0, file.length() - clsName.length() - 1);
+        } else if (file.contains(K_CLASSES)) {
+            clsName = file.substring(file.indexOf(K_CLASSES) + K_CLASSES.length());
+            clsPath = file.substring(0, file.length() - clsName.length() - 1);
+        } else {
+            clsName = file.substring(file.indexOf(PathConst.TEMP_DIR) + PathConst.TEMP_DIR.length() + 1);
+            clsPath = file.substring(0, file.length() - clsName.length() - 1);
+        }
+        return classOrPath ? clsName.replace(File.separator, ".") : clsPath;
+    }
+
 
 }

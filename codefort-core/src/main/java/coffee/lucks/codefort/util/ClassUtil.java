@@ -1,6 +1,8 @@
 package coffee.lucks.codefort.util;
 
 import cn.hutool.core.io.FileUtil;
+import coffee.lucks.codefort.arms.FileArm;
+import coffee.lucks.codefort.arms.IoArm;
 import coffee.lucks.codefort.unit.FileType;
 import javassist.*;
 import javassist.bytecode.*;
@@ -8,37 +10,41 @@ import javassist.compiler.CompileError;
 import javassist.compiler.Javac;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ClassUtil {
 
     /**
-     * 清理加密class方法体
+     * 清空class文件的方法体，并保留参数信息
      *
-     * @param jarClasses 加密class集合
-     * @param tempPath   临时地址
-     * @param libPath    lib目录
-     * @param fileType   文件类型
+     * @param classFiles jar/war 下需要加密的class文件
      */
-    public static void clearClassBody(Map<String, List<String>> jarClasses, String tempPath, String libPath, FileType fileType) {
-        try {
-            for (Map.Entry<String, List<String>> entry : jarClasses.entrySet()) {
-                ClassPool pool = ClassPool.getDefault();
-                ClassUtil.loadClassPath(pool, new String[]{libPath});
-                pool.insertClassPath(tempPath + File.separator + StringUtil.getRealPath(entry.getKey(), null, fileType));
-                for (String classname : entry.getValue()) {
-                    byte[] bts = ClassUtil.rewriteMethod(pool, classname);
-                    if (bts != null) {
-                        String path = tempPath + File.separator + StringUtil.getRealPath(entry.getKey(), classname, fileType);
-                        FileUtil.writeBytes(bts, path);
-                    }
-                }
+    public static void clearClassMethod(List<File> classFiles, String tempFilePath) {
+        ClassPool pool = ClassPool.getDefault();
+        loadClassPath(pool, new File(tempFilePath));
+        List<String> classPaths = new ArrayList<>();
+        classFiles.forEach(classFile -> {
+            String classPath = StringUtil.resolveClassPath(classFile.getAbsolutePath(), false);
+            if (classPaths.contains(classPath)) return;
+            try {
+                pool.insertClassPath(classPath);
+            } catch (NotFoundException ignored) {}
+            classPaths.add(classPath);
+        });
+        //[2]修改class方法体，并保存文件
+        classFiles.forEach(classFile -> {
+            //解析出类全名
+            String className = StringUtil.resolveClassPath(classFile.getAbsolutePath(), true);
+            byte[] bts = null;
+            try {
+                bts = rewriteMethod(pool, className);
+            } catch (Exception ignored) {}
+            if (bts != null) {
+                IoArm.writeFromByte(bts, classFile);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -49,7 +55,7 @@ public class ClassUtil {
      * @return 字节码
      */
     public static byte[] rewriteMethod(ClassPool pool, String classname) {
-        String name = "";
+        String name = null;
         try {
             CtClass cc = pool.getCtClass(classname);
             CtMethod[] methods = cc.getDeclaredMethods();
@@ -67,9 +73,8 @@ public class ClassUtil {
             }
             return cc.toBytecode();
         } catch (Exception e) {
-            System.out.println("处理class对象时异常(name:" + name + ")");
+            throw new RuntimeException("处理class对象时异常(name:" + name + ")", e);
         }
-        return null;
     }
 
     /**
@@ -121,24 +126,26 @@ public class ClassUtil {
     }
 
     /**
-     * 加载指定目录下的所有Jar
+     * 加载指定目录下的所有依赖
      *
      * @param pool  javassist池
-     * @param paths lib路径
+     * @param file  加载路径
      */
-    public static void loadClassPath(ClassPool pool, String[] paths) {
-        for (String path : paths) {
-            List<File> jars = FileUtil.loopFiles(path).stream()
-                    .filter(File::isFile)
-                    .filter(x -> FileUtil.extName(x).equalsIgnoreCase(FileType.JAR.getType()))
-                    .collect(Collectors.toList());
+    public static void loadClassPath(ClassPool pool, File file) {
+        if (file == null || !file.exists()) return;
+        if (file.isDirectory()){
+            List<File> jars = new ArrayList<>();
+            FileArm.listFile(jars, file, ".jar");
             for (File jar : jars) {
                 try {
                     pool.insertClassPath(jar.getAbsolutePath());
-                } catch (Exception e) {
-                    throw new RuntimeException("加载Jar时异常(file:" + jar.getAbsolutePath() + ")");
-                }
+                } catch (NotFoundException ignored) {}
             }
+        } else if (file.getName().endsWith(".jar")) {
+            try {
+                pool.insertClassPath(file.getAbsolutePath());
+            }catch (Exception ignore){}
         }
     }
+
 }

@@ -5,6 +5,8 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.hutool.crypto.symmetric.AES;
 import coffee.lucks.codefort.arms.ByteArm;
+import coffee.lucks.codefort.arms.FileArm;
+import coffee.lucks.codefort.arms.IoArm;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
 
@@ -23,18 +25,18 @@ public class EncryptUtil {
      * @param fileType     文件类型
      * @param password     加密密码
      */
-    public static void encryptClass(Map<String, List<String>> jarClasses, String tempFilePath, FileType fileType, String password) {
+    public static void encryptClass(List<File> encryptFile, String tempFilePath, FileType fileType, String password) {
         File metaDir = new File(tempFilePath, "META-INF" + File.separator + PathConst.ENCRYPT_NAME);
-        FileUtil.mkdir(metaDir);
+        FileArm.mkDir(metaDir);
         try {
-            for (Map.Entry<String, List<String>> entry : jarClasses.entrySet()) {
-                for (String classname : entry.getValue()) {
-                    String classPath = StringUtil.getRealPath(entry.getKey(), classname, fileType);
-                    String allPath = tempFilePath + File.separator + classPath;
-                    byte[] bytes = FileUtil.readBytes(allPath);
-                    bytes = EncryptUtil.encrypt(bytes, password);
-                    FileUtil.writeBytes(bytes, new File(metaDir, classname));
+            for (File file : encryptFile) {
+                String className = file.getName();
+                if (className.endsWith(".class")) {
+                    className = StringUtil.resolveClassPath(file.getAbsolutePath(), true);
                 }
+                byte[] bytes = ByteArm.readBytes(file);
+                bytes = EncryptUtil.encrypt(bytes, password);
+                IoArm.writeFromByte(bytes, new File(metaDir, className));
             }
         } catch (Exception e) {
             throw new RuntimeException("加密Jar/War的class文件时出现异常", e);

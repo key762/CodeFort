@@ -2,6 +2,9 @@ package coffee.lucks.codefort.util;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import coffee.lucks.codefort.arms.FileArm;
+import coffee.lucks.codefort.arms.IoArm;
+import coffee.lucks.codefort.model.DecFile;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
 
@@ -24,30 +27,31 @@ public class HandleUtil {
      * @param includeFiles 文件lib解压名称
      * @return 所有解压文件绝对路径
      */
-    public static List<String> decompression(String filePath, String targetDir, List<String> includeFiles) {
-        List<String> list = new ArrayList<>();
+    public static DecFile decompression(String filePath, String targetDir, List<String> includeFiles, DecFile decFile) {
+        FileArm.mkDir(targetDir);
         try (ZipFile zipFile = new ZipFile(new File(filePath))) {
             Enumeration<?> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
                 String entryName = entry.getName();
                 String fullPath = targetDir + File.separator + entryName;
-                list.add(fullPath);
                 if (entryName.endsWith(FileType.JAR.getFullType())) {
-                    FileUtil.writeFromStream(zipFile.getInputStream(entry), new File(fullPath), false);
+                    IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
                     if (includeFiles != null && includeFiles.contains(FileUtil.getName(entryName))) {
-                        list.addAll(decompression(fullPath, fullPath.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR), includeFiles));
+                        decFile.getLibJars().add(fullPath);
+                        decFile.getAllCls().addAll(decompression(fullPath, fullPath.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR), includeFiles, decFile).getAllCls());
                     }
                 } else if (entry.isDirectory()) {
-                    FileUtil.mkdir(fullPath);
+                    FileArm.mkDir(fullPath);
                 } else {
-                    FileUtil.writeFromStream(zipFile.getInputStream(entry), new File(fullPath), false);
+                    IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
+                    decFile.getAllCls().add(fullPath);
                 }
             }
         } catch (Exception e) {
             throw new RuntimeException("解压Jar/War执行文件时出现异常", e);
         }
-        return list;
+        return decFile;
     }
 
     /**
@@ -59,37 +63,18 @@ public class HandleUtil {
      * @param excludeClass 排除的类路径
      * @return 需加密class集合
      */
-    public static Map<String, List<String>> getEncryptClass(List<String> allFilePath, String filePath, String packages, String excludeClass) {
-        Map<String, List<String>> jarClasses = new HashMap<>();
-        List<String> classFilePath = allFilePath.stream()
+    public static List<File> getEncryptClass(List<String> allFilePath, String filePath, String packages, String excludeClass) {
+        List<File> files = new ArrayList<>();
+        List<String> stringList = allFilePath.stream()
                 .filter(x -> x.endsWith(PathConst.EXT_CLASS))
-                .map(x -> x.replace(filePath + File.separator, "")
-                        .replace(PathConst.EXT_CLASS, "")
-                        .replace(File.separator, ".")
-                )
                 .collect(Collectors.toList());
-        for (String file : classFilePath) {
-            String jarName;
-            String clsName;
-            if (StrUtil.containsAny(file, "BOOT-INF.lib.", "WEB-INF.lib.") && file.contains(PathConst.TEMP_DIR)) {
-                file = StrUtil.replace(file, "BOOT-INF.lib.", "")
-                        .replace("WEB-INF.lib.", "");
-                jarName = file.substring(0, file.indexOf(PathConst.TEMP_DIR));
-                clsName = file.substring(file.indexOf(PathConst.TEMP_DIR) + PathConst.TEMP_DIR.length() + 1);
-            } else if (StrUtil.containsAny(file, "BOOT-INF.classes.", "WEB-INF.classes.")) {
-                file = StrUtil.replace(file, "BOOT-INF.classes.", "")
-                        .replace("WEB-INF.classes.", "");
-                jarName = "CLASSES";
-                clsName = file;
-            } else {
-                jarName = "ROOT";
-                clsName = file;
-            }
-            if (StringUtil.needEncrypt(packages, clsName, excludeClass)) {
-                jarClasses.computeIfAbsent(jarName, k -> new ArrayList<>()).add(clsName);
-            }
+        for (String file : stringList) {
+            String clsName = StringUtil.resolveClassPath(file, true);
+//            if (StringUtil.needEncrypt(packages, clsName, excludeClass)) {
+                files.add(new File(file));
+//            }
         }
-        return jarClasses;
+        return files;
     }
 
     /**
