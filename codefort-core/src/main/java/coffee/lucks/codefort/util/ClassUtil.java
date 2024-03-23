@@ -1,9 +1,7 @@
 package coffee.lucks.codefort.util;
 
-import cn.hutool.core.io.FileUtil;
 import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
-import coffee.lucks.codefort.unit.FileType;
 import javassist.*;
 import javassist.bytecode.*;
 import javassist.compiler.CompileError;
@@ -12,7 +10,6 @@ import javassist.compiler.Javac;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ClassUtil {
 

@@ -1,6 +1,5 @@
 package coffee.lucks.codefort.util;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.hutool.crypto.symmetric.AES;
@@ -12,7 +11,6 @@ import coffee.lucks.codefort.unit.FileType;
 
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.*;
 
 public class EncryptUtil {
