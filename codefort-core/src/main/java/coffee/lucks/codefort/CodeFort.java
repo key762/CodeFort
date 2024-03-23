@@ -24,6 +24,13 @@ public class CodeFort {
         String password = fortUnit.getPassword();
         // 获取临时目录
         String tempFilePath = StringUtil.getTmpDirPath(fortUnit.getUnitPath(), fileType);
+
+
+
+
+
+
+
         // 解压原执行文件
         List<String> allFilePath = HandleUtil.decompression(jarPath, tempFilePath, includeFiles);
         // 收集所有需加密的class

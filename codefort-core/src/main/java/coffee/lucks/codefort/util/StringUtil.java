@@ -1,6 +1,6 @@
 package coffee.lucks.codefort.util;
 
-import cn.hutool.core.util.StrUtil;
+import coffee.lucks.codefort.arms.StrArm;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
 
@@ -19,12 +19,12 @@ public class StringUtil {
      * @return 文件类型枚举
      */
     public static FileType getFileType(String filePath) {
-        if (StrUtil.isEmpty(filePath)) {
+        if (StrArm.isEmpty(filePath)) {
             throw new RuntimeException("文件格式错误(仅支持Jar文件和War文件)");
         }
-        if (StrUtil.endWithIgnoreCase(filePath, FileType.JAR.getFullType())) {
+        if (StrArm.endWithIgnoreCase(filePath, FileType.JAR.getFullType())) {
             return FileType.JAR;
-        } else if (StrUtil.endWithIgnoreCase(filePath, FileType.WAR.getFullType())) {
+        } else if (StrArm.endWithIgnoreCase(filePath, FileType.WAR.getFullType())) {
             return FileType.WAR;
         } else {
             throw new RuntimeException("文件格式错误(仅支持Jar文件和War文件)");
@@ -39,7 +39,7 @@ public class StringUtil {
      * @return 字符串/默认值
      */
     public static String checkStrWithDef(String str, String def) {
-        return StrUtil.isEmpty(str) ? def : str;
+        return StrArm.isEmpty(str) ? def : str;
     }
 
     /**
@@ -51,12 +51,12 @@ public class StringUtil {
      * @return 是否加密
      */
     public static boolean needEncrypt(String packageName, String className, String excludeClass) {
-        if (StrUtil.isEmpty(packageName)) {
+        if (StrArm.isEmpty(packageName)) {
             return false;
         }
         String[] packages = packageName.split(",");
-        if (StrUtil.startWithAny(className, packages)) {
-            return StrUtil.isEmpty(excludeClass) || !excludeClass.contains(className);
+        if (StrArm.startWithAny(className, packages)) {
+            return StrArm.isEmpty(excludeClass) || !excludeClass.contains(className);
         }
         return false;
     }
@@ -79,7 +79,7 @@ public class StringUtil {
         } else {
             path = INF + File.separator + "lib" + File.separator + key + PathConst.TEMP_DIR;
         }
-        if (StrUtil.isEmpty(className)) {
+        if (StrArm.isEmpty(className)) {
             return path;
         }
         path = path + (path.isEmpty() ? "" : File.separator) + className.replace(".", File.separator) + PathConst.EXT_CLASS;
@@ -93,7 +93,7 @@ public class StringUtil {
      * @return 是否
      */
     public static boolean isDel(String filePath) {
-        return StrUtil.endWithAnyIgnoreCase(filePath, ".DS_Store", "Thumbs.db");
+        return StrArm.endWithAnyIgnoreCase(filePath, ".DS_Store", "Thumbs.db");
     }
 
     /**
@@ -114,7 +114,7 @@ public class StringUtil {
      * @return 集合
      */
     public static List<String> getList(String libs) {
-        if (StrUtil.isEmpty(libs)) {
+        if (StrArm.isEmpty(libs)) {
             return new ArrayList<>();
         }
         return Arrays.asList(libs.split(","));

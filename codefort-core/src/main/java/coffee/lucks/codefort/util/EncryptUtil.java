@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.hutool.crypto.symmetric.AES;
+import coffee.lucks.codefort.arms.ByteArm;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
 
@@ -84,11 +85,11 @@ public class EncryptUtil {
         byte[] bytes = null;
         String fileName = PathConst.ENCRYPT_PATH + name;
         if (workDir.isFile()) {
-            bytes = ByteUtil.getFileFromJar(workDir, fileName);
+            bytes = ByteArm.getFileFromZip(workDir, fileName);
         } else {//war解压的目录
             File file = new File(workDir, fileName);
             if (file.exists()) {
-                bytes = ByteUtil.readBytes(file);
+                bytes = ByteArm.readBytes(file);
             }
         }
         return bytes;

@@ -2,7 +2,7 @@ package coffee.lucks.codefort.agent;
 
 import coffee.lucks.codefort.util.EncryptUtil;
 import coffee.lucks.codefort.unit.FortLog;
-import coffee.lucks.codefort.util.StrUtil;
+import coffee.lucks.codefort.arms.StrArm;
 import coffee.lucks.codefort.util.StringUtil;
 
 import java.lang.instrument.ClassFileTransformer;
@@ -24,7 +24,7 @@ public class AgentTransformer implements ClassFileTransformer {
         FortLog.info("项目运行路径 : " + projectPath);
         projectPath = StringUtil.getRootPath(projectPath);
         FortLog.info("项目运行真实路径 : " + projectPath);
-        if (StrUtil.isEmpty(projectPath)) return classBuffer;
+        if (StrArm.isEmpty(projectPath)) return classBuffer;
         className = className.replace("/", ".").replace("\\", ".");
         FortLog.info("当前还原的class名称 : " + className);
         byte[] bytes = EncryptUtil.decryptFile(projectPath, className, this.pwd);
