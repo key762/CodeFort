@@ -1,14 +1,17 @@
 package coffee.lucks.codefort.embeds.unit;
 
 public class PathConst {
+
     /**
      * class文件拓展名
      */
     public static final String EXT_CLASS = ".class";
+
     /**
      * jar解压的目录名后缀
      */
     public static final String TEMP_DIR = "_temp";
+
     /**
      * class加密后的文件
      */
@@ -24,7 +27,9 @@ public class PathConst {
      */
     public static boolean DEBUG = false;
 
-
+    /**
+     * 需要嵌入的字节码文件
+     */
     public static final String[] CODE_FORT_FILES = {
             "AgentTransformer.class", "CodeFortAgent.class", "RSAManualKeys.class",
             "ByteArm.class", "DateArm.class", "FileArm.class", "IoArm.class", "StrArm.class",

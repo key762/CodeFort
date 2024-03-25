@@ -11,13 +11,16 @@ public class CmdLine {
      * option
      */
     private List<String> options = new ArrayList<>();
+
     /**
      * hasArgs
      */
     private List<Boolean> hasArgs = new ArrayList<>();
 
+    /**
+     * optionsMap
+     */
     private Map<String, List<String>> optionsMap = new HashMap<>();
-
 
     public CmdLine addOption(String opt, boolean hasArg) {
         opt = resolveOption(opt);

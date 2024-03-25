@@ -20,7 +20,6 @@ public class FortLog {
         }
     }
 
-
     /**
      * 输出info信息
      *

@@ -8,6 +8,16 @@ import java.util.stream.Collectors;
 public class StrArm {
 
     /**
+     * 字符常量：斜杠
+     */
+    private static char SLASH = '/';
+
+    /**
+     * 字符常量：反斜杠
+     */
+    private static char BACKSLASH = '\\';
+
+    /**
      * 被检测的字符串是否为空
      *
      * @param str 被检测的字符串
@@ -89,9 +99,8 @@ public class StrArm {
         }
     }
 
-
     /**
-     * 给定字符串是否以任何一个字符串开始<br>
+     * 给定字符串是否以任何一个字符串开始
      * 给定字符串和数组为空都返回false
      *
      * @param str      给定字符串
@@ -111,14 +120,13 @@ public class StrArm {
     }
 
     /**
-     * 是否以指定字符串开头<br>
+     * 是否以指定字符串开头
      * 如果给定的字符串和开头字符串都为null则返回true，否则任意一个值为null返回false
      *
      * @param str        被监测字符串
      * @param prefix     开头字符串
      * @param ignoreCase 是否忽略大小写
      * @return 是否以指定字符串开头
-     * @since 5.4.3
      */
     public static boolean startWith(CharSequence str, CharSequence prefix, boolean ignoreCase) {
         return startWith(str, prefix, ignoreCase, false);
@@ -127,19 +135,13 @@ public class StrArm {
 
     /**
      * 是否以指定字符串开头<br>
-     * 如果给定的字符串和开头字符串都为null则返回true，否则任意一个值为null返回false<br>
-     * <pre>
-     *     CharSequenceUtil.startWith("123", "123", false, true);   -- false
-     *     CharSequenceUtil.startWith("ABCDEF", "abc", true, true); -- true
-     *     CharSequenceUtil.startWith("abc", "abc", true, true);    -- false
-     * </pre>
+     * 如果给定的字符串和开头字符串都为null则返回true，否则任意一个值为null返回false
      *
      * @param str          被监测字符串
      * @param prefix       开头字符串
      * @param ignoreCase   是否忽略大小写
      * @param ignoreEquals 是否忽略字符串相等的情况
      * @return 是否以指定字符串开头
-     * @since 5.4.3
      */
     public static boolean startWith(CharSequence str, CharSequence prefix, boolean ignoreCase, boolean ignoreEquals) {
         if (null == str || null == prefix) {
@@ -148,30 +150,25 @@ public class StrArm {
             }
             return null == str && null == prefix;
         }
-
         boolean isStartWith = str.toString().regionMatches(ignoreCase, 0, prefix.toString(), 0, prefix.length());
-
         if (isStartWith) {
             return (false == ignoreEquals) || (false == equals(str, prefix, ignoreCase));
         }
         return false;
     }
 
-
     /**
-     * 给定字符串是否以任何一个字符串结尾（忽略大小写）<br>
+     * 给定字符串是否以任何一个字符串结尾（忽略大小写
      * 给定字符串和数组为空都返回false
      *
      * @param str      给定字符串
      * @param suffixes 需要检测的结尾字符串
      * @return 给定字符串是否以任何一个字符串结尾
-     * @since 5.5.9
      */
     public static boolean endWithAnyIgnoreCase(CharSequence str, CharSequence... suffixes) {
         if (isEmpty(str) || suffixes == null || suffixes.length == 0) {
             return false;
         }
-
         for (CharSequence suffix : suffixes) {
             if (endWith(str, suffix, true)) {
                 return true;
@@ -181,7 +178,7 @@ public class StrArm {
     }
 
     /**
-     * 是否以指定字符串结尾<br>
+     * 是否以指定字符串结尾
      * 如果给定的字符串和开头字符串都为null则返回true，否则任意一个值为null返回false
      *
      * @param str        被监测字符串
@@ -193,29 +190,23 @@ public class StrArm {
         return endWith(str, suffix, ignoreCase, false);
     }
 
-
     /**
-     * 字符常量：斜杠
-     */
-    private static char SLASH = '/';
-    /**
-     * 字符常量：反斜杠
-     */
-    private static char BACKSLASH = '\\';
-
-    /**
-     * 是否为Windows或者Linux（Unix）文件分隔符<br>
+     * 是否为Windows或者Linux（Unix）文件分隔符
      * Windows平台下分隔符为\，Linux（Unix）为/
      *
      * @param c 字符
      * @return 是否为Windows或者Linux（Unix）文件分隔符
-     * @since 4.1.11
      */
     public static boolean isFileSeparator(char c) {
         return SLASH == c || BACKSLASH == c;
     }
 
-
+    /**
+     * 字符串是否包含集合中的任意字符
+     * @param str 字符串
+     * @param array 字符数组
+     * @return true/false
+     */
     public static boolean containsArray(String str, String[] array) {
         for (String e : array) {
             if (str.contains(e)) {

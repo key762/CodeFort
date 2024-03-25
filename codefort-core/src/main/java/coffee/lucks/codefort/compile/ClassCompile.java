@@ -7,7 +7,6 @@ import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.unit.Guarder;
 import coffee.lucks.codefort.embeds.unit.FileType;
 import coffee.lucks.codefort.embeds.unit.PathConst;
-import coffee.lucks.codefort.embeds.util.HandleUtil;
 import coffee.lucks.codefort.embeds.util.StringUtil;
 import javassist.*;
 import javassist.bytecode.*;
@@ -33,7 +32,7 @@ public class ClassCompile {
             File thisJarFile = new File(thisJar);
             if (thisJar.endsWith("/classes/")) {
                 List<File> files = new ArrayList<>();
-                HandleUtil.listFile(files, new File(thisJar));
+                FileArm.listFile(files, new File(thisJar));
                 files.forEach(file -> {
                     String className = file.getAbsolutePath().substring(thisJarFile.getAbsolutePath().length());
                     File targetFile = FileType.JAR.equals(guarder.getType()) ? guarder.getTargetFile() : guarder.getTargetClassesDir();

@@ -14,10 +14,7 @@ public class EncryptUtil {
     /**
      * 加密class文件
      *
-     * @param jarClasses   需加密的class集合
-     * @param tempFilePath 临时文件路径
-     * @param fileType     文件类型
-     * @param password     加密密码
+     * @param guarder 执行对象
      */
     public static void encryptClass(Guarder guarder) {
         File metaDir = new File(guarder.getTargetStr(), "META-INF" + File.separator + PathConst.ENCRYPT_NAME);
@@ -75,26 +72,6 @@ public class EncryptUtil {
         return bytes;
     }
 
-    /**
-     * 在压缩文件中获取一个文件的字节
-     *
-     * @param zip      压缩文件
-     * @param fileName 文件名
-     * @return 文件的字节
-     */
-    public static byte[] getFileFromZip(File zip, String fileName) {
-        if (zip.exists()) {
-            try (ZipFile zipFile = new ZipFile(zip)) {
-                InputStream inputStream = zipFile.getInputStream(zipFile.getEntry("META-INF" + File.separator + PathConst.ENCRYPT_NAME + File.separator + fileName));
-                return IoArm.readBytes(inputStream);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("在压缩文件中获取字节时异常");
-            }
-        }
-        return null;
-    }
-
     public static byte[] decrypt(byte[] msg, String key) {
         return AESUtil.decrypt(decompressByte(msg), MD5Util.digest(key), MD5Util.digest(key));
     }
@@ -103,6 +80,12 @@ public class EncryptUtil {
         return compressByte(AESUtil.encrypt(bytes, MD5Util.digest(password), MD5Util.digest(password)));
     }
 
+    /**
+     * 字节码压缩
+     *
+     * @param inputBytes 源字节码
+     * @return 字节码
+     */
     private static byte[] compressByte(byte[] inputBytes) {
         Deflater deflater = new Deflater();
         deflater.setInput(inputBytes);
@@ -117,6 +100,12 @@ public class EncryptUtil {
         return outputStream.toByteArray();
     }
 
+    /**
+     * 字节码解压
+     *
+     * @param compressedData 源字节码
+     * @return 字节码
+     */
     private static byte[] decompressByte(byte[] compressedData) {
         Inflater inflater = new Inflater();
         inflater.setInput(compressedData);

@@ -83,7 +83,7 @@ public class HandleUtil {
      */
     public static String compress(String jarDir, String targetJar) {
         List<File> files = new ArrayList<>();
-        listFile(files, new File(jarDir));
+        FileArm.listFile(files, new File(jarDir));
         FileArm.del(targetJar);
         try (OutputStream out = Files.newOutputStream(new File(targetJar).toPath());
              ZipOutputStream zos = new ZipOutputStream(out);
@@ -123,22 +123,6 @@ public class HandleUtil {
             throw new RuntimeException("打包Jar/War文件时出现异常", e);
         }
         return targetJar;
-    }
-
-    /**
-     * 递归收集文件夹信息
-     *
-     * @param fileList 文件集合
-     * @param dir      目录地址
-     */
-    public static void listFile(List<File> fileList, File dir) {
-        File[] files = dir.listFiles();
-        for (File f : files) {
-            fileList.add(f);
-            if (f.isDirectory()) {
-                listFile(fileList, f);
-            }
-        }
     }
 
 }

@@ -5,6 +5,12 @@ import java.util.Base64;
 
 public class MD5Util {
 
+    /**
+     * 字符偏移转换
+     *
+     * @param str 源字符
+     * @return 转换后字符
+     */
     public static String convertChar(String str) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
@@ -14,6 +20,12 @@ public class MD5Util {
         return sb.toString();
     }
 
+    /**
+     * MD5加密
+     *
+     * @param data 源数据
+     * @return 加密后字符
+     */
     public static byte[] digest(String data) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

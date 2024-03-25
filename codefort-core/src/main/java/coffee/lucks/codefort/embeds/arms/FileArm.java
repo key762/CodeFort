@@ -158,4 +158,20 @@ public class FileArm {
         directory.delete();
     }
 
+    /**
+     * 递归收集文件夹信息
+     *
+     * @param fileList 文件集合
+     * @param dir      目录地址
+     */
+    public static void listFile(List<File> fileList, File dir) {
+        File[] files = dir.listFiles();
+        for (File f : files) {
+            fileList.add(f);
+            if (f.isDirectory()) {
+                listFile(fileList, f);
+            }
+        }
+    }
+
 }

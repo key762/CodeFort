@@ -7,7 +7,6 @@ import coffee.lucks.codefort.embeds.unit.FileType;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
 
 public class StringUtil {
 
@@ -31,23 +30,11 @@ public class StringUtil {
     }
 
     /**
-     * 校验字符串并异常时返回默认值
-     *
-     * @param str 字符串
-     * @param def 默认值
-     * @return 字符串/默认值
-     */
-    public static String checkStrWithDef(String str, String def) {
-        return StrArm.isEmpty(str) ? def : str;
-    }
-
-
-    /**
      * 判断class是否需要加密
      *
-     * @param className 类路径
-     * @param guarder   执行对象
-     * @return 是否加密
+     * @param file    文件路径
+     * @param guarder 执行对象
+     * @return true/false
      */
     public static boolean needEncrypt(String file, Guarder guarder) {
         if (StrArm.isEmpty(guarder.getPackages()) && guarder.getLibJarNames().isEmpty()) {
@@ -61,6 +48,13 @@ public class StringUtil {
         return false;
     }
 
+    /**
+     * 判断class是否需要加密(依赖包)
+     *
+     * @param file    文件路径
+     * @param guarder 执行对象
+     * @return true/false
+     */
     public static boolean needEncryptLib(String file, Guarder guarder) {
         if (guarder.getLibJarNames().isEmpty()) {
             return false;
@@ -71,31 +65,6 @@ public class StringUtil {
             }
         }
         return false;
-    }
-
-    /**
-     * 还原真实路径
-     *
-     * @param key       class类型
-     * @param className 类名
-     * @param fileType  文件类型
-     * @return 真实路径
-     */
-    public static String getRealPath(String key, String className, FileType fileType) {
-        String INF = fileType.getMark();
-        String path;
-        if ("ROOT".equals(key)) {
-            path = "";
-        } else if ("CLASSES".equals(key)) {
-            path = INF + File.separator + "classes";
-        } else {
-            path = INF + File.separator + "lib" + File.separator + key + PathConst.TEMP_DIR;
-        }
-        if (StrArm.isEmpty(className)) {
-            return path;
-        }
-        path = path + (path.isEmpty() ? "" : File.separator) + className.replace(".", File.separator) + PathConst.EXT_CLASS;
-        return path;
     }
 
     /**
@@ -118,20 +87,6 @@ public class StringUtil {
     public static String getTmpDirPath(String filePath, FileType fileType) {
         return filePath.replace(fileType.getFullType(), PathConst.TEMP_DIR);
     }
-
-    /**
-     * 获取字符分割集合
-     *
-     * @param libs 字符串
-     * @return 集合
-     */
-    public static List<String> getList(String libs) {
-        if (StrArm.isEmpty(libs)) {
-            return new ArrayList<>();
-        }
-        return Arrays.asList(libs.split(","));
-    }
-
 
     /**
      * 获取class运行的classes目录或所在的jar包目录
@@ -166,15 +121,14 @@ public class StringUtil {
         return null;
     }
 
-
     /**
      * 根据class的绝对路径解析出class名称或class包所在的路径
      *
-     * @param fileName    class绝对路径
-     * @param classOrPath true|false
+     * @param fileName class绝对路径
+     * @param flag     true|false
      * @return class名称|包所在的路径
      */
-    public static String resolveClassPath(String fileName, boolean classOrPath) {
+    public static String resolveClassPath(String fileName, boolean flag) {
         String K_LIB = File.separator + "lib" + File.separator;
         String K_CLASSES = File.separator + "classes" + File.separator;
         String file = fileName.substring(0, fileName.length() - 6);
@@ -190,8 +144,7 @@ public class StringUtil {
             clsName = file.substring(file.indexOf(PathConst.TEMP_DIR) + PathConst.TEMP_DIR.length() + 1);
             clsPath = file.substring(0, file.length() - clsName.length() - 1);
         }
-        return classOrPath ? clsName.replace(File.separator, ".") : clsPath;
+        return flag ? clsName.replace(File.separator, ".") : clsPath;
     }
-
 
 }
