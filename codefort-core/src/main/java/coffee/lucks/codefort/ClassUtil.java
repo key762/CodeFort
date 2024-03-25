@@ -1,8 +1,9 @@
-package coffee.lucks.codefort.util;
+package coffee.lucks.codefort;
 
 import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
 import coffee.lucks.codefort.model.Guarder;
+import coffee.lucks.codefort.util.StringUtil;
 import javassist.*;
 import javassist.bytecode.*;
 import javassist.compiler.CompileError;
