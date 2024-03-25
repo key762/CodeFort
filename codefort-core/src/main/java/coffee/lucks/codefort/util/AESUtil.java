@@ -2,6 +2,7 @@ package coffee.lucks.codefort.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.spec.IvParameterSpec;
 
@@ -12,7 +13,7 @@ public class AESUtil {
     public static byte[] encrypt(byte[] data, byte[] secret, byte[] iv) {
         try {
             SecretKeySpec secretKeySpec = new SecretKeySpec(secret, "AES");
-            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(iv,16));
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
             byte[] encrypted = cipher.doFinal(data);
@@ -25,7 +26,7 @@ public class AESUtil {
     public static byte[] decrypt(byte[] data, byte[] secret, byte[] iv) {
         try {
             SecretKeySpec secretKeySpec = new SecretKeySpec(secret, "AES");
-            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(iv,16));
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
             return cipher.doFinal(Base64.getDecoder().decode(data));
