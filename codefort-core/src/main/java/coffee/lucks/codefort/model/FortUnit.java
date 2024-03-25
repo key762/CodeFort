@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.unit;
+package coffee.lucks.codefort.model;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -10,47 +10,74 @@ public class FortUnit {
     /**
      * 执行文件路径
      */
-    private String unitPath;
+    public String unitPath;
 
     /**
      * 密码
      */
-    private String password;
+    public String password;
 
     /**
      * 机器码
      */
-    private String biosMark;
+    public String biosMark;
 
     /**
      * 编译时间
      */
-    private String buildTime;
+    public String buildTime;
 
     /**
      * 运行开始时间
      */
-    private String startTime;
+    public String startTime;
 
     /**
      * 运行结束时间
      */
-    private String endTime;
+    public String endTime;
 
     /**
      * 依赖包信息
      */
-    private String libs;
+    public String libs;
 
     /**
      * 加密路径信息
      */
-    private String packages;
+    public String packages;
 
     /**
      * 加密排除信息
      */
-    private String excludes;
+    public String excludes;
+
+    public FortUnit() {
+    }
+
+    public FortUnit(String unitPath, String password, String biosMark, String buildTime, String startTime, String endTime, String libs, String packages, String excludes) {
+        this.unitPath = unitPath;
+        this.password = password;
+        this.biosMark = biosMark;
+        this.buildTime = buildTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.libs = libs;
+        this.packages = packages;
+        this.excludes = excludes;
+    }
+
+    public FortUnit(FortUnit unit) {
+        this.unitPath = unit.unitPath;
+        this.password = unit.password;
+        this.biosMark = unit.biosMark;
+        this.buildTime = unit.buildTime;
+        this.startTime = unit.startTime;
+        this.endTime = unit.endTime;
+        this.libs = unit.libs;
+        this.packages = unit.packages;
+        this.excludes = unit.excludes;
+    }
 
     public String getUnitPath() {
         return unitPath;

@@ -2,6 +2,7 @@ package coffee.lucks.codefort.util;
 
 import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
+import coffee.lucks.codefort.model.Guarder;
 import javassist.*;
 import javassist.bytecode.*;
 import javassist.compiler.CompileError;
@@ -18,26 +19,28 @@ public class ClassUtil {
      *
      * @param classFiles jar/war 下需要加密的class文件
      */
-    public static void clearClassMethod(List<File> classFiles, String tempFilePath) {
+    public static void clearClassMethod(Guarder guarder) {
         ClassPool pool = ClassPool.getDefault();
-        loadClassPath(pool, new File(tempFilePath));
+        loadClassPath(pool, guarder.getTargetFile());
         List<String> classPaths = new ArrayList<>();
-        classFiles.forEach(classFile -> {
+        guarder.getEncryptClass().forEach(classFile -> {
             String classPath = StringUtil.resolveClassPath(classFile.getAbsolutePath(), false);
             if (classPaths.contains(classPath)) return;
             try {
                 pool.insertClassPath(classPath);
-            } catch (NotFoundException ignored) {}
+            } catch (NotFoundException ignored) {
+            }
             classPaths.add(classPath);
         });
         //[2]修改class方法体，并保存文件
-        classFiles.forEach(classFile -> {
+        guarder.getEncryptClass().forEach(classFile -> {
             //解析出类全名
             String className = StringUtil.resolveClassPath(classFile.getAbsolutePath(), true);
             byte[] bts = null;
             try {
                 bts = rewriteMethod(pool, className);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             if (bts != null) {
                 IoArm.writeFromByte(bts, classFile);
             }
@@ -125,23 +128,25 @@ public class ClassUtil {
     /**
      * 加载指定目录下的所有依赖
      *
-     * @param pool  javassist池
-     * @param file  加载路径
+     * @param pool javassist池
+     * @param file 加载路径
      */
     public static void loadClassPath(ClassPool pool, File file) {
         if (file == null || !file.exists()) return;
-        if (file.isDirectory()){
+        if (file.isDirectory()) {
             List<File> jars = new ArrayList<>();
             FileArm.listFile(jars, file, ".jar");
             for (File jar : jars) {
                 try {
                     pool.insertClassPath(jar.getAbsolutePath());
-                } catch (NotFoundException ignored) {}
+                } catch (NotFoundException ignored) {
+                }
             }
         } else if (file.getName().endsWith(".jar")) {
             try {
                 pool.insertClassPath(file.getAbsolutePath());
-            }catch (Exception ignore){}
+            } catch (Exception ignore) {
+            }
         }
     }
 

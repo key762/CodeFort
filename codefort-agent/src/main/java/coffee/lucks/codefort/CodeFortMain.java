@@ -1,6 +1,6 @@
 package coffee.lucks.codefort;
 
-import coffee.lucks.codefort.unit.FortUnit;
+import coffee.lucks.codefort.model.FortUnit;
 
 import java.util.Date;
 
@@ -30,7 +30,7 @@ public class CodeFortMain {
         fortUnit.setLibs(includeFiles);
         fortUnit.setPackages(packages);
         fortUnit.setExcludes(excludeClass);
-        String res = new CodeFort().doEncryptJar(fortUnit);
+        String res = new coffee.lucks.codefort.CodeFort().doEncryptJar(fortUnit);
         System.out.println(res);
     }
 

@@ -6,6 +6,7 @@ import cn.hutool.crypto.symmetric.AES;
 import coffee.lucks.codefort.arms.ByteArm;
 import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
+import coffee.lucks.codefort.model.Guarder;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
 
@@ -23,39 +24,23 @@ public class EncryptUtil {
      * @param fileType     文件类型
      * @param password     加密密码
      */
-    public static void encryptClass(List<File> encryptFile, String tempFilePath, FileType fileType, String password) {
-        File metaDir = new File(tempFilePath, "META-INF" + File.separator + PathConst.ENCRYPT_NAME);
+    public static void encryptClass(Guarder guarder) {
+        File metaDir = new File(guarder.getTargetStr(), "META-INF" + File.separator + PathConst.ENCRYPT_NAME);
         FileArm.mkDir(metaDir);
         try {
-            for (File file : encryptFile) {
+            for (File file : guarder.getEncryptClass()) {
                 String className = file.getName();
                 if (className.endsWith(".class")) {
                     className = StringUtil.resolveClassPath(file.getAbsolutePath(), true);
                 }
                 byte[] bytes = ByteArm.readBytes(file);
-                bytes = EncryptUtil.encrypt(bytes, password);
+                bytes = EncryptUtil.encrypt(bytes, guarder.getPassword());
                 IoArm.writeFromByte(bytes, new File(metaDir, className));
             }
         } catch (Exception e) {
             throw new RuntimeException("加密Jar/War的class文件时出现异常", e);
         }
     }
-
-    public static byte[] toByteArray(InputStream input) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        try {
-            byte[] buffer = new byte[4096];
-            int n = 0;
-            while (-1 != (n = input.read(buffer))) {
-                output.write(buffer, 0, n);
-            }
-            return output.toByteArray();
-        } finally {
-            output.close();
-            input.close();
-        }
-    }
-
 
     /**
      * 根据名称解密出一个文件

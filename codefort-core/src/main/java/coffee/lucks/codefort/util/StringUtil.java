@@ -1,6 +1,7 @@
 package coffee.lucks.codefort.util;
 
 import coffee.lucks.codefort.arms.StrArm;
+import coffee.lucks.codefort.model.Guarder;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
 
@@ -40,21 +41,34 @@ public class StringUtil {
         return StrArm.isEmpty(str) ? def : str;
     }
 
+
     /**
      * 判断class是否需要加密
      *
-     * @param packageName  包路径
-     * @param className    类路径
-     * @param excludeClass 排除的类信息
+     * @param className 类路径
+     * @param guarder   执行对象
      * @return 是否加密
      */
-    public static boolean needEncrypt(String packageName, String className, String excludeClass) {
-        if (StrArm.isEmpty(packageName)) {
+    public static boolean needEncrypt(String file, Guarder guarder) {
+        if (StrArm.isEmpty(guarder.getPackages()) && guarder.getLibJarNames().isEmpty()) {
             return false;
         }
-        String[] packages = packageName.split(",");
-        if (StrArm.startWithAny(className, packages)) {
-            return StrArm.isEmpty(excludeClass) || !excludeClass.contains(className);
+        String clsName = StringUtil.resolveClassPath(file, true);
+        String[] packages = guarder.getPackages().split(",");
+        if (StrArm.startWithAny(clsName, packages) || needEncryptLib(file, guarder)) {
+            return StrArm.isEmpty(guarder.getExcludes()) || !guarder.getExcludes().contains(clsName);
+        }
+        return false;
+    }
+
+    public static boolean needEncryptLib(String file, Guarder guarder) {
+        if (guarder.getLibJarNames().isEmpty()) {
+            return false;
+        }
+        for (String libJarName : guarder.getLibJarNames()) {
+            if (file.contains(libJarName)) {
+                return true;
+            }
         }
         return false;
     }

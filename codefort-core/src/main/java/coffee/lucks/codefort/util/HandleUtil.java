@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
 import coffee.lucks.codefort.model.DecFile;
+import coffee.lucks.codefort.model.Guarder;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
 
@@ -22,12 +23,12 @@ public class HandleUtil {
     /**
      * 解压Jar/War执行文件
      *
-     * @param filePath     文件路径
-     * @param targetDir    目标路径
-     * @param includeFiles 文件lib解压名称
+     * @param filePath  文件路径
+     * @param targetDir 目标路径
+     * @param guarder   执行对象
      * @return 所有解压文件绝对路径
      */
-    public static DecFile decompression(String filePath, String targetDir, List<String> includeFiles, DecFile decFile) {
+    public static Guarder decompression(String filePath, String targetDir, Guarder guarder) {
         FileArm.mkDir(targetDir);
         try (ZipFile zipFile = new ZipFile(new File(filePath))) {
             Enumeration<?> entries = zipFile.entries();
@@ -37,44 +38,42 @@ public class HandleUtil {
                 String fullPath = targetDir + File.separator + entryName;
                 if (entryName.endsWith(FileType.JAR.getFullType())) {
                     IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
-                    if (includeFiles != null && includeFiles.contains(FileUtil.getName(entryName))) {
-                        decFile.getLibJars().add(fullPath);
-                        decFile.getAllCls().addAll(decompression(fullPath, fullPath.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR), includeFiles, decFile).getAllCls());
+                    if (guarder.getIncludeJars() != null && guarder.getIncludeJars().contains(FileUtil.getName(entryName))) {
+                        guarder.getLibJars().add(fullPath);
+                        guarder.getLibJarNames().add(entryName.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR));
+                        guarder.getAllFile().addAll(decompression(fullPath, fullPath.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR), guarder).getAllFile());
                     }
                 } else if (entry.isDirectory()) {
                     FileArm.mkDir(fullPath);
                 } else {
                     IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
-                    decFile.getAllCls().add(fullPath);
+                    guarder.getAllFile().add(fullPath);
                 }
             }
         } catch (Exception e) {
             throw new RuntimeException("解压Jar/War执行文件时出现异常", e);
         }
-        return decFile;
+        return guarder;
     }
 
     /**
      * 收集需加密class
      *
-     * @param allFilePath  临时文件路径集合
-     * @param filePath     临时文件路径
-     * @param packages     需加密包路径
-     * @param excludeClass 排除的类路径
-     * @return 需加密class集合
+     * @param guarder 执行对象
+     * @return 加密class集合
      */
-    public static List<File> getEncryptClass(List<String> allFilePath, String filePath, String packages, String excludeClass) {
+    public static Guarder getEncryptClass(Guarder guarder) {
         List<File> files = new ArrayList<>();
-        List<String> stringList = allFilePath.stream()
+        List<String> stringList = guarder.getAllFile().stream()
                 .filter(x -> x.endsWith(PathConst.EXT_CLASS))
                 .collect(Collectors.toList());
         for (String file : stringList) {
-            String clsName = StringUtil.resolveClassPath(file, true);
-//            if (StringUtil.needEncrypt(packages, clsName, excludeClass)) {
+            if (StringUtil.needEncrypt(file, guarder)) {
                 files.add(new File(file));
-//            }
+            }
         }
-        return files;
+        guarder.getEncryptClass().addAll(files);
+        return guarder;
     }
 
     /**

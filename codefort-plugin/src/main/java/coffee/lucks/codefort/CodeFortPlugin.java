@@ -2,7 +2,7 @@ package coffee.lucks.codefort;
 
 import cn.hutool.core.date.TimeInterval;
 import cn.hutool.core.io.FileUtil;
-import coffee.lucks.codefort.unit.FortUnit;
+import coffee.lucks.codefort.model.FortUnit;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.logging.Log;
