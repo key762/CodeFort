@@ -24,4 +24,10 @@ public class PathConst {
      */
     public static boolean DEBUG = false;
 
+
+    public static final String[] CODE_FORT_FILES = {"CoreAgent.class", "InputForm.class", "InputForm$1.class",
+            "JarDecryptor.class", "AgentTransformer.class", "Const.class", "CmdLineOption.class",
+            "EncryptUtils.class", "IoUtils.class", "JarUtils.class", "Log.class", "StrUtils.class",
+            "SysUtils.class"};
+
 }

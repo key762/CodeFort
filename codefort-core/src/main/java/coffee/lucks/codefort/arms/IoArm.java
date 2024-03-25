@@ -60,4 +60,42 @@ public class IoArm {
         }
     }
 
+    public static String readTxtFile(File file) {
+        StringBuffer txt = new StringBuffer("");
+        try (InputStreamReader read = new InputStreamReader(new FileInputStream(file), "UTF-8");
+             BufferedReader bufferedReader = new BufferedReader(read)) {
+            String lineTxt;
+            while ((lineTxt = bufferedReader.readLine()) != null) {
+                txt.append(lineTxt).append("\r\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return txt.toString();
+    }
+
+    /**
+     * 写文件
+     *
+     * @param file 文件
+     * @param txt  内容
+     */
+    public static void writeTxtFile(File file, String txt) {
+        BufferedWriter out = null;
+        try {
+            if (!file.exists()) {
+                file.mkdirs();
+                file.delete();
+                file.createNewFile();
+            }
+            out = new BufferedWriter(new FileWriter(file));
+            out.write(txt);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(out);
+        }
+    }
+
 }

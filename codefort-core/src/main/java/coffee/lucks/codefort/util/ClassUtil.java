@@ -1,8 +1,12 @@
 package coffee.lucks.codefort.util;
 
+import coffee.lucks.codefort.CodeFortAgent;
 import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
+import coffee.lucks.codefort.arms.StrArm;
 import coffee.lucks.codefort.model.Guarder;
+import coffee.lucks.codefort.unit.FileType;
+import coffee.lucks.codefort.unit.PathConst;
 import javassist.*;
 import javassist.bytecode.*;
 import javassist.compiler.CompileError;
@@ -148,6 +152,39 @@ public class ClassUtil {
             } catch (Exception ignore) {
             }
         }
+    }
+
+    public static void codeFortAgent(Guarder guarder) {
+        List<String> thisJarPaths = new ArrayList<>();
+        thisJarPaths.add(ClassUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        //把本项目的class文件打包进去
+        thisJarPaths.forEach(thisJar -> {
+            File thisJarFile = new File(thisJar);
+            if (thisJar.endsWith("/classes/")) {
+                List<File> files = new ArrayList<>();
+                HandleUtil.listFile(files, new File(thisJar));
+                files.forEach(file -> {
+                    String className = file.getAbsolutePath().substring(thisJarFile.getAbsolutePath().length());
+                    File targetFile = FileType.JAR.equals(guarder.getType()) ? guarder.getTargetFile() : guarder.getTargetClassesDir();
+                    targetFile = new File(targetFile, className);
+                    if (file.isDirectory()) {
+                        targetFile.mkdirs();
+                    } else if (StrArm.containsArray(file.getAbsolutePath(), PathConst.CODE_FORT_FILES)) {
+                        byte[] bytes = FileArm.readBytes(file);
+                        IoArm.writeFromByte(bytes, targetFile);
+                    }
+                });
+            }
+        });
+        //把javaagent信息加入到MANIFEST.MF
+        File manifest = new File(guarder.getTargetFile(), "META-INF/MANIFEST.MF");
+        String preMain = "Premain-Class: " + CodeFortAgent.class.getName();
+        String[] txts = {};
+        if (manifest.exists()) {
+            txts = IoArm.readTxtFile(manifest).split("\r\n");
+        }
+        String str = StrArm.insertStringArray(txts, preMain, "Main-Class:");
+        IoArm.writeTxtFile(manifest, str + "\r\n\r\n");
     }
 
 }

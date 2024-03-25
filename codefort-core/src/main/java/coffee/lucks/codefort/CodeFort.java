@@ -15,6 +15,8 @@ public class CodeFort {
         Guarder guarder = new Guarder(fortUnit);
         HandleUtil.decompression(guarder.getUnitPath(), guarder.getTargetStr(), guarder);
         HandleUtil.getEncryptClass(guarder);
+        //将本项目打包进去
+        ClassUtil.codeFortAgent(guarder);
         EncryptUtil.encryptClass(guarder);
         ClassUtil.clearClassMethod(guarder);
         // 先打包lib路径下的jar

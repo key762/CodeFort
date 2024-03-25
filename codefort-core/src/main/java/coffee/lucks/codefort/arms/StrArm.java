@@ -215,4 +215,38 @@ public class StrArm {
         return SLASH == c || BACKSLASH == c;
     }
 
+
+    public static boolean containsArray(String str, String[] array) {
+        for (String e : array) {
+            if (str.contains(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 在字符串的某个位置插入字符串
+     *
+     * @param arrayStr  字符串数组
+     * @param insertStr 要插入的字串
+     * @param pos       位置开始标识
+     * @return 插入后的字串
+     */
+    public static String insertStringArray(String[] arrayStr, String insertStr, String pos) {
+        StringBuffer newStr = new StringBuffer();
+        boolean isInsert = false;
+        for (int i = 0; i < arrayStr.length; i++) {
+            newStr.append(arrayStr[i]).append("\r\n");
+            if (arrayStr[i].startsWith(pos)) {
+                newStr.append(insertStr).append("\r\n");
+                isInsert = true;
+            }
+        }
+        if (!isInsert) {
+            newStr.append(insertStr).append("\r\n");
+        }
+        return newStr.toString();
+    }
+
 }

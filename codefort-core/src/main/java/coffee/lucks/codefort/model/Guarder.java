@@ -17,6 +17,10 @@ public class Guarder extends FortUnit {
 
     private File targetFile;
 
+    private File targetLibDir;
+
+    private File targetClassesDir;
+
     private List<String> allFile;
 
     private List<String> libJars;
@@ -38,6 +42,10 @@ public class Guarder extends FortUnit {
         this.libJarNames = new ArrayList<>();
         this.encryptClass = new ArrayList<>();
         this.includeJars = StrArm.toListByRegex(this.libs, ",");
+        this.targetLibDir = new File(this.targetFile, (FileType.JAR.equals(this.type) ? "BOOT-INF" : "WEB-INF")
+                + File.separator + "lib");
+        this.targetClassesDir = new File(this.targetFile, (FileType.JAR.equals(this.type) ? "BOOT-INF" : "WEB-INF")
+                + File.separator + "classes");
     }
 
     public FileType getType() {
@@ -102,6 +110,22 @@ public class Guarder extends FortUnit {
 
     public void setLibJarNames(List<String> libJarNames) {
         this.libJarNames = libJarNames;
+    }
+
+    public File getTargetLibDir() {
+        return targetLibDir;
+    }
+
+    public void setTargetLibDir(File targetLibDir) {
+        this.targetLibDir = targetLibDir;
+    }
+
+    public File getTargetClassesDir() {
+        return targetClassesDir;
+    }
+
+    public void setTargetClassesDir(File targetClassesDir) {
+        this.targetClassesDir = targetClassesDir;
     }
 
 }
