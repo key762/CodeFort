@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class FortLog {
 
-    public static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("HH:mm:ss");
+    public static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 
     /**
      * 输出debug信息
