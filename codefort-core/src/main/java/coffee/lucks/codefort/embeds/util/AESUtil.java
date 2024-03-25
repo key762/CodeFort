@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.util;
+package coffee.lucks.codefort.embeds.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;

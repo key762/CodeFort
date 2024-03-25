@@ -1,11 +1,13 @@
 package coffee.lucks.codefort;
 
-import coffee.lucks.codefort.model.FortUnit;
+import coffee.lucks.codefort.compile.FortCompile;
+import coffee.lucks.codefort.embeds.unit.FortUnit;
 
 import java.util.Date;
 
 /**
- * java -javaagent:codefort-agent-1.0.0.jar='-pwd 123456' -jar demo-encrypted.jar
+ * java -javaagent:demo-encrypted.jar='-pwd 123456' -jar demo-encrypted.jar
+ * java -javaagent:demo-encrypted.jar -jar demo-encrypted.jar
  */
 public class CodeFortMain {
 
@@ -30,7 +32,7 @@ public class CodeFortMain {
         fortUnit.setLibs(includeFiles);
         fortUnit.setPackages(packages);
         fortUnit.setExcludes(excludeClass);
-        String res = new coffee.lucks.codefort.CodeFort().doEncryptJar(fortUnit);
+        String res = FortCompile.fc.doEncrypt(fortUnit);
         System.out.println(res);
     }
 

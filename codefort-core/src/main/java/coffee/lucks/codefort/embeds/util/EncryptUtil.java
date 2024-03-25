@@ -1,10 +1,10 @@
-package coffee.lucks.codefort.util;
+package coffee.lucks.codefort.embeds.util;
 
-import coffee.lucks.codefort.arms.ByteArm;
-import coffee.lucks.codefort.arms.FileArm;
-import coffee.lucks.codefort.arms.IoArm;
-import coffee.lucks.codefort.model.Guarder;
-import coffee.lucks.codefort.unit.PathConst;
+import coffee.lucks.codefort.embeds.arms.ByteArm;
+import coffee.lucks.codefort.embeds.arms.FileArm;
+import coffee.lucks.codefort.embeds.arms.IoArm;
+import coffee.lucks.codefort.embeds.unit.Guarder;
+import coffee.lucks.codefort.embeds.unit.PathConst;
 
 import java.io.*;
 import java.util.zip.*;

@@ -1,11 +1,10 @@
 package coffee.lucks.codefort;
 
-import coffee.lucks.codefort.agent.AgentTransformer;
-import coffee.lucks.codefort.arms.StrArm;
-import coffee.lucks.codefort.unit.FortBanner;
-import coffee.lucks.codefort.unit.FortLog;
-import coffee.lucks.codefort.unit.PathConst;
-import coffee.lucks.codefort.util.CmdLine;
+import coffee.lucks.codefort.embeds.arms.StrArm;
+import coffee.lucks.codefort.embeds.unit.FortBanner;
+import coffee.lucks.codefort.embeds.unit.FortLog;
+import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.util.CmdLine;
 
 import java.io.Console;
 import java.lang.instrument.Instrumentation;
@@ -14,6 +13,12 @@ public class CodeFortAgent {
 
     public static String GLOBAL_VAR = "";
 
+    /**
+     * 启动前置信息处理
+     *
+     * @param args 参数
+     * @param inst 实例
+     */
     public static void premain(String args, Instrumentation inst) {
         FortBanner.banner();
         PathConst.DEBUG = true;

@@ -1,9 +1,8 @@
-package coffee.lucks.codefort.model;
+package coffee.lucks.codefort.embeds.unit;
 
-import coffee.lucks.codefort.arms.FileArm;
-import coffee.lucks.codefort.arms.StrArm;
-import coffee.lucks.codefort.unit.FileType;
-import coffee.lucks.codefort.util.StringUtil;
+import coffee.lucks.codefort.embeds.arms.FileArm;
+import coffee.lucks.codefort.embeds.arms.StrArm;
+import coffee.lucks.codefort.embeds.util.StringUtil;
 
 import java.io.File;
 import java.util.ArrayList;

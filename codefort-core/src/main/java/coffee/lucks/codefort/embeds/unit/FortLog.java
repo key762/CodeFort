@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.unit;
+package coffee.lucks.codefort.embeds.unit;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,24 +1,31 @@
-package coffee.lucks.codefort;
+package coffee.lucks.codefort.compile;
 
-import coffee.lucks.codefort.arms.FileArm;
-import coffee.lucks.codefort.model.FortUnit;
-import coffee.lucks.codefort.model.Guarder;
-import coffee.lucks.codefort.unit.FileType;
-import coffee.lucks.codefort.unit.PathConst;
-import coffee.lucks.codefort.util.ClassUtil;
-import coffee.lucks.codefort.util.EncryptUtil;
-import coffee.lucks.codefort.util.HandleUtil;
+import coffee.lucks.codefort.embeds.arms.FileArm;
+import coffee.lucks.codefort.embeds.unit.FortUnit;
+import coffee.lucks.codefort.embeds.unit.Guarder;
+import coffee.lucks.codefort.embeds.unit.FileType;
+import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.util.EncryptUtil;
+import coffee.lucks.codefort.embeds.util.HandleUtil;
 
-public class CodeFort {
+public class FortCompile {
 
-    public String doEncryptJar(FortUnit fortUnit) {
+    public final static FortCompile fc = new FortCompile();
+
+    /**
+     * 对执行文件进行加密
+     *
+     * @param fortUnit 执行对象
+     * @return 加密后的执行文件路径
+     */
+    public String doEncrypt(FortUnit fortUnit) {
         Guarder guarder = new Guarder(fortUnit);
         HandleUtil.decompression(guarder.getUnitPath(), guarder.getTargetStr(), guarder);
         HandleUtil.getEncryptClass(guarder);
         //将本项目打包进去
-        ClassUtil.codeFortAgent(guarder);
+        ClassCompile.codeFortAgent(guarder);
         EncryptUtil.encryptClass(guarder);
-        ClassUtil.clearClassMethod(guarder);
+        ClassCompile.clearClassMethod(guarder);
         // 先打包lib路径下的jar
         for (String file : guarder.getLibJars()) {
             HandleUtil.compress(file.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR), file);

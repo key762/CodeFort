@@ -1,10 +1,16 @@
-package coffee.lucks.codefort.arms;
+package coffee.lucks.codefort.embeds.arms;
 
 import java.io.*;
 import java.nio.file.Files;
 
 public class IoArm {
 
+    /**
+     * 将输入流写入到文件
+     *
+     * @param in   输入流
+     * @param file 文件
+     */
     public static void writeFromStream(InputStream in, File file) {
         byte[] bytes = ByteArm.readBytes(in);
         try (OutputStream os = Files.newOutputStream(file.toPath())) {
@@ -15,6 +21,12 @@ public class IoArm {
         }
     }
 
+    /**
+     * 将字节码写入到文件
+     *
+     * @param bytes 字节码
+     * @param file  文件
+     */
     public static void writeFromByte(byte[] bytes, File file) {
         try (OutputStream os = Files.newOutputStream(file.toPath())) {
             os.write(bytes, 0, bytes.length);
@@ -60,6 +72,12 @@ public class IoArm {
         }
     }
 
+    /**
+     * 从文件中读取文本
+     *
+     * @param file 文件
+     * @return 文本
+     */
     public static String readTxtFile(File file) {
         StringBuffer txt = new StringBuffer("");
         try (InputStreamReader read = new InputStreamReader(new FileInputStream(file), "UTF-8");

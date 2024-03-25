@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.unit;
+package coffee.lucks.codefort.embeds.unit;
 
 public class FortBanner {
 

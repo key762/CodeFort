@@ -1,7 +1,8 @@
 package coffee.lucks.codefort;
 
-import coffee.lucks.codefort.arms.FileArm;
-import coffee.lucks.codefort.model.FortUnit;
+import coffee.lucks.codefort.compile.FortCompile;
+import coffee.lucks.codefort.embeds.arms.FileArm;
+import coffee.lucks.codefort.embeds.unit.FortUnit;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.logging.Log;
@@ -85,7 +86,7 @@ public class CodeFortPlugin extends AbstractMojo {
         fortUnit.setPackages(packages);
         fortUnit.setExcludes(excludes);
         // 准备开始加密
-        String res = new CodeFort().doEncryptJar(fortUnit);
+        String res = FortCompile.fc.doEncrypt(fortUnit);
         logger.info(String.format("%s 加密完成", FileArm.getName(res)));
         logger.info("\u001B[33m" + "联系QQ 2940397985" + "\u001B[0m");
     }

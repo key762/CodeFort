@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.util;
+package coffee.lucks.codefort.embeds.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

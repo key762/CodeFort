@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.unit;
+package coffee.lucks.codefort.embeds.unit;
 
 public class PathConst {
     /**
@@ -25,9 +25,10 @@ public class PathConst {
     public static boolean DEBUG = false;
 
 
-    public static final String[] CODE_FORT_FILES = {"CoreAgent.class", "InputForm.class", "InputForm$1.class",
-            "JarDecryptor.class", "AgentTransformer.class", "Const.class", "CmdLineOption.class",
-            "EncryptUtils.class", "IoUtils.class", "JarUtils.class", "Log.class", "StrUtils.class",
-            "SysUtils.class"};
+    public static final String[] CODE_FORT_FILES = {
+            "AgentTransformer.class", "CodeFortAgent.class", "RSAManualKeys.class",
+            "ByteArm.class", "DateArm.class", "FileArm.class", "IoArm.class", "StrArm.class",
+            "FileType.class", "FortBanner.class", "FortLog.class", "FortUnit.class", "Guarder.class", "PathConst.class",
+            "AESUtil.class", "CmdLine.class", "EncryptUtil.class", "HandleUtil.class", "MD5Util.class", "StringUtil.class"};
 
 }

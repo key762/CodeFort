@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.arms;
+package coffee.lucks.codefort.embeds.arms;
 
 import java.util.ArrayList;
 import java.util.Arrays;

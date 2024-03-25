@@ -1,9 +1,9 @@
-package coffee.lucks.codefort.util;
+package coffee.lucks.codefort.embeds.util;
 
-import coffee.lucks.codefort.arms.StrArm;
-import coffee.lucks.codefort.model.Guarder;
-import coffee.lucks.codefort.unit.PathConst;
-import coffee.lucks.codefort.unit.FileType;
+import coffee.lucks.codefort.embeds.arms.StrArm;
+import coffee.lucks.codefort.embeds.unit.Guarder;
+import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.unit.FileType;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;

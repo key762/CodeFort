@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.arms;
+package coffee.lucks.codefort.embeds.arms;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +20,6 @@ public class FileArm {
         return null;
     }
 
-
     /**
      * 创建文件夹
      *
@@ -33,7 +32,6 @@ public class FileArm {
         }
         return null;
     }
-
 
     /**
      * 递归查找文件，只返回文件
@@ -65,17 +63,11 @@ public class FileArm {
         return System.getProperty("java.io.tmpdir");
     }
 
-
     /**
-     * 返回文件名<br>
-     * <pre>
-     * "d:/test/aaa" 返回 "aaa"
-     * "/test/aaa.jpg" 返回 "aaa.jpg"
-     * </pre>
+     * 返回文件名
      *
      * @param filePath 文件
      * @return 文件名
-     * @since 4.1.13
      */
     public static String getName(String filePath) {
         if (null == filePath) {
@@ -89,7 +81,6 @@ public class FileArm {
             // 以分隔符结尾的去掉结尾分隔符
             len--;
         }
-
         int begin = 0;
         char c;
         for (int i = len - 1; i > -1; i--) {
@@ -100,14 +91,13 @@ public class FileArm {
                 break;
             }
         }
-
         return filePath.substring(begin, len);
     }
 
     /**
-     * 读取文件所有数据<br>
-     * 文件的长度不能超过 {@link Integer#MAX_VALUE}
+     * 读取文件所有数据
      *
+     * @param file 文件对象
      * @return 字节码
      */
     public static byte[] readBytes(File file) {
@@ -115,7 +105,6 @@ public class FileArm {
         if (len >= Integer.MAX_VALUE) {
             throw new RuntimeException("File is larger then max array size");
         }
-
         byte[] bytes = new byte[(int) len];
         FileInputStream in = null;
         int readLength;
@@ -130,11 +119,14 @@ public class FileArm {
         } finally {
             IoArm.close(in);
         }
-
         return bytes;
     }
 
-
+    /**
+     * 删除文件或目录
+     *
+     * @param path
+     */
     public static void del(String path) {
         File fileOrFolder = new File(path);
         if (!fileOrFolder.exists()) {
@@ -147,6 +139,11 @@ public class FileArm {
         }
     }
 
+    /**
+     * 递归删除文件
+     *
+     * @param directory 文件目录
+     */
     private static void deleteDirectory(File directory) {
         File[] files = directory.listFiles();
         if (files != null) {
@@ -160,6 +157,5 @@ public class FileArm {
         }
         directory.delete();
     }
-
 
 }

@@ -1,7 +1,7 @@
-package coffee.lucks.codefort.model;
+package coffee.lucks.codefort.embeds.unit;
 
-import coffee.lucks.codefort.arms.DateArm;
-import coffee.lucks.codefort.arms.StrArm;
+import coffee.lucks.codefort.embeds.arms.DateArm;
+import coffee.lucks.codefort.embeds.arms.StrArm;
 
 import java.util.Date;
 

@@ -1,12 +1,14 @@
-package coffee.lucks.codefort.util;
+package coffee.lucks.codefort.compile;
 
 import coffee.lucks.codefort.CodeFortAgent;
-import coffee.lucks.codefort.arms.FileArm;
-import coffee.lucks.codefort.arms.IoArm;
-import coffee.lucks.codefort.arms.StrArm;
-import coffee.lucks.codefort.model.Guarder;
-import coffee.lucks.codefort.unit.FileType;
-import coffee.lucks.codefort.unit.PathConst;
+import coffee.lucks.codefort.embeds.arms.FileArm;
+import coffee.lucks.codefort.embeds.arms.IoArm;
+import coffee.lucks.codefort.embeds.arms.StrArm;
+import coffee.lucks.codefort.embeds.unit.Guarder;
+import coffee.lucks.codefort.embeds.unit.FileType;
+import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.util.HandleUtil;
+import coffee.lucks.codefort.embeds.util.StringUtil;
 import javassist.*;
 import javassist.bytecode.*;
 import javassist.compiler.CompileError;
@@ -16,12 +18,50 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassUtil {
+public class ClassCompile {
+
+    /**
+     * 将本项目打包到目标执行文件中
+     *
+     * @param guarder
+     */
+    public static void codeFortAgent(Guarder guarder) {
+        List<String> thisJarPaths = new ArrayList<>();
+        thisJarPaths.add(ClassCompile.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        //把本项目的class文件打包进去
+        thisJarPaths.forEach(thisJar -> {
+            File thisJarFile = new File(thisJar);
+            if (thisJar.endsWith("/classes/")) {
+                List<File> files = new ArrayList<>();
+                HandleUtil.listFile(files, new File(thisJar));
+                files.forEach(file -> {
+                    String className = file.getAbsolutePath().substring(thisJarFile.getAbsolutePath().length());
+                    File targetFile = FileType.JAR.equals(guarder.getType()) ? guarder.getTargetFile() : guarder.getTargetClassesDir();
+                    targetFile = new File(targetFile, className);
+                    if (file.isDirectory()) {
+                        targetFile.mkdirs();
+                    } else if (StrArm.containsArray(file.getAbsolutePath(), PathConst.CODE_FORT_FILES)) {
+                        byte[] bytes = FileArm.readBytes(file);
+                        IoArm.writeFromByte(bytes, targetFile);
+                    }
+                });
+            }
+        });
+        //把javaagent信息加入到MANIFEST.MF
+        File manifest = new File(guarder.getTargetFile(), "META-INF/MANIFEST.MF");
+        String preMain = "Premain-Class: " + CodeFortAgent.class.getName();
+        String[] txts = {};
+        if (manifest.exists()) {
+            txts = IoArm.readTxtFile(manifest).split("\r\n");
+        }
+        String str = StrArm.insertStringArray(txts, preMain, "Main-Class:");
+        IoArm.writeTxtFile(manifest, str + "\r\n\r\n");
+    }
 
     /**
      * 清空class文件的方法体，并保留参数信息
      *
-     * @param classFiles jar/war 下需要加密的class文件
+     * @param guarder
      */
     public static void clearClassMethod(Guarder guarder) {
         ClassPool pool = ClassPool.getDefault();
@@ -52,6 +92,31 @@ public class ClassUtil {
     }
 
     /**
+     * 加载指定目录下的所有依赖
+     *
+     * @param pool javassist池
+     * @param file 加载路径
+     */
+    public static void loadClassPath(ClassPool pool, File file) {
+        if (file == null || !file.exists()) return;
+        if (file.isDirectory()) {
+            List<File> jars = new ArrayList<>();
+            FileArm.listFile(jars, file, ".jar");
+            for (File jar : jars) {
+                try {
+                    pool.insertClassPath(jar.getAbsolutePath());
+                } catch (NotFoundException ignored) {
+                }
+            }
+        } else if (file.getName().endsWith(".jar")) {
+            try {
+                pool.insertClassPath(file.getAbsolutePath());
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    /**
      * 清空方法
      *
      * @param pool      javassist池
@@ -68,7 +133,7 @@ public class ClassUtil {
                 if (!m.getName().contains("<") && m.getLongName().startsWith(cc.getName())) {
                     CodeAttribute ca = m.getMethodInfo().getCodeAttribute();
                     if (ca != null && ca.getCodeLength() != 1 && ca.getCode()[0] != -79) {
-                        ClassUtil.setBodyKeepParamInfos(m, null, true);
+                        setBodyKeepParamInfos(m, null, true);
                         if ("void".equalsIgnoreCase(m.getReturnType().getName()) && m.getLongName().endsWith(".main(java.lang.String[])") && m.getMethodInfo().getAccessFlags() == 9) {
                             m.insertBefore("System.out.println(\"启动校验失败,请联系开发者或管理员处理.\");");
                         }
@@ -127,64 +192,6 @@ public class ClassUtil {
                 throw new CannotCompileException(var14);
             }
         }
-    }
-
-    /**
-     * 加载指定目录下的所有依赖
-     *
-     * @param pool javassist池
-     * @param file 加载路径
-     */
-    public static void loadClassPath(ClassPool pool, File file) {
-        if (file == null || !file.exists()) return;
-        if (file.isDirectory()) {
-            List<File> jars = new ArrayList<>();
-            FileArm.listFile(jars, file, ".jar");
-            for (File jar : jars) {
-                try {
-                    pool.insertClassPath(jar.getAbsolutePath());
-                } catch (NotFoundException ignored) {
-                }
-            }
-        } else if (file.getName().endsWith(".jar")) {
-            try {
-                pool.insertClassPath(file.getAbsolutePath());
-            } catch (Exception ignore) {
-            }
-        }
-    }
-
-    public static void codeFortAgent(Guarder guarder) {
-        List<String> thisJarPaths = new ArrayList<>();
-        thisJarPaths.add(ClassUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        //把本项目的class文件打包进去
-        thisJarPaths.forEach(thisJar -> {
-            File thisJarFile = new File(thisJar);
-            if (thisJar.endsWith("/classes/")) {
-                List<File> files = new ArrayList<>();
-                HandleUtil.listFile(files, new File(thisJar));
-                files.forEach(file -> {
-                    String className = file.getAbsolutePath().substring(thisJarFile.getAbsolutePath().length());
-                    File targetFile = FileType.JAR.equals(guarder.getType()) ? guarder.getTargetFile() : guarder.getTargetClassesDir();
-                    targetFile = new File(targetFile, className);
-                    if (file.isDirectory()) {
-                        targetFile.mkdirs();
-                    } else if (StrArm.containsArray(file.getAbsolutePath(), PathConst.CODE_FORT_FILES)) {
-                        byte[] bytes = FileArm.readBytes(file);
-                        IoArm.writeFromByte(bytes, targetFile);
-                    }
-                });
-            }
-        });
-        //把javaagent信息加入到MANIFEST.MF
-        File manifest = new File(guarder.getTargetFile(), "META-INF/MANIFEST.MF");
-        String preMain = "Premain-Class: " + CodeFortAgent.class.getName();
-        String[] txts = {};
-        if (manifest.exists()) {
-            txts = IoArm.readTxtFile(manifest).split("\r\n");
-        }
-        String str = StrArm.insertStringArray(txts, preMain, "Main-Class:");
-        IoArm.writeTxtFile(manifest, str + "\r\n\r\n");
     }
 
 }
