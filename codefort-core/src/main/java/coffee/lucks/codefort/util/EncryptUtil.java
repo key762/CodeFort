@@ -1,7 +1,5 @@
 package coffee.lucks.codefort.util;
 
-import cn.hutool.crypto.digest.MD5;
-import cn.hutool.crypto.symmetric.AES;
 import coffee.lucks.codefort.arms.ByteArm;
 import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
@@ -98,23 +96,11 @@ public class EncryptUtil {
     }
 
     public static byte[] decrypt(byte[] msg, String key) {
-        AES aes = new AES(
-                "CBC",
-                "PKCS7Padding",
-                MD5.create().digest(key),
-                MD5.create().digest(key)
-        );
-        return aes.decrypt(decompressByte(msg));
+        return AESUtil.decrypt(decompressByte(msg), MD5Util.digest(key), MD5Util.digest(key));
     }
 
     public static byte[] encrypt(byte[] bytes, String password) {
-        AES aes = new AES(
-                "CBC",
-                "PKCS7Padding",
-                MD5.create().digest(password),
-                MD5.create().digest(password)
-        );
-        return compressByte(aes.encrypt(bytes));
+        return compressByte(AESUtil.encrypt(bytes, MD5Util.digest(password), MD5Util.digest(password)));
     }
 
     private static byte[] compressByte(byte[] inputBytes) {

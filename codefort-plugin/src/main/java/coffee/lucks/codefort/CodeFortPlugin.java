@@ -1,7 +1,6 @@
 package coffee.lucks.codefort;
 
-import cn.hutool.core.date.TimeInterval;
-import cn.hutool.core.io.FileUtil;
+import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.model.FortUnit;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.AbstractMojo;
@@ -71,10 +70,9 @@ public class CodeFortPlugin extends AbstractMojo {
     public void execute() {
         Log logger = getLog();
         logger.info("\u001B[34m" + "CodeFort 致力于保卫您的代码安全" + "\u001B[0m");
-        TimeInterval interval = new TimeInterval();
         Build build = project.getBuild();
         String targetJar = build.getFinalName() + "." + project.getPackaging();
-        logger.info(String.format("%s 编译完成,耗时: %d毫秒", targetJar, interval.interval()));
+        logger.info(String.format("%s 编译完成", targetJar));
         targetJar = build.getDirectory() + File.separator + targetJar;
         FortUnit fortUnit = new FortUnit();
         fortUnit.setUnitPath(targetJar);
@@ -88,7 +86,7 @@ public class CodeFortPlugin extends AbstractMojo {
         fortUnit.setExcludes(excludes);
         // 准备开始加密
         String res = new CodeFort().doEncryptJar(fortUnit);
-        logger.info(String.format("%s 加密完成,耗时: %d毫秒", FileUtil.getName(res), interval.interval()));
+        logger.info(String.format("%s 加密完成", FileArm.getName(res)));
         logger.info("\u001B[33m" + "联系QQ 2940397985" + "\u001B[0m");
     }
 

@@ -20,8 +20,6 @@
 
     <properties>
         <cli.version>1.6.0</cli.version>
-        <bcprov.version>1.77</bcprov.version>
-        <hutool.version>5.8.26</hutool.version>
         <javassist.version>3.30.2-GA</javassist.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -39,18 +37,6 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15to18</artifactId>
-                <version>${bcprov.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-bom</artifactId>
-                <version>${hutool.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
