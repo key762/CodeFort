@@ -1,7 +1,7 @@
 package coffee.lucks.codefort.model;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
+import coffee.lucks.codefort.arms.DateArm;
+import coffee.lucks.codefort.arms.StrArm;
 
 import java.util.Date;
 
@@ -92,7 +92,7 @@ public class FortUnit {
     }
 
     public void setPassword(String password) {
-        if (StrUtil.isEmpty(password)) {
+        if (StrArm.isEmpty(password)) {
             this.password = "000000";
         } else {
             this.password = password;
@@ -104,7 +104,7 @@ public class FortUnit {
     }
 
     public void setBuildTime() {
-        this.buildTime = DateUtil.formatDateTime(new Date());
+        this.buildTime = DateArm.formatDateTime(new Date());
     }
 
     public String getStartTime() {
@@ -115,7 +115,7 @@ public class FortUnit {
         if (startTime == null) {
             this.startTime = "";
         } else {
-            this.startTime = DateUtil.formatDateTime(startTime);
+            this.startTime = DateArm.formatDateTime(startTime);
         }
     }
 
@@ -127,7 +127,7 @@ public class FortUnit {
         if (endTime == null) {
             this.endTime = "";
         } else {
-            this.endTime = DateUtil.formatDateTime(endTime);
+            this.endTime = DateArm.formatDateTime(endTime);
         }
     }
 
@@ -136,7 +136,7 @@ public class FortUnit {
     }
 
     public void setLibs(String libs) {
-        if (StrUtil.isEmpty(libs)) {
+        if (StrArm.isEmpty(libs)) {
             this.libs = "";
         } else {
             this.libs = libs;
@@ -148,7 +148,7 @@ public class FortUnit {
     }
 
     public void setPackages(String packages) {
-        if (StrUtil.isEmpty(packages)) {
+        if (StrArm.isEmpty(packages)) {
             this.packages = "";
         } else {
             this.packages = packages;
@@ -160,7 +160,7 @@ public class FortUnit {
     }
 
     public void setExcludes(String excludes) {
-        if (StrUtil.isEmpty(excludes)) {
+        if (StrArm.isEmpty(excludes)) {
             this.excludes = "";
         } else {
             this.excludes = excludes;
@@ -172,7 +172,7 @@ public class FortUnit {
     }
 
     public void setBiosMark(String biosMark) {
-        if (StrUtil.isEmpty(biosMark)) {
+        if (StrArm.isEmpty(biosMark)) {
             biosMark = "1q2w3e4r";
         } else {
             this.biosMark = biosMark;
