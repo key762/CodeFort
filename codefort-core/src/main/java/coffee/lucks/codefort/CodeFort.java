@@ -1,6 +1,6 @@
 package coffee.lucks.codefort;
 
-import cn.hutool.core.io.FileUtil;
+import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.model.FortUnit;
 import coffee.lucks.codefort.model.Guarder;
 import coffee.lucks.codefort.unit.FileType;
@@ -23,11 +23,11 @@ public class CodeFort {
         }
         // 删除lib路径下的jar解压出的临时文件
         for (String file : guarder.getLibJars()) {
-            FileUtil.del(file.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR));
+            FileArm.del(file.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR));
         }
         // 最终打包
         String result = HandleUtil.compress(guarder.getTargetStr(), guarder.getUnitPath().replace(guarder.getType().getFullType(), "-encrypted" + guarder.getType().getFullType()));
-        FileUtil.del(guarder.getTargetFile());
+        FileArm.del(guarder.getTargetStr());
         return result;
     }
 

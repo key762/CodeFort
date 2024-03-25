@@ -1,6 +1,7 @@
 package coffee.lucks.codefort.arms;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 public class FileArm {
@@ -44,7 +45,7 @@ public class FileArm {
     public static void listFile(List<File> fileList, File dir, String endWith) {
         if (!dir.exists()) throw new RuntimeException("目录[" + dir.getAbsolutePath() + "]不存在");
         File[] files = dir.listFiles();
-        if (files != null){
+        if (files != null) {
             for (File f : files) {
                 if (f.isDirectory()) {
                     listFile(fileList, f, endWith);
@@ -57,10 +58,108 @@ public class FileArm {
 
     /**
      * 获取系统级的临时目录
+     *
      * @return 临时目录
      */
     public static String getTmpDirPath() {
         return System.getProperty("java.io.tmpdir");
     }
+
+
+    /**
+     * 返回文件名<br>
+     * <pre>
+     * "d:/test/aaa" 返回 "aaa"
+     * "/test/aaa.jpg" 返回 "aaa.jpg"
+     * </pre>
+     *
+     * @param filePath 文件
+     * @return 文件名
+     * @since 4.1.13
+     */
+    public static String getName(String filePath) {
+        if (null == filePath) {
+            return null;
+        }
+        int len = filePath.length();
+        if (0 == len) {
+            return filePath;
+        }
+        if (StrArm.isFileSeparator(filePath.charAt(len - 1))) {
+            // 以分隔符结尾的去掉结尾分隔符
+            len--;
+        }
+
+        int begin = 0;
+        char c;
+        for (int i = len - 1; i > -1; i--) {
+            c = filePath.charAt(i);
+            if (StrArm.isFileSeparator(c)) {
+                // 查找最后一个路径分隔符（/或者\）
+                begin = i + 1;
+                break;
+            }
+        }
+
+        return filePath.substring(begin, len);
+    }
+
+    /**
+     * 读取文件所有数据<br>
+     * 文件的长度不能超过 {@link Integer#MAX_VALUE}
+     *
+     * @return 字节码
+     */
+    public static byte[] readBytes(File file) {
+        long len = file.length();
+        if (len >= Integer.MAX_VALUE) {
+            throw new RuntimeException("File is larger then max array size");
+        }
+
+        byte[] bytes = new byte[(int) len];
+        FileInputStream in = null;
+        int readLength;
+        try {
+            in = new FileInputStream(file);
+            readLength = in.read(bytes);
+            if (readLength < len) {
+                throw new RuntimeException(String.format("File length is [%d] but read [%d]!", len, readLength));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            IoArm.close(in);
+        }
+
+        return bytes;
+    }
+
+
+    public static void del(String path) {
+        File fileOrFolder = new File(path);
+        if (!fileOrFolder.exists()) {
+            return;
+        }
+        if (fileOrFolder.isDirectory()) {
+            deleteDirectory(fileOrFolder);
+        } else {
+            fileOrFolder.delete();
+        }
+    }
+
+    private static void deleteDirectory(File directory) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        directory.delete();
+    }
+
 
 }

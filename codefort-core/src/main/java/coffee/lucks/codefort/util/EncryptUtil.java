@@ -97,13 +97,6 @@ public class EncryptUtil {
         return null;
     }
 
-    public static void main(String[] args) {
-        byte[] bytes = getFileFromZip(new File("/Users/anorak/Documents/JavaProject/standalone/codefort/codefort-core/src/main/resources/demo-encrypted.jar"), "host.skiree.springdemo.SpringdemoApplication");
-        if (bytes == null) {
-            System.out.println("err");
-        }
-    }
-
     public static byte[] decrypt(byte[] msg, String key) {
         AES aes = new AES(
                 "CBC",

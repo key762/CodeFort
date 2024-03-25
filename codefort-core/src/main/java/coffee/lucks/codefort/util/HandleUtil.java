@@ -1,9 +1,8 @@
 package coffee.lucks.codefort.util;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
+import coffee.lucks.codefort.arms.StrArm;
 import coffee.lucks.codefort.model.Guarder;
 import coffee.lucks.codefort.unit.PathConst;
 import coffee.lucks.codefort.unit.FileType;
@@ -37,7 +36,7 @@ public class HandleUtil {
                 String fullPath = targetDir + File.separator + entryName;
                 if (entryName.endsWith(FileType.JAR.getFullType())) {
                     IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
-                    if (guarder.getIncludeJars() != null && guarder.getIncludeJars().contains(FileUtil.getName(entryName))) {
+                    if (guarder.getIncludeJars() != null && guarder.getIncludeJars().contains(FileArm.getName(entryName))) {
                         guarder.getLibJars().add(fullPath);
                         guarder.getLibJarNames().add(entryName.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR));
                         guarder.getAllFile().addAll(decompression(fullPath, fullPath.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR), guarder).getAllFile());
@@ -85,7 +84,7 @@ public class HandleUtil {
     public static String compress(String jarDir, String targetJar) {
         List<File> files = new ArrayList<>();
         listFile(files, new File(jarDir));
-        FileUtil.del(targetJar);
+        FileArm.del(targetJar);
         try (OutputStream out = Files.newOutputStream(new File(targetJar).toPath());
              ZipOutputStream zos = new ZipOutputStream(out);
         ) {
@@ -101,8 +100,8 @@ public class HandleUtil {
                     ze.setTime(System.currentTimeMillis());
                     zos.putNextEntry(ze);
                     zos.closeEntry();
-                } else if (StrUtil.endWithAnyIgnoreCase(fileName, ".zip", ".jar")) {
-                    byte[] bytes = FileUtil.readBytes(file);
+                } else if (StrArm.endWithAnyIgnoreCase(fileName, ".zip", ".jar")) {
+                    byte[] bytes = FileArm.readBytes(file);
                     ZipEntry ze = new ZipEntry(fileName);
                     ze.setMethod(ZipEntry.STORED);
                     ze.setSize(bytes.length);
@@ -115,7 +114,7 @@ public class HandleUtil {
                     ZipEntry ze = new ZipEntry(fileName);
                     ze.setTime(System.currentTimeMillis());
                     zos.putNextEntry(ze);
-                    byte[] bytes = FileUtil.readBytes(file);
+                    byte[] bytes = FileArm.readBytes(file);
                     zos.write(bytes);
                     zos.closeEntry();
                 }

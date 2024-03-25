@@ -193,4 +193,26 @@ public class StrArm {
         return endWith(str, suffix, ignoreCase, false);
     }
 
+
+    /**
+     * 字符常量：斜杠
+     */
+    private static char SLASH = '/';
+    /**
+     * 字符常量：反斜杠
+     */
+    private static char BACKSLASH = '\\';
+
+    /**
+     * 是否为Windows或者Linux（Unix）文件分隔符<br>
+     * Windows平台下分隔符为\，Linux（Unix）为/
+     *
+     * @param c 字符
+     * @return 是否为Windows或者Linux（Unix）文件分隔符
+     * @since 4.1.11
+     */
+    public static boolean isFileSeparator(char c) {
+        return SLASH == c || BACKSLASH == c;
+    }
+
 }
