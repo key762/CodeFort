@@ -1,6 +1,5 @@
 package coffee.lucks.codefort.util;
 
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.hutool.crypto.symmetric.AES;
 import coffee.lucks.codefort.arms.ByteArm;
@@ -8,10 +7,8 @@ import coffee.lucks.codefort.arms.FileArm;
 import coffee.lucks.codefort.arms.IoArm;
 import coffee.lucks.codefort.model.Guarder;
 import coffee.lucks.codefort.unit.PathConst;
-import coffee.lucks.codefort.unit.FileType;
 
 import java.io.*;
-import java.util.List;
 import java.util.zip.*;
 
 public class EncryptUtil {
@@ -91,7 +88,7 @@ public class EncryptUtil {
         if (zip.exists()) {
             try (ZipFile zipFile = new ZipFile(zip)) {
                 InputStream inputStream = zipFile.getInputStream(zipFile.getEntry("META-INF" + File.separator + PathConst.ENCRYPT_NAME + File.separator + fileName));
-                return IoUtil.readBytes(inputStream);
+                return IoArm.readBytes(inputStream);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException("在压缩文件中获取字节时异常");
