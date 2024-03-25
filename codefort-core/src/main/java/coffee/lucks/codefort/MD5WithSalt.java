@@ -1,4 +1,4 @@
-package coffee.lucks.codefort.util;
+package coffee.lucks.codefort;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
