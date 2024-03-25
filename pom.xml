@@ -14,7 +14,6 @@
 
     <modules>
         <module>codefort-core</module>
-        <module>codefort-agent</module>
         <module>codefort-plugin</module>
     </modules>
 
