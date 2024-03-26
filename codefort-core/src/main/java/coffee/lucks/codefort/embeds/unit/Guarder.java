@@ -6,7 +6,9 @@ import coffee.lucks.codefort.embeds.util.StringUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Guarder extends FortUnit {
 
@@ -125,6 +127,23 @@ public class Guarder extends FortUnit {
 
     public void setTargetClassesDir(File targetClassesDir) {
         this.targetClassesDir = targetClassesDir;
+    }
+
+    public byte[] getNecessaryInfo() {
+        Map<String, Object> res = new HashMap<>();
+        res.put("needSocket", "false");
+        res.put("needBiosMark", "false");
+        // 判断是否需要socket检查
+        if (!StrArm.isEmpty(this.host) && this.port != null){
+            res.put("needSocket", "true");
+            res.put("host", this.host);
+            res.put("port", this.port);
+        }
+        // 判断是否需要绑定机器码
+        if (!PathConst.DEFAULT_PASSWORD.equalsIgnoreCase(this.biosMark)){
+            res.put("biosMark", this.biosMark);
+        }
+        return null;
     }
 
 }

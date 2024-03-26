@@ -2,6 +2,7 @@ package coffee.lucks.codefort;
 
 import coffee.lucks.codefort.compile.FortCompile;
 import coffee.lucks.codefort.embeds.unit.FortUnit;
+import coffee.lucks.codefort.embeds.unit.PathConst;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class CodeFortMain {
         fortUnit.setBuildTime();
         fortUnit.setStartTime(new Date());
         fortUnit.setEndTime(new Date());
-        fortUnit.setBiosMark("1q2w3e4R");
+        fortUnit.setBiosMark(PathConst.DEFAULT_PASSWORD);
         fortUnit.setLibs(includeFiles);
         fortUnit.setPackages(packages);
         fortUnit.setExcludes(excludeClass);

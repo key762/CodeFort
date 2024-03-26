@@ -52,19 +52,18 @@ public class FortUnit {
      */
     public String excludes;
 
-    public FortUnit() {
-    }
+    /**
+     * Socket主机地址
+     */
+    public String host;
 
-    public FortUnit(String unitPath, String password, String biosMark, String buildTime, String startTime, String endTime, String libs, String packages, String excludes) {
-        this.unitPath = unitPath;
-        this.password = password;
-        this.biosMark = biosMark;
-        this.buildTime = buildTime;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.libs = libs;
-        this.packages = packages;
-        this.excludes = excludes;
+
+    /**
+     * Socket主机端口
+     */
+    public String port;
+
+    public FortUnit() {
     }
 
     public FortUnit(FortUnit unit) {
@@ -77,6 +76,8 @@ public class FortUnit {
         this.libs = unit.libs;
         this.packages = unit.packages;
         this.excludes = unit.excludes;
+        this.host = unit.host;
+        this.port = unit.port;
     }
 
     public String getUnitPath() {
@@ -93,7 +94,7 @@ public class FortUnit {
 
     public void setPassword(String password) {
         if (StrArm.isEmpty(password)) {
-            this.password = "000000";
+            this.password = PathConst.DEFAULT_PASSWORD;
         } else {
             this.password = password;
         }
@@ -173,10 +174,26 @@ public class FortUnit {
 
     public void setBiosMark(String biosMark) {
         if (StrArm.isEmpty(biosMark)) {
-            biosMark = "1q2w3e4r";
+            biosMark = PathConst.DEFAULT_PASSWORD;
         } else {
             this.biosMark = biosMark;
         }
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
     }
 
 }

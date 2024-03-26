@@ -32,6 +32,8 @@ public class EncryptUtil {
         } catch (Exception e) {
             throw new RuntimeException("加密Jar/War的class文件时出现异常", e);
         }
+        // 写入必要信息
+        IoArm.writeFromByte(guarder.getNecessaryInfo(), new File(metaDir, PathConst.CODE_FORT_INFO));
     }
 
     /**

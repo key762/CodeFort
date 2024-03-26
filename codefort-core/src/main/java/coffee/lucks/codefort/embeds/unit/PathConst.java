@@ -28,9 +28,20 @@ public class PathConst {
     public static boolean DEBUG = false;
 
     /**
+     * 编译信息
+     */
+    public static final String CODE_FORT_INFO = "CodeFortAlwaysSupportYou";
+
+    /**
+     * 默认密码
+     */
+    public static final String DEFAULT_PASSWORD = "cfasy";
+
+    /**
      * 需要嵌入的字节码文件
      */
     public static final String[] CODE_FORT_FILES = {
+            "CodeFortAgent$1.class","FortSocket.class",
             "AgentTransformer.class", "CodeFortAgent.class", "RSAManualKeys.class",
             "ByteArm.class", "DateArm.class", "FileArm.class", "IoArm.class", "StrArm.class",
             "FileType.class", "FortBanner.class", "FortLog.class", "FortUnit.class", "Guarder.class", "PathConst.class",
