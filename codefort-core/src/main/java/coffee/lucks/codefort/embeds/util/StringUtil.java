@@ -7,6 +7,9 @@ import coffee.lucks.codefort.embeds.unit.FileType;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
@@ -41,8 +44,9 @@ public class StringUtil {
             return false;
         }
         String clsName = StringUtil.resolveClassPath(file, true);
-        String[] packages = guarder.getPackages().split(",");
-        if (StrArm.startWithAny(clsName, packages) || needEncryptLib(file, guarder)) {
+        List<String> packages = Arrays.asList(guarder.getPackages().split(","));
+        List<String> libJarName = guarder.getLibJarNames();
+        if (StrArm.isMatch(packages, clsName) || StrArm.isMatch(libJarName, clsName)) {
             return StrArm.isEmpty(guarder.getExcludes()) || !guarder.getExcludes().contains(clsName);
         }
         return false;

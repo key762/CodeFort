@@ -3,6 +3,7 @@ package coffee.lucks.codefort.embeds.arms;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class StrArm {
@@ -203,7 +204,8 @@ public class StrArm {
 
     /**
      * 字符串是否包含集合中的任意字符
-     * @param str 字符串
+     *
+     * @param str   字符串
      * @param array 字符数组
      * @return true/false
      */
@@ -238,6 +240,38 @@ public class StrArm {
             newStr.append(insertStr).append("\r\n");
         }
         return newStr.toString();
+    }
+
+    /**
+     * 判断集合是否包含字符
+     *
+     * @param strings 集合
+     * @param str     字符
+     * @return true/false
+     */
+    public static boolean isMatch(List<String> strings, String str) {
+        if (strings == null || strings.isEmpty()) {
+            return false;
+        }
+        for (String s : strings) {
+            if (str.startsWith(s) || str.endsWith(s) || isMatch(s, str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 通配符匹配
+     *
+     * @param s   匹配字符串
+     * @param str 待匹配字符窜
+     * @return
+     */
+    public static boolean isMatch(String s, String str) {
+        String regex = s.replaceAll("\\?", "(.?)")
+                .replaceAll("\\*+", "(.*?)");
+        return Pattern.matches(regex, str);
     }
 
 }
