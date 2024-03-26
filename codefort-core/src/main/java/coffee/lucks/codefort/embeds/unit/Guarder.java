@@ -1,10 +1,14 @@
 package coffee.lucks.codefort.embeds.unit;
 
 import coffee.lucks.codefort.embeds.arms.FileArm;
+import coffee.lucks.codefort.embeds.arms.MapArm;
 import coffee.lucks.codefort.embeds.arms.StrArm;
+import coffee.lucks.codefort.embeds.arms.SysArm;
+import coffee.lucks.codefort.embeds.util.SecurityUtil;
 import coffee.lucks.codefort.embeds.util.StringUtil;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -134,16 +138,30 @@ public class Guarder extends FortUnit {
         res.put("needSocket", "false");
         res.put("needBiosMark", "false");
         // 判断是否需要socket检查
-        if (!StrArm.isEmpty(this.host) && this.port != null){
+        if (!StrArm.isEmpty(this.host) && this.port != null) {
             res.put("needSocket", "true");
             res.put("host", this.host);
             res.put("port", this.port);
         }
         // 判断是否需要绑定机器码
-        if (!PathConst.DEFAULT_PASSWORD.equalsIgnoreCase(this.biosMark)){
+        if (!PathConst.DEFAULT_PASSWORD.equalsIgnoreCase(this.biosMark)) {
+            res.put("needBiosMark", "true");
             res.put("biosMark", this.biosMark);
         }
-        return null;
+        // 设置其他信息
+        Map<String, Object> otherInfo = new HashMap<>();
+        otherInfo.put("buildTime", this.buildTime);
+        otherInfo.put("startTime", this.startTime);
+        otherInfo.put("endTime", this.endTime);
+        otherInfo.put("explain", this.explain);
+        otherInfo.put("version", PathConst.CODE_FORT_VERSION);
+        otherInfo.put("cpuSerial", SysArm.getCPUSerialNumber());
+        otherInfo.put("ipInfo", SysArm.getInternetIp());
+        // 合并
+        res.put("contact", SecurityUtil.encryptRsa(PathConst.RSA_PUBLIC_KEY, MapArm.toString(otherInfo)));
+        // 综合加密
+        String allStr = MapArm.toString(res);
+        return SecurityUtil.encrypt(allStr.getBytes(StandardCharsets.UTF_8), this.password);
     }
 
 }

@@ -106,7 +106,7 @@ public class HandleUtil {
                     ze.setMethod(ZipEntry.STORED);
                     ze.setSize(bytes.length);
                     ze.setTime(System.currentTimeMillis());
-                    ze.setCrc(EncryptUtil.crc32(bytes));
+                    ze.setCrc(SecurityUtil.crc32(bytes));
                     zos.putNextEntry(ze);
                     zos.write(bytes);
                     zos.closeEntry();

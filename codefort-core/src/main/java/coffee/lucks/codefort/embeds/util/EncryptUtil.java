@@ -7,7 +7,6 @@ import coffee.lucks.codefort.embeds.unit.Guarder;
 import coffee.lucks.codefort.embeds.unit.PathConst;
 
 import java.io.*;
-import java.util.zip.*;
 
 public class EncryptUtil {
 
@@ -26,7 +25,7 @@ public class EncryptUtil {
                     className = StringUtil.resolveClassPath(file.getAbsolutePath(), true);
                 }
                 byte[] bytes = ByteArm.readBytes(file);
-                bytes = EncryptUtil.encrypt(bytes, guarder.getPassword());
+                bytes = SecurityUtil.encrypt(bytes, guarder.getPassword());
                 IoArm.writeFromByte(bytes, new File(metaDir, className));
             }
         } catch (Exception e) {
@@ -50,7 +49,7 @@ public class EncryptUtil {
         if (bytes == null) {
             return null;
         }
-        return decrypt(bytes, password);
+        return SecurityUtil.decrypt(bytes, password);
     }
 
     /**
@@ -72,69 +71,6 @@ public class EncryptUtil {
             }
         }
         return bytes;
-    }
-
-    public static byte[] decrypt(byte[] msg, String key) {
-        return AESUtil.decrypt(decompressByte(msg), MD5Util.digest(key), MD5Util.digest(key));
-    }
-
-    public static byte[] encrypt(byte[] bytes, String password) {
-        return compressByte(AESUtil.encrypt(bytes, MD5Util.digest(password), MD5Util.digest(password)));
-    }
-
-    /**
-     * 字节码压缩
-     *
-     * @param inputBytes 源字节码
-     * @return 字节码
-     */
-    private static byte[] compressByte(byte[] inputBytes) {
-        Deflater deflater = new Deflater();
-        deflater.setInput(inputBytes);
-        deflater.finish();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(inputBytes.length);
-        byte[] buffer = new byte[1024];
-        while (!deflater.finished()) {
-            int count = deflater.deflate(buffer);
-            outputStream.write(buffer, 0, count);
-        }
-        deflater.end();
-        return outputStream.toByteArray();
-    }
-
-    /**
-     * 字节码解压
-     *
-     * @param compressedData 源字节码
-     * @return 字节码
-     */
-    private static byte[] decompressByte(byte[] compressedData) {
-        Inflater inflater = new Inflater();
-        inflater.setInput(compressedData);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(compressedData.length);
-        byte[] buffer = new byte[1024];
-        try {
-            while (!inflater.finished()) {
-                int count = inflater.inflate(buffer);
-                outputStream.write(buffer, 0, count);
-            }
-        } catch (DataFormatException e) {
-            e.printStackTrace();
-        }
-        inflater.end();
-        return outputStream.toByteArray();
-    }
-
-    /**
-     * crc32算法
-     *
-     * @param bytes 字节码
-     * @return 加密值
-     */
-    public static long crc32(byte[] bytes) {
-        CRC32 crc = new CRC32();
-        crc.update(bytes);
-        return crc.getValue();
     }
 
 }

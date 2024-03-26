@@ -33,6 +33,7 @@ public class CodeFortMain {
         fortUnit.setLibs(includeFiles);
         fortUnit.setPackages(packages);
         fortUnit.setExcludes(excludeClass);
+        fortUnit.setBiosMark("123123");
         String res = FortCompile.fc.doEncrypt(fortUnit);
         System.out.println(res);
     }

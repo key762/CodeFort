@@ -3,6 +3,22 @@ package coffee.lucks.codefort.embeds.unit;
 public class PathConst {
 
     /**
+     * 版本
+     */
+    public static final String CODE_FORT_VERSION = "1.0.0";
+
+    /**
+     * RSA公钥
+     */
+    public static final String RSA_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsC8XjlV8kaxg8mVdYfuJ\n" +
+            "uMNx7leWMloj/PGhx84FVbaIFFsJei2+/hVAdKkxMH/NpqeW6bDg2W9spfMqx1uq\n" +
+            "AtRKr0aIKyBM/V4SC8/9XmIpws0kLAEDGZa28LnUgl40gGuxjhFWvDmkUiv+r1Sr\n" +
+            "QYBMFPptGrrSgncLyJBTma5vWoxZrfPmyfuX4vkaqeTkqbIdsw6er8LD9u5TStNp\n" +
+            "zrGAP/OnqhhX0I+KbeIPzg+P4kV0m2wodHlG9VQ61zlwG6UGm5JkkXn6vrgbD/Tx\n" +
+            "akVW0bqkEtbd/sO01DwUUM3/RPrIwSAjeOoEQPUMAc2EN4B687ZVDKPE2NUXsbAI\n" +
+            "eQIDAQAB";
+
+    /**
      * class文件拓展名
      */
     public static final String EXT_CLASS = ".class";
@@ -41,10 +57,11 @@ public class PathConst {
      * 需要嵌入的字节码文件
      */
     public static final String[] CODE_FORT_FILES = {
-            "CodeFortAgent$1.class","FortSocket.class",
-            "AgentTransformer.class", "CodeFortAgent.class", "RSAManualKeys.class",
-            "ByteArm.class", "DateArm.class", "FileArm.class", "IoArm.class", "StrArm.class",
+            "CodeFortAgent$1.class",
+
+            "AgentTransformer.class", "CodeFortAgent.class", "FortSocket.class", "RSAManualKeys.class",
+            "ByteArm.class", "DateArm.class", "FileArm.class", "IoArm.class", "MapArm.class", "StrArm.class", "SysArm.class",
             "FileType.class", "FortBanner.class", "FortLog.class", "FortUnit.class", "Guarder.class", "PathConst.class",
-            "AESUtil.class", "CmdLine.class", "EncryptUtil.class", "HandleUtil.class", "MD5Util.class", "StringUtil.class"};
+            "CmdLineUtil.class", "EncryptUtil.class", "HandleUtil.class", "SecurityUtil.class", "StringUtil.class"};
 
 }

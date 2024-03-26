@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CmdLine {
+public class CmdLineUtil {
 
     /**
      * option
@@ -22,7 +22,7 @@ public class CmdLine {
      */
     private Map<String, List<String>> optionsMap = new HashMap<>();
 
-    public CmdLine addOption(String opt, boolean hasArg) {
+    public CmdLineUtil addOption(String opt, boolean hasArg) {
         opt = resolveOption(opt);
         if (!options.contains(opt)) {
             options.add(opt);
@@ -41,7 +41,7 @@ public class CmdLine {
         return (values == null || values.isEmpty()) ? null : values.toArray(new String[values.size()]);
     }
 
-    public CmdLine parse(String[] arguments) {
+    public CmdLineUtil parse(String[] arguments) {
         int optIndex = -1;
         for (int i = 0; i < arguments.length; i++) {
             String arg = arguments[i];

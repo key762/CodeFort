@@ -11,7 +11,7 @@ public class MapArm {
      * @param map map
      * @return json字符串
      */
-    private static String toString(Map<String, Object> map) {
+    public static String toString(Map<String, Object> map) {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -33,7 +33,7 @@ public class MapArm {
      * @param jsonString 字符串
      * @return map
      */
-    private static Map<String, Object> toMap(String jsonString) {
+    public static Map<String, Object> toMap(String jsonString) {
         Map<String, Object> map = new HashMap<>();
         jsonString = jsonString.substring(1, jsonString.length() - 1); // Remove curly braces
         String[] keyValuePairs = jsonString.split(",");

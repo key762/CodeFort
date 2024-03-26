@@ -63,6 +63,11 @@ public class FortUnit {
      */
     public String port;
 
+    /**
+     * 备注说明
+     */
+    public String explain;
+
     public FortUnit() {
     }
 
@@ -78,6 +83,7 @@ public class FortUnit {
         this.excludes = unit.excludes;
         this.host = unit.host;
         this.port = unit.port;
+        this.explain = unit.explain;
     }
 
     public String getUnitPath() {
@@ -196,4 +202,11 @@ public class FortUnit {
         this.port = port;
     }
 
+    public String getExplain() {
+        return explain;
+    }
+
+    public void setExplain(String explain) {
+        this.explain = explain;
+    }
 }
