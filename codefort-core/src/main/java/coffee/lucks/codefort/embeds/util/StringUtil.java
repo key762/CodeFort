@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class StringUtil {
 
