@@ -44,13 +44,13 @@ public class CodeFortAgent {
             pwd = cmdLine.getOptionValue("pwd", "");
         }
         if (StrArm.isEmpty(pwd)) {
-            FortLog.info("无法在运行参数中获取密码,将会从系统参数获取.");
+            FortLog.info("无法在运行参数中获取密码,将会从系统参数获取");
             pwd = System.getenv("pwd");
         }
         if (StrArm.isEmpty(pwd)) {
             Console console = System.console();
             if (console != null) {
-                FortLog.info("无法在系统参数中获取密码,将会从控制台获取.");
+                FortLog.info("无法在系统参数中获取密码,将会从控制台获取");
                 pwd = new String(console.readPassword(FortLog.infoStr("请输入密码 :")));
             }
         }
@@ -75,7 +75,7 @@ public class CodeFortAgent {
         Map<String, Object> objectMap = MapArm.toMap(fileStr);
         // todo 临时打印
         for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
-            FortLog.info(entry.getKey()+" : " + entry.getValue());
+            FortLog.debug(entry.getKey()+" : " + entry.getValue());
         }
         // todo 临时打印
         // 时间区域

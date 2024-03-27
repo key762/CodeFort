@@ -8,9 +8,14 @@ public class FortBanner {
     public static final String cyanColor = "\u001B[36m";
 
     /**
-     * 青色
+     * 蓝色
      */
     public static final String blueColor = "\u001B[34m";
+
+    /**
+     * 橙色
+     */
+    public static final String orangeColor = "\u001B[38;5;208m";
 
     /**
      * 重制颜色

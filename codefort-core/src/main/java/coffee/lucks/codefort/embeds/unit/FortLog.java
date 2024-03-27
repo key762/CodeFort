@@ -15,7 +15,7 @@ public class FortLog {
     public static void debug(Object msg) {
         String def = datetimeFormat.format(new Date());
         if (PathConst.DEBUG) {
-            String log = "[" + FortBanner.cyanColor + def + FortBanner.resetColor + "-" + FortBanner.blueColor + "DEBUG" + FortBanner.resetColor + "] " + msg;
+            String log = "[" + FortBanner.cyanColor + def + FortBanner.resetColor + "-" + FortBanner.orangeColor + "DEBUG" + FortBanner.resetColor + "] " + msg;
             System.out.println(log);
         }
     }
