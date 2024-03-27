@@ -1,5 +1,6 @@
 package coffee.lucks.codefort;
 
+import coffee.lucks.codefort.embeds.arms.DateArm;
 import coffee.lucks.codefort.embeds.arms.MapArm;
 import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.arms.SysArm;
@@ -17,7 +18,6 @@ import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.sql.Time;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
@@ -72,8 +72,35 @@ public class CodeFortAgent {
             FortLog.info("密码错误,请重试或联系管理员/开发者");
             System.exit(0);
         }
-        System.out.println(fileStr);
         Map<String, Object> objectMap = MapArm.toMap(fileStr);
+        // todo 临时打印
+        for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
+            FortLog.info(entry.getKey()+" : " + entry.getValue());
+        }
+        // todo 临时打印
+        // 时间区域
+        if (!objectMap.get("timeJudge").toString().equals("no")) {
+            // 先检查本地时间
+            if (DateArm.compareLocalTimeAfter(objectMap.get("buildTime").toString())) {
+                FortLog.info("请先同步本机时间,即将退出");
+                System.exit(0);
+            }
+            String timeJudge = objectMap.get("timeJudge").toString();
+            if (timeJudge.equals("region")) {
+                String startTime = objectMap.get("startTime").toString();
+                String endTime = objectMap.get("endTime").toString();
+                if (!DateArm.localTimeInRegion(startTime, endTime)) {
+                    FortLog.info("请在时间段 " + startTime + " 至 " + endTime + " 运行此服务,即将退出");
+                    System.exit(0);
+                }
+            } else if (timeJudge.equals("deadline")) {
+                if (!DateArm.beforeDeadline(objectMap.get("buildTime").toString(), timeJudge)) {
+                    FortLog.info("此服务可用时间已不足,即将退出");
+                    System.exit(0);
+                }
+            }
+        }
+        // 机器码
         if (objectMap.get("needBiosMark").toString().equals("true")){
             if (!SysArm.getCPUSerialNumber().equalsIgnoreCase(objectMap.get("biosMark").toString())){
                 FortLog.info("请在指定机器上运行此服务,即将退出");

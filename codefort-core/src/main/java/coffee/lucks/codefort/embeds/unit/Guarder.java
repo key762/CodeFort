@@ -137,6 +137,18 @@ public class Guarder extends FortUnit {
         Map<String, Object> res = new HashMap<>();
         res.put("needSocket", "false");
         res.put("needBiosMark", "false");
+        // 设置
+        res.put("timeJudge", "no");
+        if (!StrArm.isEmpty(this.startTime) && !StrArm.isEmpty(this.endTime)) {
+            res.put("buildTime", this.buildTime);
+            res.put("startTime", this.startTime);
+            res.put("endTime", this.endTime);
+            res.put("timeJudge", "region");
+        } else if (this.availableTime != 0) {
+            res.put("buildTime", this.buildTime);
+            res.put("availableTime", this.availableTime);
+            res.put("timeJudge", "deadline");
+        }
         // 判断是否需要socket检查
         if (!StrArm.isEmpty(this.host) && this.port != null) {
             res.put("needSocket", "true");
@@ -150,9 +162,11 @@ public class Guarder extends FortUnit {
         }
         // 设置其他信息
         Map<String, Object> otherInfo = new HashMap<>();
+        otherInfo.put("password", this.password);
         otherInfo.put("buildTime", this.buildTime);
         otherInfo.put("startTime", this.startTime);
         otherInfo.put("endTime", this.endTime);
+        otherInfo.put("availableTime", this.availableTime);
         otherInfo.put("explain", this.explain);
         otherInfo.put("version", PathConst.CODE_FORT_VERSION);
         otherInfo.put("cpuSerial", SysArm.getCPUSerialNumber());
@@ -160,8 +174,7 @@ public class Guarder extends FortUnit {
         // 合并
         res.put("contact", SecurityUtil.encryptRsa(PathConst.RSA_PUBLIC_KEY, MapArm.toString(otherInfo)));
         // 综合加密
-        String allStr = MapArm.toString(res);
-        return SecurityUtil.encrypt(allStr.getBytes(StandardCharsets.UTF_8), this.password);
+        return SecurityUtil.encrypt(MapArm.toString(res).getBytes(StandardCharsets.UTF_8), this.password);
     }
 
 }

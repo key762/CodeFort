@@ -38,6 +38,11 @@ public class FortUnit {
     public String endTime;
 
     /**
+     * 可用时间
+     */
+    public int availableTime;
+
+    /**
      * 依赖包信息
      */
     public String libs;
@@ -84,6 +89,7 @@ public class FortUnit {
         this.host = unit.host;
         this.port = unit.port;
         this.explain = unit.explain;
+        this.availableTime = unit.availableTime;
     }
 
     public String getUnitPath() {
@@ -209,4 +215,13 @@ public class FortUnit {
     public void setExplain(String explain) {
         this.explain = explain;
     }
+
+    public int getAvailableTime() {
+        return availableTime;
+    }
+
+    public void setAvailableTime(int availableTime) {
+        this.availableTime = availableTime;
+    }
+
 }
