@@ -25,7 +25,25 @@ import java.util.TimerTask;
 
 public class CodeFortAgent {
 
-    public static String GLOBAL_VAR = "";
+    /**
+     * Socket状态
+     */
+    public static boolean SOCKET_STATUS = false;
+
+    /**
+     * Socket内容
+     */
+    public static String SOCKET_CONTACT = "";
+
+    /**
+     * Socket主机地址
+     */
+    public static String SOCKET_HOST = "";
+
+    /**
+     * Socket主机端口
+     */
+    public static int SOCKET_PORT = 0;
 
     /**
      * 启动前置信息处理
@@ -55,7 +73,6 @@ public class CodeFortAgent {
             }
         }
         FortLog.info("获取到了密码: " + pwd);
-        GLOBAL_VAR = "成功设置了数据";
         // 正式处理之前先去获取配置的信息
         byte[] encryptedFile = EncryptUtil.readEncryptedFile(new File(Objects.requireNonNull(StringUtil.getRootPath(null))), PathConst.CODE_FORT_INFO);
         String fileStr = "";
@@ -104,6 +121,15 @@ public class CodeFortAgent {
                 FortLog.info("请在指定机器上运行此服务,即将退出");
                 System.exit(0);
             }
+        }
+        // Socket实时
+        if (objectMap.get("needSocket").toString().equals("true")){
+            SOCKET_STATUS = true;
+            SOCKET_CONTACT = objectMap.get("contact").toString();
+            SOCKET_HOST = objectMap.get("host").toString();
+            try {
+                SOCKET_PORT = Integer.parseInt(objectMap.get("port").toString());
+            }catch (Exception ignore){}
         }
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
