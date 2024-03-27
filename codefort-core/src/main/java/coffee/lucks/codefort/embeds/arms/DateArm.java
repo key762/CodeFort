@@ -28,7 +28,7 @@ public class DateArm {
     public static Date parseDateTime(String str) {
         try {
             return simpleDateFormat.parse(str);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new Date();
         }
     }
@@ -48,10 +48,6 @@ public class DateArm {
         } catch (Exception e) {
             return true;
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(compareLocalTimeAfter("2024-03-27 09:56:38"));
     }
 
     /**
