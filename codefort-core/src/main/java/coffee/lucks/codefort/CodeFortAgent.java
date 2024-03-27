@@ -73,11 +73,9 @@ public class CodeFortAgent {
             System.exit(0);
         }
         Map<String, Object> objectMap = MapArm.toMap(fileStr);
-        // todo 临时打印
         for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
             FortLog.debug(entry.getKey()+" : " + entry.getValue());
         }
-        // todo 临时打印
         // 时间区域
         if (!objectMap.get("timeJudge").toString().equals("no")) {
             // 先检查本地时间

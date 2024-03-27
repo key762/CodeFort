@@ -55,15 +55,6 @@ public class FileArm {
     }
 
     /**
-     * 获取系统级的临时目录
-     *
-     * @return 临时目录
-     */
-    public static String getTmpDirPath() {
-        return System.getProperty("java.io.tmpdir");
-    }
-
-    /**
      * 返回文件名
      *
      * @param filePath 文件

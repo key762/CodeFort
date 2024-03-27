@@ -40,7 +40,6 @@ public class Guarder extends FortUnit {
         super(unit);
         this.type = StringUtil.getFileType(this.unitPath);
         this.targetStr = StringUtil.getTmpDirPath(this.unitPath, this.type);
-//        this.targetStr = FileArm.getTmpDirPath();
         this.targetFile = FileArm.mkDir(this.targetStr);
         this.allFile = new ArrayList<>();
         this.libJars = new ArrayList<>();
