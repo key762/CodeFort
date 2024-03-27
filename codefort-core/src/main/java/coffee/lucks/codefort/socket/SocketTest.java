@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SocketTest {
     private static List<Handler> list=new ArrayList<>();
@@ -24,8 +26,11 @@ public class SocketTest {
 
     static class Handler extends Thread{
         Socket socket;
+        private Timer timer;
+
         public Handler(Socket socket){
             this.socket=socket;
+            this.timer = new Timer();
         }
         public synchronized void sendTalk(List<Handler> list,String tellInfo) throws IOException {   //将信息全发送给所有socket连接
             for (Handler v:list){
@@ -53,11 +58,26 @@ public class SocketTest {
             System.out.println(socket.getRemoteSocketAddress()+"客户端连接已断开");
         }
 
+        public void sendPeriodicMessage() {
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        PrintWriter printStream = new PrintWriter(socket.getOutputStream(), true);
+                        printStream.println("This is a periodic message from the server.");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 0, 10000); // 每10秒发送一次消息
+        }
+
         private void handle(InputStream inputStream,OutputStream outputStream) throws IOException {
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
             BufferedReader br=new BufferedReader(new InputStreamReader(inputStream,StandardCharsets.UTF_8));
             bw.write("连接成功\n");
             bw.flush();
+            sendPeriodicMessage();
             while (true){
                 String message=br.readLine();  //读取客户端发送过来的消息
                 System.out.println(String.format("客户%s：%s",socket.getRemoteSocketAddress(),message));

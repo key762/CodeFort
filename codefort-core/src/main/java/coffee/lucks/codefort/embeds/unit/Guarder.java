@@ -149,7 +149,7 @@ public class Guarder extends FortUnit {
             res.put("timeJudge", "deadline");
         }
         // 判断是否需要socket检查
-        if (!StrArm.isEmpty(this.host) && this.port != null) {
+        if (!StrArm.isEmpty(this.host) && this.port != 0) {
             res.put("needSocket", "true");
             res.put("host", this.host);
             res.put("port", this.port);

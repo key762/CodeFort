@@ -30,10 +30,12 @@ public class CodeFortMain {
         fortUnit.setBuildTime();
 //        fortUnit.setStartTime(DateArm.parseDateTime("2024-04-03 12:00:00"));
 //        fortUnit.setEndTime(DateArm.parseDateTime("2024-05-01 12:00:00"));
-        fortUnit.setAvailableTime(1000);
+//        fortUnit.setAvailableTime(1000);
         fortUnit.setBiosMark(PathConst.DEFAULT_PASSWORD);
         fortUnit.setLibs(includeFiles);
         fortUnit.setPackages(packages);
+        fortUnit.setHost("127.0.0.1");
+        fortUnit.setPort(7007);
         fortUnit.setExcludes(excludeClass);
 //        fortUnit.setBiosMark("123123");
         String res = FortCompile.fc.doEncrypt(fortUnit);

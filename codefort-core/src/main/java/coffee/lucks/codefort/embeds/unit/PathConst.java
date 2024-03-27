@@ -57,7 +57,7 @@ public class PathConst {
      * 需要嵌入的字节码文件
      */
     public static final String[] CODE_FORT_FILES = {
-            "CodeFortAgent$1.class",
+            "CodeFortAgent$1.class","FortSocket$1.class",
 
             "AgentTransformer.class", "CodeFortAgent.class", "FortSocket.class", "RSAManualKeys.class",
             "ByteArm.class", "DateArm.class", "FileArm.class", "IoArm.class", "MapArm.class", "StrArm.class", "SysArm.class",

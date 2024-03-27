@@ -66,7 +66,7 @@ public class FortUnit {
     /**
      * Socket主机端口
      */
-    public String port;
+    public int port;
 
     /**
      * 备注说明
@@ -200,11 +200,11 @@ public class FortUnit {
         this.host = host;
     }
 
-    public String getPort() {
+    public int getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(int port) {
         this.port = port;
     }
 

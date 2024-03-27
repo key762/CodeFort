@@ -12,11 +12,8 @@ import coffee.lucks.codefort.embeds.util.EncryptUtil;
 import coffee.lucks.codefort.embeds.util.SecurityUtil;
 import coffee.lucks.codefort.embeds.util.StringUtil;
 
-import java.io.Console;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.instrument.Instrumentation;
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
@@ -72,26 +69,27 @@ public class CodeFortAgent {
                 pwd = new String(console.readPassword(FortLog.infoStr("请输入密码 :")));
             }
         }
-        FortLog.info("获取到了密码: " + pwd);
+        FortLog.debug("获取到了密码: " + pwd);
         // 正式处理之前先去获取配置的信息
         byte[] encryptedFile = EncryptUtil.readEncryptedFile(new File(Objects.requireNonNull(StringUtil.getRootPath(null))), PathConst.CODE_FORT_INFO);
         String fileStr = "";
         try {
             fileStr = new String(SecurityUtil.decrypt(encryptedFile, pwd), StandardCharsets.UTF_8);
-        }catch (Exception e){
+        } catch (Exception e) {
             FortLog.info("密码错误,请重试或联系管理员及开发者");
             try {
                 Thread.sleep(1000);
-            }catch (Exception ignore){}
+            } catch (Exception ignore) {
+            }
             System.exit(0);
         }
-        if (StrArm.isEmpty(fileStr) && !fileStr.startsWith("{\"") && !fileStr.endsWith("\"}")){
+        if (StrArm.isEmpty(fileStr) && !fileStr.startsWith("{\"") && !fileStr.endsWith("\"}")) {
             FortLog.info("密码错误,请重试或联系管理员/开发者");
             System.exit(0);
         }
         Map<String, Object> objectMap = MapArm.toMap(fileStr);
         for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
-            FortLog.debug(entry.getKey()+" : " + entry.getValue());
+            FortLog.debug(entry.getKey() + " : " + entry.getValue());
         }
         // 时间区域
         if (!objectMap.get("timeJudge").toString().equals("no")) {
@@ -116,51 +114,29 @@ public class CodeFortAgent {
             }
         }
         // 机器码
-        if (objectMap.get("needBiosMark").toString().equals("true")){
-            if (!SysArm.getCPUSerialNumber().equalsIgnoreCase(objectMap.get("biosMark").toString())){
+        if (objectMap.get("needBiosMark").toString().equals("true")) {
+            if (!SysArm.getCPUSerialNumber().equalsIgnoreCase(objectMap.get("biosMark").toString())) {
                 FortLog.info("请在指定机器上运行此服务,即将退出");
                 System.exit(0);
             }
         }
         // Socket实时
-        if (objectMap.get("needSocket").toString().equals("true")){
+        if (objectMap.get("needSocket").toString().equals("true")) {
             SOCKET_STATUS = true;
             SOCKET_CONTACT = objectMap.get("contact").toString();
             SOCKET_HOST = objectMap.get("host").toString();
             try {
                 SOCKET_PORT = Integer.parseInt(objectMap.get("port").toString());
-            }catch (Exception ignore){}
-        }
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (FortSocket.getInstance().getSocket() == null){
-                    boolean flag = FortSocket.getInstance().create();
-                    if (flag){
-                        FortLog.info("连接成功");
-                    }else {
-                        FortSocket.getInstance().setSocket(null);
-                        FortLog.info("连接失败");
-                    }
-                }else {
-                    try {
-                        // 尝试读取数据
-                        Socket socket = FortSocket.getInstance().getSocket();
-                        int data = socket.getInputStream().read();
-                        if (data == -1 || socket.isClosed() || !socket.isConnected()) {
-                            FortLog.info("服务端已关闭");
-                            FortSocket.getInstance().setSocket(null);
-                        } else {
-                            FortLog.info("与服务端连接通畅");
-                        }
-                    } catch (IOException e) {
-                        FortSocket.getInstance().setSocket(null);
-                        FortLog.info("连接异常关闭");
-                    }
-                }
+            } catch (Exception ignore) {
             }
-        }, 1000, 10000); // 10秒后开始，每隔10秒执行一次
+            // 1秒后开始，每隔10秒执行一次
+            new Timer().scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    FortSocket.getInstance().handle();
+                }
+            }, 1000, 10000);
+        }
         AgentTransformer tran = new AgentTransformer(pwd);
         inst.addTransformer(tran);
     }
