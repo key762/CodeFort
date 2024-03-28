@@ -7,11 +7,14 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/core/pom.xml" />
+        <option value="$PROJECT_DIR$/codefort-web/pom.xml" />
+        <option value="$PROJECT_DIR$/codefort-server/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/codefort-agent/pom.xml" />
+        <option value="$PROJECT_DIR$/codefort-server/pom.xml" />
         <option value="$PROJECT_DIR$/core/pom.xml" />
       </set>
     </option>

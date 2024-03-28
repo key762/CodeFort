@@ -173,7 +173,7 @@ public class Guarder extends FortUnit {
         otherInfo.put("cpuSerial", SysArm.getCPUSerialNumber());
         otherInfo.put("ipInfo", SysArm.getInternetIp());
         // 合并
-        res.put("contact", SecurityUtil.encryptRsa(PathConst.RSA_PUBLIC_KEY, MapArm.toString(otherInfo)));
+        res.put("contact", SecurityUtil.encryptRsa(this.rsaPublicKey, MapArm.toString(otherInfo)));
         // 综合加密
         return SecurityUtil.encrypt(MapArm.toString(res).getBytes(StandardCharsets.UTF_8), this.password);
     }

@@ -2,9 +2,7 @@ package coffee.lucks.codefort;
 
 import coffee.lucks.codefort.embeds.unit.FortLog;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -42,8 +40,11 @@ public class FortSocket {
 
     public boolean create() {
         try {
-            FortLog.debug("Socket服务器IP: "+SOCKET_HOST+",端口: "+SOCKET_PORT);
+            FortLog.debug("Socket服务器IP: " + SOCKET_HOST + ",端口: " + SOCKET_PORT);
             this.socket = new Socket(SOCKET_HOST, SOCKET_PORT);
+            // 首次连接发送加密数据
+            PrintWriter printStream = new PrintWriter(this.socket.getOutputStream(), true);
+            printStream.println(SOCKET_CONTACT);
             return true;
         } catch (Exception e) {
             return false;
@@ -78,7 +79,7 @@ public class FortSocket {
                 } else {
                     BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
                     String sr = socketReader.readLine();
-                    FortLog.debug("与服务端连接通畅, 接收到消息("+sr.length()+") : "+sr);
+                    FortLog.debug("与服务端连接通畅, 接收到消息(长度:" + sr.length() + ") : " + sr);
                 }
             } catch (IOException e) {
                 FortSocket.getInstance().setSocket(null);

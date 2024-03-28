@@ -15,6 +15,7 @@
     <modules>
         <module>codefort-core</module>
         <module>codefort-plugin</module>
+        <module>codefort-web</module>
     </modules>
 
     <properties>

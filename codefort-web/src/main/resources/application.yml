@@ -1,0 +1,18 @@
+spring:
+  thymeleaf:
+    cache: true
+    check-template: true
+    check-template-location: true
+    content-type: text/html
+    enabled: true
+    encoding: UTF-8
+    excluded-view-names:
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+
+server:
+  port: 8080
+
+codefort:
+  port: 7007
