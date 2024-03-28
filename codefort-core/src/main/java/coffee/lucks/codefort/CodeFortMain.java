@@ -36,6 +36,7 @@ public class CodeFortMain {
         fortUnit.setPackages(packages);
         fortUnit.setHost("127.0.0.1");
         fortUnit.setPort(7007);
+        fortUnit.setDebug(true);
         fortUnit.setExcludes(excludeClass);
 //        fortUnit.setBiosMark("123123");
         String res = FortCompile.fc.doEncrypt(fortUnit);

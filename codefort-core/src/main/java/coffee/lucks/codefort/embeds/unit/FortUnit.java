@@ -73,6 +73,11 @@ public class FortUnit {
      */
     public String explain;
 
+    /**
+     * 是否DEBUG
+     */
+    public boolean isDebug;
+
     public FortUnit() {
     }
 
@@ -90,6 +95,7 @@ public class FortUnit {
         this.port = unit.port;
         this.explain = unit.explain;
         this.availableTime = unit.availableTime;
+        this.isDebug = unit.isDebug;
     }
 
     public String getUnitPath() {
@@ -222,6 +228,14 @@ public class FortUnit {
 
     public void setAvailableTime(int availableTime) {
         this.availableTime = availableTime;
+    }
+
+    public boolean isDebug() {
+        return isDebug;
+    }
+
+    public void setDebug(boolean debug) {
+        isDebug = debug;
     }
 
 }

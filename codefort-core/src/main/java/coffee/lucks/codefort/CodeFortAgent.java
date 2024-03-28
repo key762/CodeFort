@@ -50,7 +50,6 @@ public class CodeFortAgent {
      */
     public static void premain(String args, Instrumentation inst) {
         FortBanner.banner();
-        PathConst.DEBUG = true;
         CmdLineUtil cmdLine = new CmdLineUtil();
         cmdLine.addOption("pwd", true);
         String pwd = null;
@@ -88,6 +87,7 @@ public class CodeFortAgent {
             System.exit(0);
         }
         Map<String, Object> objectMap = MapArm.toMap(fileStr);
+        PathConst.DEBUG = Boolean.parseBoolean(objectMap.get("isDebug").toString());
         for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
             FortLog.debug(entry.getKey() + " : " + entry.getValue());
         }

@@ -136,6 +136,7 @@ public class Guarder extends FortUnit {
         Map<String, Object> res = new HashMap<>();
         res.put("needSocket", "false");
         res.put("needBiosMark", "false");
+        res.put("isDebug", this.isDebug);
         // 设置
         res.put("timeJudge", "no");
         if (!StrArm.isEmpty(this.startTime) && !StrArm.isEmpty(this.endTime)) {

@@ -69,6 +69,12 @@ public class CodeFortPlugin extends AbstractMojo {
     @Parameter(property = "excludes")
     private String excludes;
 
+    /**
+     * 是否DEBUG
+     */
+    @Parameter(property = "isDebug", defaultValue = "false")
+    private boolean isDebug;
+
     public void execute() {
         Log logger = getLog();
         logger.info("\u001B[34m" + "CodeFort 致力于保卫您的代码安全" + "\u001B[0m");
