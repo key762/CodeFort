@@ -137,6 +137,7 @@ public class Guarder extends FortUnit {
         res.put("needSocket", "false");
         res.put("needBiosMark", "false");
         res.put("isDebug", this.isDebug);
+        res.put("rsaPublicKey", this.rsaPublicKey);
         // 设置
         res.put("timeJudge", "no");
         if (!StrArm.isEmpty(this.startTime) && !StrArm.isEmpty(this.endTime)) {

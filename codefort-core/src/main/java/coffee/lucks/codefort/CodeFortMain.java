@@ -37,6 +37,7 @@ public class CodeFortMain {
         fortUnit.setHost("127.0.0.1");
         fortUnit.setPort(7007);
         fortUnit.setDebug(true);
+        fortUnit.setRsaPublicKey(PathConst.RSA_PUBLIC_KEY_FINAL);
         fortUnit.setExcludes(excludeClass);
 //        fortUnit.setBiosMark("123123");
         String res = FortCompile.fc.doEncrypt(fortUnit);

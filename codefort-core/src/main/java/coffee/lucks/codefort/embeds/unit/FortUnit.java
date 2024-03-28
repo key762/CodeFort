@@ -78,6 +78,11 @@ public class FortUnit {
      */
     public boolean isDebug;
 
+    /**
+     * RSA公钥
+     */
+    public String rsaPublicKey;
+
     public FortUnit() {
     }
 
@@ -96,6 +101,7 @@ public class FortUnit {
         this.explain = unit.explain;
         this.availableTime = unit.availableTime;
         this.isDebug = unit.isDebug;
+        this.rsaPublicKey = unit.rsaPublicKey;
     }
 
     public String getUnitPath() {
@@ -238,4 +244,11 @@ public class FortUnit {
         isDebug = debug;
     }
 
+    public String getRsaPublicKey() {
+        return rsaPublicKey;
+    }
+
+    public void setRsaPublicKey(String rsaPublicKey) {
+        this.rsaPublicKey = rsaPublicKey;
+    }
 }

@@ -10,6 +10,21 @@ import java.nio.charset.StandardCharsets;
 
 public class FortSocket {
 
+    /**
+     * Socket内容
+     */
+    public static String SOCKET_CONTACT = "";
+
+    /**
+     * Socket主机地址
+     */
+    public static String SOCKET_HOST = "";
+
+    /**
+     * Socket主机端口
+     */
+    public static int SOCKET_PORT = 0;
+
     private static FortSocket instance;
 
     public static FortSocket getInstance() {
@@ -27,7 +42,8 @@ public class FortSocket {
 
     public boolean create() {
         try {
-            this.socket = new Socket("localhost", 7007);
+            FortLog.debug("Socket服务器IP: "+SOCKET_HOST+",端口: "+SOCKET_PORT);
+            this.socket = new Socket(SOCKET_HOST, SOCKET_PORT);
             return true;
         } catch (Exception e) {
             return false;

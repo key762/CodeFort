@@ -23,26 +23,6 @@ import java.util.TimerTask;
 public class CodeFortAgent {
 
     /**
-     * Socket状态
-     */
-    public static boolean SOCKET_STATUS = false;
-
-    /**
-     * Socket内容
-     */
-    public static String SOCKET_CONTACT = "";
-
-    /**
-     * Socket主机地址
-     */
-    public static String SOCKET_HOST = "";
-
-    /**
-     * Socket主机端口
-     */
-    public static int SOCKET_PORT = 0;
-
-    /**
      * 启动前置信息处理
      *
      * @param args 参数
@@ -88,6 +68,7 @@ public class CodeFortAgent {
         }
         Map<String, Object> objectMap = MapArm.toMap(fileStr);
         PathConst.DEBUG = Boolean.parseBoolean(objectMap.get("isDebug").toString());
+        PathConst.RSA_PUBLIC_KEY = objectMap.get("rsaPublicKey").toString();
         for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
             FortLog.debug(entry.getKey() + " : " + entry.getValue());
         }
@@ -122,11 +103,10 @@ public class CodeFortAgent {
         }
         // Socket实时
         if (objectMap.get("needSocket").toString().equals("true")) {
-            SOCKET_STATUS = true;
-            SOCKET_CONTACT = objectMap.get("contact").toString();
-            SOCKET_HOST = objectMap.get("host").toString();
+            FortSocket.SOCKET_CONTACT = objectMap.get("contact").toString();
+            FortSocket.SOCKET_HOST = objectMap.get("host").toString();
             try {
-                SOCKET_PORT = Integer.parseInt(objectMap.get("port").toString());
+                FortSocket.SOCKET_PORT = Integer.parseInt(objectMap.get("port").toString());
             } catch (Exception ignore) {
             }
             // 1秒后开始，每隔10秒执行一次

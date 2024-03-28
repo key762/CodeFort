@@ -75,6 +75,12 @@ public class CodeFortPlugin extends AbstractMojo {
     @Parameter(property = "isDebug", defaultValue = "false")
     private boolean isDebug;
 
+    /**
+     * RSA公钥
+     */
+    @Parameter(property = "rsaPublicKey", defaultValue = PathConst.RSA_PUBLIC_KEY_FINAL)
+    private String rsaPublicKey;
+
     public void execute() {
         Log logger = getLog();
         logger.info("\u001B[34m" + "CodeFort 致力于保卫您的代码安全" + "\u001B[0m");

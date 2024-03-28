@@ -10,7 +10,12 @@ public class PathConst {
     /**
      * RSA公钥
      */
-    public static final String RSA_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsC8XjlV8kaxg8mVdYfuJ\n" +
+    public static String RSA_PUBLIC_KEY = "";
+
+    /**
+     * RSA公钥静态-编译默认
+     */
+    public static final String RSA_PUBLIC_KEY_FINAL = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsC8XjlV8kaxg8mVdYfuJ\n" +
             "uMNx7leWMloj/PGhx84FVbaIFFsJei2+/hVAdKkxMH/NpqeW6bDg2W9spfMqx1uq\n" +
             "AtRKr0aIKyBM/V4SC8/9XmIpws0kLAEDGZa28LnUgl40gGuxjhFWvDmkUiv+r1Sr\n" +
             "QYBMFPptGrrSgncLyJBTma5vWoxZrfPmyfuX4vkaqeTkqbIdsw6er8LD9u5TStNp\n" +
