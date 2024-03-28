@@ -24,7 +24,7 @@ public class StartListener implements ApplicationRunner {
                 Socket socket = serverSocket.accept();
                 FortLog.info("客户端连接成功,地址: " + socket.getRemoteSocketAddress());
                 SocketServer fortServer = new SocketServer(socket);
-                SocketServer.list.add(fortServer);
+                SocketServer.serverCodeFortMap.put(fortServer, null);
                 fortServer.start();
             }
         } catch (Exception e) {

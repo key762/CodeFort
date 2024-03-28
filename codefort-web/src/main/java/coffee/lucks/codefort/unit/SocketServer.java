@@ -40,64 +40,42 @@ public class SocketServer extends Thread {
             "9cilXXj6wPq7dXc7ToOzS7PhNpXAYbqVYBH8sDdNFXxY5X92vkctsx3Npr1DEXSj\n" +
             "fs1YH+FYqTpUs07RXl3APabF";
 
-    public static List<SocketServer> list = new ArrayList<>();
+    public static Map<SocketServer,CodeFort> serverCodeFortMap = new HashMap<>();
 
     private Socket socket;
 
-
-    private Timer timer;
-
     public SocketServer(Socket socket) {
         this.socket = socket;
-        this.timer = new Timer();
     }
 
-    public synchronized void removeSocket(List<SocketServer> list) {
-        synchronized (list) {
-            list.remove(this);
+    public synchronized void removeSocket(Map<SocketServer,CodeFort> serverCodeFortMap) {
+        synchronized (serverCodeFortMap) {
+            serverCodeFortMap.remove(this);
         }
     }
 
     @Override
     public void run() {
         try {
-            InputStream is = this.socket.getInputStream();
-            OutputStream os = this.socket.getOutputStream();
-            server(is, os);
+            server(this.socket.getInputStream());
         } catch (IOException ignored) {
         } finally {
-            removeSocket(list);
+            removeSocket(serverCodeFortMap);
         }
         FortLog.info("客户端连接已断开,地址: " + socket.getRemoteSocketAddress());
     }
 
-    public void sendPeriodicMessage() {
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    PrintWriter printStream = new PrintWriter(socket.getOutputStream(), true);
-                    printStream.println("This is a periodic message from the server.");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 0, 10000); // 每10秒发送一次消息
-    }
-
-    private void server(InputStream inputStream, OutputStream outputStream) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
+    private void server(InputStream inputStream) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        bw.write("连接成功\n");
-        bw.flush();
-//        sendPeriodicMessage();
+        PrintWriter printStream = new PrintWriter(this.socket.getOutputStream(), true);
+        printStream.println(" CodeFort 致力保卫您的代码安全, 联系QQ 2940397985");
         while (true) {
-            String message = br.readLine();  //读取客户端发送过来的消息
+            String message = br.readLine();
             if (StrUtil.isNotEmpty(message)){
                 byte[] keyBytes = Base64.getDecoder().decode(message);
                 String data = SecurityUtil.decryptRsa(rsaKey,keyBytes);
                 CodeFort codeFort = JSONUtil.toBean(data, CodeFort.class);
-                System.out.println(codeFort);
+                serverCodeFortMap.put(this, codeFort);
             }
         }
     }
