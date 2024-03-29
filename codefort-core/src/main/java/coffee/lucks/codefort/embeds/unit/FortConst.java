@@ -66,7 +66,7 @@ public class FortConst {
 
             "AgentTransformer.class", "CodeFortAgent.class", "FortSocket.class", "RSAManualKeys.class",
             "ByteArm.class", "DateArm.class", "FileArm.class", "IoArm.class", "MapArm.class", "StrArm.class", "SysArm.class",
-            "FileType.class", "FortBanner.class", "FortLog.class", "FortUnit.class", "Guarder.class", "PathConst.class",
+            "FileType.class", "FortBanner.class", "FortLog.class", "FortUnit.class", "Guarder.class", "FortConst.class",
             "CmdLineUtil.class", "EncryptUtil.class", "HandleUtil.class", "SecurityUtil.class", "StringUtil.class"};
 
 }

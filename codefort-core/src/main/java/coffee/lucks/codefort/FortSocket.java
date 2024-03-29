@@ -1,10 +1,13 @@
 package coffee.lucks.codefort;
 
+import coffee.lucks.codefort.embeds.arms.MapArm;
+import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.unit.FortLog;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class FortSocket {
 
@@ -79,7 +82,15 @@ public class FortSocket {
                 } else {
                     BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
                     String sr = socketReader.readLine();
-                    FortLog.debug("与服务端连接通畅, 接收到消息(长度:" + sr.length() + ") : " + sr);
+                    if (!StrArm.isEmpty(sr) && sr.startsWith("{") && sr.endsWith("}")){
+                        Map<String, Object> objectMap = MapArm.toMap(sr);
+                        if (!StrArm.isEmpty(objectMap.get("msg").toString())){
+                            FortLog.info(objectMap.get("msg").toString());
+                        }
+                        if (objectMap.get("type").toString().equals("exit")){
+                            System.exit(0);
+                        }
+                    }
                 }
             } catch (IOException e) {
                 FortSocket.getInstance().setSocket(null);

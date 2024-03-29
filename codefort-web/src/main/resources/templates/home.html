@@ -36,11 +36,14 @@
                 <td th:text="${#dates.format(data.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                 <td th:text="${#dates.format(data.endTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                 <td>
-                    <div class="dropdown show">
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item btn btn-primary">发送消息</button>
-                            <button class="dropdown-item btn btn-danger">下线</button>
-                        </div>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <!-- 提示按钮 -->
+                        <form th:action="@{'/fortInfo/' + ${data.cpuSerial}}" method="post">
+                            <input type="text" name="data" placeholder="请输入信息">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </form>
+                        <!-- 下线按钮 -->
+                        <a th:href="@{'/fortOut/' + ${data.cpuSerial}}" class="dropdown-item btn btn-danger">下线</a>
                     </div>
                 </td>
             </tr>

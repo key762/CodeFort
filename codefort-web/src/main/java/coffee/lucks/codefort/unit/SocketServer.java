@@ -40,7 +40,10 @@ public class SocketServer extends Thread {
     private void server(InputStream inputStream) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         PrintWriter printStream = new PrintWriter(this.socket.getOutputStream(), true);
-        printStream.println(" CodeFort 致力保卫您的代码安全, 联系QQ 2940397985");
+        Map<String,String> res = new HashMap<>();
+        res.put("type", "info");
+        res.put("msg", "CodeFort 致力保卫您的代码安全, 联系QQ 2940397985");
+        printStream.println(" "+JSONUtil.toJsonStr(res));
         while (true) {
             String message = br.readLine();
             if (StrUtil.isNotEmpty(message)){
@@ -50,6 +53,27 @@ public class SocketServer extends Thread {
                 serverCodeFortMap.put(this, codeFort);
             }
         }
+    }
+
+    public void outLine() {
+        try {
+            Map<String,String> res = new HashMap<>();
+            res.put("type", "exit");
+            res.put("msg", "此服务已被强制下线！如有疑问请联系管理员或开发者");
+            PrintWriter printStream = new PrintWriter(this.socket.getOutputStream(), true);
+            printStream.println(" "+JSONUtil.toJsonStr(res));
+            removeSocket(serverCodeFortMap);
+        }catch (Exception ignore){}
+    }
+
+    public void info(String data) {
+        try {
+            Map<String,String> res = new HashMap<>();
+            res.put("type", "info");
+            res.put("msg", data);
+            PrintWriter printStream = new PrintWriter(this.socket.getOutputStream(), true);
+            printStream.println(" "+JSONUtil.toJsonStr(res));
+        }catch (Exception ignore){}
     }
 
 }
