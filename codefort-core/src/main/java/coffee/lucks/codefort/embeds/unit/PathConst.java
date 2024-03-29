@@ -54,7 +54,7 @@ public class PathConst {
     public static final String CODE_FORT_INFO = "CodeFortAlwaysSupportYou";
 
     /**
-     * 默认密码
+     * 默认密码 - CodeFortAlwaysSupportYou
      */
     public static final String DEFAULT_PASSWORD = "cfasy";
 

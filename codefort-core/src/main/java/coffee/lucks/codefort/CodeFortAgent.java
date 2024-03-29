@@ -45,10 +45,14 @@ public class CodeFortAgent {
             Console console = System.console();
             if (console != null) {
                 FortLog.info("无法在系统参数中获取密码,将会从控制台获取");
+                FortLog.info("提示: 如果未设置密码请直接回车键跳过");
                 pwd = new String(console.readPassword(FortLog.infoStr("请输入密码 :")));
             }
         }
-        FortLog.debug("获取到了密码: " + pwd);
+        if (StrArm.isEmpty(pwd)){
+            pwd = PathConst.DEFAULT_PASSWORD;
+        }
+        FortLog.info("获取到了密码: " + pwd);
         // 正式处理之前先去获取配置的信息
         byte[] encryptedFile = EncryptUtil.readEncryptedFile(new File(Objects.requireNonNull(StringUtil.getRootPath(null))), PathConst.CODE_FORT_INFO);
         String fileStr = "";

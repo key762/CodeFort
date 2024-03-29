@@ -26,7 +26,8 @@ public class CodeFortMain {
     public static void main(String[] args) {
         FortUnit fortUnit = new FortUnit();
         fortUnit.setUnitPath(jarPath);
-        fortUnit.setPassword(password);
+//        fortUnit.setPassword(password);
+        fortUnit.setPassword(PathConst.DEFAULT_PASSWORD);
         fortUnit.setBuildTime();
 //        fortUnit.setStartTime(DateArm.parseDateTime("2024-04-03 12:00:00"));
 //        fortUnit.setEndTime(DateArm.parseDateTime("2024-05-01 12:00:00"));
