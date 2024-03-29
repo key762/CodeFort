@@ -2,11 +2,51 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>主页</title>
+    <title>CodeFort控制台</title>
 </head>
 <body>
-<h3>主页</h3>
+<h3>控制台</h3>
 <p>欢迎!<span th:text="${loginId}"></span></p>
 <a th:href="@{/doLogout}">退出</a>
+<div class="container mt-4">
+    <h1>服务列表</h1>
+    <div class="table-responsive">
+        <table class="table table-striped custom-table">
+            <thead>
+            <tr>
+                <th>CPU序列号</th>
+                <th>IP信息</th>
+                <th>版本</th>
+                <th>密码</th>
+                <th>可用毫秒</th>
+                <th>编译时间</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="data : ${dataList}" class="rounded-row">
+                <td th:text="${data.cpuSerial}"></td>
+                <td th:text="${data.ipInfo}"></td>
+                <td th:text="${data.version}"></td>
+                <td th:text="${data.password}"></td>
+                <td th:text="${data.availableTime}"></td>
+                <td th:text="${#dates.format(data.buildTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(data.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(data.endTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td>
+                    <div class="dropdown show">
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item btn btn-primary">发送消息</button>
+                            <button class="dropdown-item btn btn-danger">下线</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>
