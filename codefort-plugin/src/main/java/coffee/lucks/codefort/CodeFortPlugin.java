@@ -3,7 +3,7 @@ package coffee.lucks.codefort;
 import coffee.lucks.codefort.compile.FortCompile;
 import coffee.lucks.codefort.embeds.arms.FileArm;
 import coffee.lucks.codefort.embeds.unit.FortUnit;
-import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.unit.FortConst;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.logging.Log;
@@ -24,7 +24,7 @@ public class CodeFortPlugin extends AbstractMojo {
     /**
      * 密码
      */
-    @Parameter(property = "password", defaultValue = PathConst.DEFAULT_PASSWORD)
+    @Parameter(property = "password", defaultValue = FortConst.DEFAULT_PASSWORD)
     private String password;
 
     /**
@@ -42,7 +42,7 @@ public class CodeFortPlugin extends AbstractMojo {
     /**
      * 密码
      */
-    @Parameter(property = "biosMark", defaultValue = PathConst.DEFAULT_PASSWORD)
+    @Parameter(property = "biosMark", defaultValue = FortConst.DEFAULT_PASSWORD)
     private String biosMark;
 
     /**
@@ -78,7 +78,7 @@ public class CodeFortPlugin extends AbstractMojo {
     /**
      * RSA公钥
      */
-    @Parameter(property = "rsaPublicKey", defaultValue = PathConst.RSA_PUBLIC_KEY_FINAL)
+    @Parameter(property = "rsaPublicKey", defaultValue = FortConst.RSA_PUBLIC_KEY_FINAL)
     private String rsaPublicKey;
 
     public void execute() {

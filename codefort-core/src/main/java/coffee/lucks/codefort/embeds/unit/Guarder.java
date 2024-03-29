@@ -157,7 +157,7 @@ public class Guarder extends FortUnit {
             res.put("port", this.port);
         }
         // 判断是否需要绑定机器码
-        if (!PathConst.DEFAULT_PASSWORD.equalsIgnoreCase(this.biosMark)) {
+        if (!FortConst.DEFAULT_PASSWORD.equalsIgnoreCase(this.biosMark)) {
             res.put("needBiosMark", "true");
             res.put("biosMark", this.biosMark);
         }
@@ -169,7 +169,7 @@ public class Guarder extends FortUnit {
         otherInfo.put("endTime", this.endTime);
         otherInfo.put("availableTime", this.availableTime);
         otherInfo.put("explain", this.explain);
-        otherInfo.put("version", PathConst.CODE_FORT_VERSION);
+        otherInfo.put("version", FortConst.CODE_FORT_VERSION);
         otherInfo.put("cpuSerial", SysArm.getCPUSerialNumber());
         otherInfo.put("ipInfo", SysArm.getInternetIp());
         // 合并

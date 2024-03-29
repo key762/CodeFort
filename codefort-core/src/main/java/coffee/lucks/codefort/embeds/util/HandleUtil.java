@@ -4,7 +4,7 @@ import coffee.lucks.codefort.embeds.arms.FileArm;
 import coffee.lucks.codefort.embeds.arms.IoArm;
 import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.unit.Guarder;
-import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.unit.FortConst;
 import coffee.lucks.codefort.embeds.unit.FileType;
 
 import java.io.File;
@@ -38,8 +38,8 @@ public class HandleUtil {
                     IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
                     if (guarder.getIncludeJars() != null && guarder.getIncludeJars().contains(FileArm.getName(entryName))) {
                         guarder.getLibJars().add(fullPath);
-                        guarder.getLibJarNames().add(entryName.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR));
-                        guarder.getAllFile().addAll(decompression(fullPath, fullPath.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR), guarder).getAllFile());
+                        guarder.getLibJarNames().add(entryName.replace(FileType.JAR.getFullType(), FortConst.TEMP_DIR));
+                        guarder.getAllFile().addAll(decompression(fullPath, fullPath.replace(FileType.JAR.getFullType(), FortConst.TEMP_DIR), guarder).getAllFile());
                     }
                 } else if (entry.isDirectory()) {
                     FileArm.mkDir(fullPath);
@@ -63,7 +63,7 @@ public class HandleUtil {
     public static Guarder getEncryptClass(Guarder guarder) {
         List<File> files = new ArrayList<>();
         List<String> stringList = guarder.getAllFile().stream()
-                .filter(x -> x.endsWith(PathConst.EXT_CLASS))
+                .filter(x -> x.endsWith(FortConst.EXT_CLASS))
                 .collect(Collectors.toList());
         for (String file : stringList) {
             if (StringUtil.needEncrypt(file, guarder)) {

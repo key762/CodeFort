@@ -4,7 +4,7 @@ import coffee.lucks.codefort.embeds.arms.ByteArm;
 import coffee.lucks.codefort.embeds.arms.FileArm;
 import coffee.lucks.codefort.embeds.arms.IoArm;
 import coffee.lucks.codefort.embeds.unit.Guarder;
-import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.unit.FortConst;
 
 import java.io.*;
 
@@ -16,7 +16,7 @@ public class EncryptUtil {
      * @param guarder 执行对象
      */
     public static void encryptClass(Guarder guarder) {
-        File metaDir = new File(guarder.getTargetStr(), "META-INF" + File.separator + PathConst.ENCRYPT_NAME);
+        File metaDir = new File(guarder.getTargetStr(), "META-INF" + File.separator + FortConst.ENCRYPT_NAME);
         FileArm.mkDir(metaDir);
         try {
             for (File file : guarder.getEncryptClass()) {
@@ -32,7 +32,7 @@ public class EncryptUtil {
             throw new RuntimeException("加密Jar/War的class文件时出现异常", e);
         }
         // 写入必要信息
-        IoArm.writeFromByte(guarder.getNecessaryInfo(), new File(metaDir, PathConst.CODE_FORT_INFO));
+        IoArm.writeFromByte(guarder.getNecessaryInfo(), new File(metaDir, FortConst.CODE_FORT_INFO));
     }
 
     /**
@@ -61,7 +61,7 @@ public class EncryptUtil {
      */
     public static byte[] readEncryptedFile(File workDir, String name) {
         byte[] bytes = null;
-        String fileName = PathConst.ENCRYPT_PATH + name;
+        String fileName = FortConst.ENCRYPT_PATH + name;
         if (workDir.isFile()) {
             bytes = ByteArm.getFileFromZip(workDir, fileName);
         } else {//war解压的目录

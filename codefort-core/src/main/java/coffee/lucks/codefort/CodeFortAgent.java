@@ -6,7 +6,7 @@ import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.arms.SysArm;
 import coffee.lucks.codefort.embeds.unit.FortBanner;
 import coffee.lucks.codefort.embeds.unit.FortLog;
-import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.unit.FortConst;
 import coffee.lucks.codefort.embeds.util.CmdLineUtil;
 import coffee.lucks.codefort.embeds.util.EncryptUtil;
 import coffee.lucks.codefort.embeds.util.SecurityUtil;
@@ -50,11 +50,11 @@ public class CodeFortAgent {
             }
         }
         if (StrArm.isEmpty(pwd)){
-            pwd = PathConst.DEFAULT_PASSWORD;
+            pwd = FortConst.DEFAULT_PASSWORD;
         }
         FortLog.info("获取到了密码: " + pwd);
         // 正式处理之前先去获取配置的信息
-        byte[] encryptedFile = EncryptUtil.readEncryptedFile(new File(Objects.requireNonNull(StringUtil.getRootPath(null))), PathConst.CODE_FORT_INFO);
+        byte[] encryptedFile = EncryptUtil.readEncryptedFile(new File(Objects.requireNonNull(StringUtil.getRootPath(null))), FortConst.CODE_FORT_INFO);
         String fileStr = "";
         try {
             fileStr = new String(SecurityUtil.decrypt(encryptedFile, pwd), StandardCharsets.UTF_8);
@@ -71,8 +71,8 @@ public class CodeFortAgent {
             System.exit(0);
         }
         Map<String, Object> objectMap = MapArm.toMap(fileStr);
-        PathConst.DEBUG = Boolean.parseBoolean(objectMap.get("isDebug").toString());
-        PathConst.RSA_PUBLIC_KEY = objectMap.get("rsaPublicKey").toString();
+        FortConst.DEBUG = Boolean.parseBoolean(objectMap.get("isDebug").toString());
+        FortConst.RSA_PUBLIC_KEY = objectMap.get("rsaPublicKey").toString();
         for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
             FortLog.debug(entry.getKey() + " : " + entry.getValue());
         }

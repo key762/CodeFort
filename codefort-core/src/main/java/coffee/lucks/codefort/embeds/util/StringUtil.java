@@ -2,7 +2,7 @@ package coffee.lucks.codefort.embeds.util;
 
 import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.unit.Guarder;
-import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.unit.FortConst;
 import coffee.lucks.codefort.embeds.unit.FileType;
 
 import java.io.File;
@@ -88,7 +88,7 @@ public class StringUtil {
      * @return 临时文件目录
      */
     public static String getTmpDirPath(String filePath, FileType fileType) {
-        return filePath.replace(fileType.getFullType(), PathConst.TEMP_DIR);
+        return filePath.replace(fileType.getFullType(), FortConst.TEMP_DIR);
     }
 
     /**
@@ -138,13 +138,13 @@ public class StringUtil {
         String clsPath;
         String clsName;
         if (file.contains(K_LIB)) {
-            clsName = file.substring(file.indexOf(PathConst.TEMP_DIR, file.indexOf(K_LIB)) + PathConst.TEMP_DIR.length() + 1);
+            clsName = file.substring(file.indexOf(FortConst.TEMP_DIR, file.indexOf(K_LIB)) + FortConst.TEMP_DIR.length() + 1);
             clsPath = file.substring(0, file.length() - clsName.length() - 1);
         } else if (file.contains(K_CLASSES)) {
             clsName = file.substring(file.indexOf(K_CLASSES) + K_CLASSES.length());
             clsPath = file.substring(0, file.length() - clsName.length() - 1);
         } else {
-            clsName = file.substring(file.indexOf(PathConst.TEMP_DIR) + PathConst.TEMP_DIR.length() + 1);
+            clsName = file.substring(file.indexOf(FortConst.TEMP_DIR) + FortConst.TEMP_DIR.length() + 1);
             clsPath = file.substring(0, file.length() - clsName.length() - 1);
         }
         return flag ? clsName.replace(File.separator, ".") : clsPath;

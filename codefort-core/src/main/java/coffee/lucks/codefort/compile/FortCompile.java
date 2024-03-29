@@ -4,7 +4,7 @@ import coffee.lucks.codefort.embeds.arms.FileArm;
 import coffee.lucks.codefort.embeds.unit.FortUnit;
 import coffee.lucks.codefort.embeds.unit.Guarder;
 import coffee.lucks.codefort.embeds.unit.FileType;
-import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.unit.FortConst;
 import coffee.lucks.codefort.embeds.util.EncryptUtil;
 import coffee.lucks.codefort.embeds.util.HandleUtil;
 
@@ -28,11 +28,11 @@ public class FortCompile {
         ClassCompile.clearClassMethod(guarder);
         // 先打包lib路径下的jar
         for (String file : guarder.getLibJars()) {
-            HandleUtil.compress(file.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR), file);
+            HandleUtil.compress(file.replace(FileType.JAR.getFullType(), FortConst.TEMP_DIR), file);
         }
         // 删除lib路径下的jar解压出的临时文件
         for (String file : guarder.getLibJars()) {
-            FileArm.del(file.replace(FileType.JAR.getFullType(), PathConst.TEMP_DIR));
+            FileArm.del(file.replace(FileType.JAR.getFullType(), FortConst.TEMP_DIR));
         }
         // 最终打包
         String result = HandleUtil.compress(guarder.getTargetStr(), guarder.getUnitPath().replace(guarder.getType().getFullType(), "-encrypted" + guarder.getType().getFullType()));

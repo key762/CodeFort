@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+</head>
+<body>
+<h3>主页</h3>
+<p>欢迎!<span th:text="${loginId}"></span></p>
+<a th:href="@{/doLogout}">退出</a>
+</body>
+</html>

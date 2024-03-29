@@ -6,7 +6,7 @@ import coffee.lucks.codefort.embeds.arms.IoArm;
 import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.unit.Guarder;
 import coffee.lucks.codefort.embeds.unit.FileType;
-import coffee.lucks.codefort.embeds.unit.PathConst;
+import coffee.lucks.codefort.embeds.unit.FortConst;
 import coffee.lucks.codefort.embeds.util.StringUtil;
 import javassist.*;
 import javassist.bytecode.*;
@@ -39,7 +39,7 @@ public class ClassCompile {
                     targetFile = new File(targetFile, className);
                     if (file.isDirectory()) {
                         targetFile.mkdirs();
-                    } else if (StrArm.containsArray(file.getAbsolutePath(), PathConst.CODE_FORT_FILES)) {
+                    } else if (StrArm.containsArray(file.getAbsolutePath(), FortConst.CODE_FORT_FILES)) {
                         byte[] bytes = FileArm.readBytes(file);
                         IoArm.writeFromByte(bytes, targetFile);
                     }

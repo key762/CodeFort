@@ -1,6 +1,6 @@
 package coffee.lucks.codefort.embeds.unit;
 
-public class PathConst {
+public class FortConst {
 
     /**
      * 版本

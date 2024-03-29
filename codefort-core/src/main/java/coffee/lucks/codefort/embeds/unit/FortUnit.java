@@ -118,7 +118,7 @@ public class FortUnit {
 
     public void setPassword(String password) {
         if (StrArm.isEmpty(password)) {
-            this.password = PathConst.DEFAULT_PASSWORD;
+            this.password = FortConst.DEFAULT_PASSWORD;
         } else {
             this.password = password;
         }
@@ -198,7 +198,7 @@ public class FortUnit {
 
     public void setBiosMark(String biosMark) {
         if (StrArm.isEmpty(biosMark)) {
-            biosMark = PathConst.DEFAULT_PASSWORD;
+            biosMark = FortConst.DEFAULT_PASSWORD;
         } else {
             this.biosMark = biosMark;
         }
