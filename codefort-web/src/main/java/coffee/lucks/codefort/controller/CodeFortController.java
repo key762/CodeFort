@@ -12,6 +12,11 @@ import java.util.Map;
 @Controller
 public class CodeFortController {
 
+    @GetMapping("/")
+    public String index() {
+        return "login";
+    }
+
     @GetMapping("/home")
     public String home(Model model) {
         if (StpUtil.isLogin()) {
