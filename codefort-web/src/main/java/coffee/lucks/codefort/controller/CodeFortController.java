@@ -20,7 +20,7 @@ public class CodeFortController {
     @GetMapping("/home")
     public String home(Model model) {
         if (StpUtil.isLogin()) {
-            model.addAttribute("loginId", StpUtil.getLoginId());
+            model.addAttribute("loginName", "Admin");
             model.addAttribute("dataList", SocketServer.serverCodeFortMap.values());
             return "home";
         }
@@ -33,8 +33,10 @@ public class CodeFortController {
     }
 
     @PostMapping("/doLogin")
-    public String doLogin(String username, String password) {
+    public String doLogin(Model model, String username, String password) {
         if ("admin".equals(username) && "123456".equals(password)) {
+            model.addAttribute("loginName", "Admin");
+            model.addAttribute("dataList", SocketServer.serverCodeFortMap.values());
             StpUtil.login(10001);
             return "home";
         }
