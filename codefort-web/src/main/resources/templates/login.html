@@ -2,22 +2,185 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
-    <link type="text/css" rel="stylesheet" th:href="@{/css/login.css}"/>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 10px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .logo {
+            font-size: 3rem;
+            color: rgb(144, 129, 241);
+            margin-bottom: 2rem;
+        }
+
+        .box {
+            display: flex;
+            width: 90rem;
+            height: 55rem;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 1.5rem;
+            box-shadow: 0 0 1rem 0.2rem rgba(0, 0, 0, 0.1);
+        }
+
+        .left {
+            width: 35%;
+            background-color: skyblue;
+            position: relative;
+        }
+
+        .left::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url(images/left.png);
+            background-size: cover;
+            opacity: 0.8;
+        }
+
+        .right {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        h4 {
+            color: rgb(144, 129, 241);
+            font-size: 3rem;
+            margin-top: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .acc {
+            width: 80%;
+            height: 5rem;
+            font-size: 1.6rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            border: none;
+            border-bottom: 1px solid rgb(144, 129, 241);
+            color: rgb(144, 129, 241);
+            background-color: transparent;
+            outline: none;
+        }
+
+        .acc:focus {
+            color: rgb(144, 129, 241);
+            border-bottom: 1px solid rgb(144, 129, 241);
+        }
+
+        .show-password {
+            background-color: transparent;
+            border: none;
+            color: rgb(144, 129, 241);
+            font-size: 1.6rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .submit {
+            width: 60%;
+            height: 5rem;
+            color: #fff;
+            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            font-size: 1.4rem;
+            border: none;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+            cursor: pointer;
+        }
+
+        .submit:hover {
+            box-shadow: 0 0 2rem -0.5rem rgba(0, 0, 0, 0.15);
+        }
+
+        .fn {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            width: 70%;
+        }
+
+        .fn a {
+            font-size: 1.3rem;
+            padding: 1rem 2rem;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .fn a:hover {
+            color: rgb(144, 129, 241);
+        }
+    </style>
 </head>
 <body>
-<form id="login-form" th:action="@{/doLogin}" method="post">
-    <div>
-        <label>用户名:</label>
-        <input name="username"/>
+<div class="logo">
+    <h1>Code Fort WebConsole</h1>
+</div>
+<div class="box">
+    <div class="left"></div>
+    <div class="right">
+        <h2></h2>
+        <h2></h2>
+        <h4>登录</h4>
+        <h2></h2>
+        <h2></h2>
+        <h2></h2>
+        <form id="login-form" th:action="@{/doLogin}" method="post">
+            <input class="acc" name="username" type="text" placeholder="用户名">
+            <input class="acc" name="password" type="password" placeholder="密码">
+            <button type="button" class="show-password" onclick="showPassword()">显示密码</button>
+            <input class="submit" type="submit" value="登录">
+        </form>
     </div>
-    <div>
-        <label>密  码:</label>
-        <input name="password" type="password"/>
-    </div>
-    <div>
-        <button type="submit">登录</button>
-    </div>
-</form>
+</div>
+
+<script>
+    function showPassword() {
+        var passwordInput = document.querySelector('input[name="password"]');
+        var showButton = document.querySelector('button[class="show-password"]');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            showButton.textContent = '隐藏密码';
+        } else {
+            passwordInput.type = 'password';
+            showButton.textContent = '显示密码';
+        }
+    }
+</script>
+
 </body>
 </html>
