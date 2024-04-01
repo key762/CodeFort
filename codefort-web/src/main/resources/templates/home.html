@@ -3,6 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>CodeFort控制台</title>
+    <style>
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup {
+            position: fixed;
+            background-color: white;
+            width: 300px;
+            padding: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+    </style>
 </head>
 <body>
 <h3>控制台</h3>
@@ -38,10 +61,7 @@
                 <td>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <!-- 提示按钮 -->
-                        <form th:action="@{'/fortInfo/' + ${data.cpuSerial}}" method="post">
-                            <input type="text" name="data" placeholder="请输入信息">
-                            <button type="submit" class="btn btn-primary">提交</button>
-                        </form>
+                        <a href="#" th:onclick="showPopup([[${data.cpuSerial}]])">提示</a>
                         <!-- 下线按钮 -->
                         <a th:href="@{'/fortOut/' + ${data.cpuSerial}}" class="dropdown-item btn btn-danger">下线</a>
                     </div>
@@ -51,5 +71,27 @@
         </table>
     </div>
 </div>
+
+<div class="overlay" id="overlay">
+    <div class="popup" id="popup">
+        <form id="myform" th:action="@{'/fortInfo/'}" method="post">
+            <input type="text" name="data" placeholder="请输入信息" id="inputField">
+            <button type="submit" class="btn btn-primary">提交</button>
+            <button type="button" class="btn btn-secondary" onclick="hidePopup()">取消</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showPopup(cpuSerial) {
+        document.getElementById('myform').action = "/fortInfo/" + cpuSerial;
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function hidePopup() {
+        document.getElementById('overlay').style.display = 'none';
+    }
+</script>
+
 </body>
 </html>
