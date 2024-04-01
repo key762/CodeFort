@@ -31,3 +31,5 @@ sa-token:
 
 codefort:
   port: 7007
+  user: admin
+  password: 123456

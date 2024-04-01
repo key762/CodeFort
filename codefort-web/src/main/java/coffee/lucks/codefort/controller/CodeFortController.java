@@ -3,6 +3,7 @@ package coffee.lucks.codefort.controller;
 import cn.dev33.satoken.stp.StpUtil;
 import coffee.lucks.codefort.unit.CodeFort;
 import coffee.lucks.codefort.unit.SocketServer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,12 @@ import java.util.Map;
 
 @Controller
 public class CodeFortController {
+
+    @Value("${codefort.user}")
+    private String user;
+
+    @Value("${codefort.password}")
+    private String fortPassword;
 
     @GetMapping("/")
     public String index() {
@@ -34,10 +41,10 @@ public class CodeFortController {
 
     @PostMapping("/doLogin")
     public String doLogin(Model model, String username, String password) {
-        if ("admin".equals(username) && "123456".equals(password)) {
+        if (user.equals(username) && fortPassword.equals(password)) {
             model.addAttribute("loginName", "Admin");
             model.addAttribute("dataList", SocketServer.serverCodeFortMap.values());
-            StpUtil.login(10001);
+            StpUtil.login("Admin");
             return "home";
         }
         return "loginFailed";
