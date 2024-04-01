@@ -36,7 +36,7 @@ public class CodeFortController {
     public String doLogin(String username, String password) {
         if ("admin".equals(username) && "123456".equals(password)) {
             StpUtil.login(10001);
-            return "loginSucceed";
+            return "home";
         }
         return "loginFailed";
     }
