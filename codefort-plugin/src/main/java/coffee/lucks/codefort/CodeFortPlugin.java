@@ -70,6 +70,25 @@ public class CodeFortPlugin extends AbstractMojo {
     private String excludes;
 
     /**
+     * Socket主机地址
+     */
+    @Parameter(property = "host")
+    public String host;
+
+
+    /**
+     * Socket主机端口
+     */
+    @Parameter(property = "port")
+    public int port;
+
+    /**
+     * 备注说明
+     */
+    @Parameter(property = "explain")
+    public String explain;
+
+    /**
      * 是否DEBUG
      */
     @Parameter(property = "isDebug", defaultValue = "false")
