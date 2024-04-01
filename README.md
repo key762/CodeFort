@@ -1,39 +1,109 @@
-# codefort
+<h1 align="center" style="text-align:center;">
+<img src="solon_icon.png" width="128" />
+<br />
+Solon v2.7.3
+</h1>
+<p align="center">
+	<strong>Java 新的应用开发框架，更快、更小、更简单！</strong>
+</p>
+<p align="center">
+	<a href="https://solon.noear.org/">https://solon.noear.org</a>
+</p>
 
-#### 介绍
-学习并拓展ClassFinal功能
+<p align="center">
+    <a target="_blank" href="https://central.sonatype.com/search?q=org.noear%3Asolon-parent">
+        <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" alt="Maven" />
+    </a>
+    <a target="_blank" href="LICENSE">
+		<img src="https://img.shields.io/:License-Apache2-blue.svg" alt="Apache 2" />
+	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-8-green.svg" alt="jdk-8" />
+	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-11-green.svg" alt="jdk-11" />
+	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-17-green.svg" alt="jdk-17" />
+	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-21-green.svg" alt="jdk-21" />
+	</a>
+    <br />
+    <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
+		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='gitee star'/>
+	</a>
+    <a target="_blank" href='https://github.com/noear/solon/stargazers'>
+		<img src="https://img.shields.io/github/stars/noear/solon.svg?logo=github" alt="github star"/>
+	</a>
+</p>
 
-#### 软件架构
-软件架构说明
+<br/>
+<p align="center">
+	<a href="https://jq.qq.com/?_wv=1027&k=kjB5JNiC">
+	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
+</p>
 
-![输入图片说明](https://foruda.gitee.com/images/1711696699012804113/44d9aa4c_4834949.png "截屏2024-03-29 15.14.56.png")
+##### 语言： 中文 | [English](README_EN.md) | [Русский](README_RU.md) | [日本語](README_JP.md)
 
-![输入图片说明](%E6%88%AA%E5%B1%8F2024-03-29%2015.14.43.png)
-#### 安装教程
+<hr />
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+<p align="center">
+并发高 2～ 3 倍；内存节省 1/3 ~ 1/2；启动快 5 ～ 10 倍；打包可以缩到 1/2 ~ 1/10
+<br/>
+从零开始构建，有自己的标准规范与开放生态
+</p>
 
-#### 使用说明
+<hr />
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+## 特性:
 
-#### 参与贡献
+更高的计算性价比：
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+* 降低运行成本：每秒并发高 2～ 3 倍；内存节省 1/3 ~ 1/2
+
+更高的开发效率，更简单的编码体验：
+
+* 降低学习成本：源码简单；新手入门容易；使用方便
+* 提高调试效率：重启快 5 ～ 10 倍；更快定位问题
+
+更快的生产与部署体验：
+
+* 服务包更小，CI/DI 更快：打包缩到 1/2 ~ 1/10
+* 云原生更友好（镜像拉取快，容器就绪快）：打包缩到 1/2 ~ 1/10，启动快 5 ～ 10 倍
+
+更自由的运行时兼容选择：
+
+* 同时支持 java8、java11、java17、java21、java22 的运行时
 
 
-#### 特技
+## 生态架构图：
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+* solon
+
+<img src="solon_schema.png" width="700" />
+
+* solon cloud
+
+<img src="solon_cloud_schema.png" width="700" />
+
+## 加入到交流群：
+
+| QQ交流群：22200020                       | 微信交流群（申请时输入：Solon）                     |
+|---------------------------|----------------------------------------|
+| <img src="group_qq.png" width="120" />       | <img src="group_wx.png" width="120" /> 
+
+
+## 官网及相关示例、案例：
+
+* 官网地址：[https://solon.noear.org](https://solon.noear.org)
+* 官网配套演示：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
+* 项目单测：[__test](./__test/) 
+* 用户案例：[用户开源项目](https://solon.noear.org/article/555)、[用户商业项目](https://solon.noear.org/article/cases)
+
+## 特别感谢JetBrains对开源项目支持：
+
+<a href="https://jb.gg/OpenSourceSupport">
+  <img src="https://user-images.githubusercontent.com/8643542/160519107-199319dc-e1cf-4079-94b7-01b6b8d23aa6.png" align="left" height="100" width="100"  alt="JetBrains">
+</a>
+
