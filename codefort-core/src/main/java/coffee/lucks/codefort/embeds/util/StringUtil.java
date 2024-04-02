@@ -94,6 +94,7 @@ public class StringUtil {
     /**
      * 获取class运行的classes目录或所在的jar包目录
      *
+     * @param path 当前classes目录
      * @return 路径字符串
      */
     public static String getRootPath(String path) {

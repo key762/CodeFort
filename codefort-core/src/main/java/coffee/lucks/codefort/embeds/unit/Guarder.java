@@ -36,6 +36,9 @@ public class Guarder extends FortUnit {
 
     private List<String> includeJars;
 
+    public Guarder() {
+    }
+
     public Guarder(FortUnit unit) {
         super(unit);
         this.type = StringUtil.getFileType(this.unitPath);

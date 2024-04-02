@@ -33,6 +33,7 @@ public class FortLog {
      * 获取info信息
      *
      * @param msg 信息
+     * @return 返回字符串的信息
      */
     public static String infoStr(Object msg) {
         String def = datetimeFormat.format(new Date());

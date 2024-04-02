@@ -52,7 +52,7 @@ public class CodeFortAgent {
         if (StrArm.isEmpty(pwd)){
             pwd = FortConst.DEFAULT_PASSWORD;
         }
-        FortLog.info("获取到了密码: " + pwd);
+        FortLog.debug("获取到了密码: " + pwd);
         // 正式处理之前先去获取配置的信息
         byte[] encryptedFile = EncryptUtil.readEncryptedFile(new File(Objects.requireNonNull(StringUtil.getRootPath(null))), FortConst.CODE_FORT_INFO);
         String fileStr = "";

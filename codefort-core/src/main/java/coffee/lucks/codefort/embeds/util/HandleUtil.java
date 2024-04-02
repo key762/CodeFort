@@ -44,8 +44,15 @@ public class HandleUtil {
                 } else if (entry.isDirectory()) {
                     FileArm.mkDir(fullPath);
                 } else {
-                    IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
-                    guarder.getAllFile().add(fullPath);
+                    if (StrArm.isEmpty(guarder.getUnitPath())){
+                        if (!fullPath.contains("META-INF")){
+                            IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
+                            guarder.getAllFile().add(fullPath);
+                        }
+                    }else {
+                        IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
+                        guarder.getAllFile().add(fullPath);
+                    }
                 }
             }
         } catch (Exception e) {

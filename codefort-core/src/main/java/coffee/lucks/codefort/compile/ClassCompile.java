@@ -7,6 +7,7 @@ import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.unit.Guarder;
 import coffee.lucks.codefort.embeds.unit.FileType;
 import coffee.lucks.codefort.embeds.unit.FortConst;
+import coffee.lucks.codefort.embeds.util.HandleUtil;
 import coffee.lucks.codefort.embeds.util.StringUtil;
 import javassist.*;
 import javassist.bytecode.*;
@@ -15,6 +16,7 @@ import javassist.compiler.Javac;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClassCompile {
@@ -22,7 +24,7 @@ public class ClassCompile {
     /**
      * 将本项目打包到目标执行文件中
      *
-     * @param guarder
+     * @param guarder 执行对象
      */
     public static void codeFortAgent(Guarder guarder) {
         List<String> thisJarPaths = new ArrayList<>();
@@ -30,7 +32,17 @@ public class ClassCompile {
         //把本项目的class文件打包进去
         thisJarPaths.forEach(thisJar -> {
             File thisJarFile = new File(thisJar);
-            if (thisJar.endsWith("/classes/")) {
+            if (guarder.getType().equals(FileType.JAR) && thisJar.endsWith(FileType.JAR.getFullType())) {
+                List<String> includeFiles = Arrays.asList(FortConst.CODE_FORT_FILES);
+                Guarder guarder1 = new Guarder();
+                guarder1.setIncludeJars(includeFiles);
+                guarder1.setAllFile(new ArrayList<>());
+                HandleUtil.decompression(thisJar, guarder.getTargetFile().getAbsolutePath(), guarder1);
+            } else if (guarder.getType().equals(FileType.WAR) && thisJar.endsWith(FileType.JAR.getFullType())) {
+                File targetClassFinalJar = new File(guarder.getTargetLibDir(), thisJarFile.getName());
+                byte[] bytes = FileArm.readBytes(thisJarFile);
+                IoArm.writeFromByte(bytes, targetClassFinalJar);
+            } else if (thisJar.endsWith("/classes/")) {
                 List<File> files = new ArrayList<>();
                 FileArm.listFile(files, new File(thisJar));
                 files.forEach(file -> {
@@ -60,7 +72,7 @@ public class ClassCompile {
     /**
      * 清空class文件的方法体，并保留参数信息
      *
-     * @param guarder
+     * @param guarder 执行对象
      */
     public static void clearClassMethod(Guarder guarder) {
         ClassPool pool = ClassPool.getDefault();

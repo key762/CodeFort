@@ -33,7 +33,7 @@ public class StrArm {
      *
      * @param str   原始字符串
      * @param regex 分割字符
-     * @return List<String>
+     * @return 字符串数组
      */
     public static List<String> toListByRegex(String str, String regex) {
         List<String> list = new ArrayList<>();

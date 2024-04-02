@@ -63,7 +63,6 @@ public class FortConst {
      */
     public static final String[] CODE_FORT_FILES = {
             "CodeFortAgent$1.class","FortSocket$1.class",
-
             "AgentTransformer.class", "CodeFortAgent.class", "FortSocket.class", "RSAManualKeys.class",
             "ByteArm.class", "DateArm.class", "FileArm.class", "IoArm.class", "MapArm.class", "StrArm.class", "SysArm.class",
             "FileType.class", "FortBanner.class", "FortLog.class", "FortUnit.class", "Guarder.class", "FortConst.class",

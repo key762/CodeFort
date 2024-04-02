@@ -118,6 +118,11 @@ public class CodeFortPlugin extends AbstractMojo {
         fortUnit.setPackages(packages);
         fortUnit.setExcludes(excludes);
         fortUnit.setAvailableTime(availableTime);
+        fortUnit.setDebug(isDebug);
+        fortUnit.setExplain(explain);
+        fortUnit.setRsaPublicKey(rsaPublicKey);
+        fortUnit.setHost(host);
+        fortUnit.setPort(port);
         // 准备开始加密
         String res = FortCompile.fc.doEncrypt(fortUnit);
         logger.info(String.format("%s 加密完成", FileArm.getName(res)));

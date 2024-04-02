@@ -1,6 +1,5 @@
 package coffee.lucks.codefort.embeds.arms;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,7 +22,6 @@ public class DateArm {
      *
      * @param str 时间字符串
      * @return 时间对象
-     * @throws ParseException
      */
     public static Date parseDateTime(String str) {
         try {
@@ -38,7 +36,6 @@ public class DateArm {
      *
      * @param str 时间字符串
      * @return 如果输入时间大于当前本地时间返回true，否则返回false
-     * @throws ParseException 如果时间字符串解析失败
      */
     public static boolean compareLocalTimeAfter(String str) {
         try {

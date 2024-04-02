@@ -10,10 +10,9 @@
         <version>1.0.0</version>
     </parent>
 
-
     <groupId>io.gitee.anoraks</groupId>
     <artifactId>codefort-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.5</version>
     <packaging>maven-plugin</packaging>
     <name>codefort-plugin</name>
     <description>字节码加密控制程序</description>
@@ -52,9 +51,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>coffee.lucks</groupId>
+            <groupId>io.gitee.anoraks</groupId>
             <artifactId>codefort-core</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -73,9 +72,9 @@
             <version>2.2.1</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
-            <!--   central发布插件    -->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -86,7 +85,6 @@
                     <tokenAuth>true</tokenAuth>
                 </configuration>
             </plugin>
-            <!--   source源码插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -100,7 +98,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--   javadoc插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -122,7 +119,6 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
                 <configuration>
-<!--                    <executable>E:\dev\gpg2\GnuPG\bin\gpg.exe</executable>-->
                     <keyname>anoraks</keyname>
                 </configuration>
                 <executions>

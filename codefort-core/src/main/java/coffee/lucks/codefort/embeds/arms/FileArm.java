@@ -116,7 +116,7 @@ public class FileArm {
     /**
      * 删除文件或目录
      *
-     * @param path
+     * @param path 当前classes目录
      */
     public static void del(String path) {
         File fileOrFolder = new File(path);
