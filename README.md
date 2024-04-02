@@ -1,6 +1,5 @@
 <h1 align="center" style="text-align:center;">
-![输入图片说明](codefort.png)
-<img src="https://gitee.com/anoraks/codefort/raw/master/codefort.png" width="128" />
+<img src="https://gitee.com/anoraks/codefort/raw/master/codefort.png" width="200" height="200" />
 <br />
 CodeFort v1.0.5
 </h1>
