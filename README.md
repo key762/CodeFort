@@ -56,33 +56,33 @@ CodeFort = Code + Fort，“Code”是代码的表示，Fort表示堡垒。CodeF
 
 ```xml
 <plugin>
-                <groupId>io.gitee.anoraks</groupId>
-                <artifactId>codefort-plugin</artifactId>
-                <version>1.0.5</version>
-                <configuration>
-                    <password>123456</password>
-                    <startTime>2017-03-01 22:33:23</startTime>
-                    <endTime>2027-03-01 22:33:23</endTime>
-                    <biosMark>FVFKD2YM1WFY</biosMark>
-                    <availableTime>1000</availableTime>
-                    <libs>license-client-2.0.jar</libs>
-                    <packages>host.skiree.springdemo</packages>
-                    <excludes>host.skiree.springdemo.excludes</excludes>
-                    <host>127.0.0.1</host>
-                    <port>7007</port>
-                    <explain>示例项目</explain>
-                    <isDebug>true</isDebug>
-                    <rsaPublicKey>RSA公钥</rsaPublicKey>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>CodeFort</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+    <groupId>io.gitee.anoraks</groupId>
+    <artifactId>codefort-plugin</artifactId>
+    <version>1.0.5</version>
+    <configuration>
+        <password>123456</password>
+        <startTime>2017-03-01 22:33:23</startTime>
+        <endTime>2027-03-01 22:33:23</endTime>
+        <biosMark>FVFKD2YM1WFY</biosMark>
+        <availableTime>1000</availableTime>
+        <libs>license-client-2.0.jar</libs>
+        <packages>host.skiree.springdemo</packages>
+        <excludes>host.skiree.springdemo.excludes</excludes>
+        <host>127.0.0.1</host>
+        <port>7007</port>
+        <explain>示例项目</explain>
+        <isDebug>true</isDebug>
+        <rsaPublicKey>RSA公钥</rsaPublicKey>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>CodeFort</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
 ```
 -------------------------------------------------------------------------------
 
