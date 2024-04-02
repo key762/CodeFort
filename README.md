@@ -7,11 +7,11 @@ CodeFort v1.0.5
 	<strong>Java 字节码加密插件，配置简单、多种方式、远程管理！</strong>
 </p>
 <p align="center">
-	<a href="https://solon.noear.org/">https://solon.noear.org</a>
+	<a href="https://gitee.com/anoraks/codefort">https://gitee.com/anoraks/codefort</a>
 </p>
 
 <p align="center">
-    <a target="_blank" href="https://central.sonatype.com/search?q=org.noear%3Asolon-parent">
+    <a target="_blank" href="https://central.sonatype.com/search?q=io.gitee.anoraks%3Acodefort-plugin">
         <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" alt="Maven" />
     </a>
     <a target="_blank" href="LICENSE">
@@ -32,10 +32,8 @@ CodeFort v1.0.5
 <br/>
 <p align="center">
 	<a href="https://jq.qq.com/?_wv=1027&k=kjB5JNiC">
-	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
+	<img src="https://img.shields.io/badge/QQ-2940397985-orange"/></a>
 </p>
-
-##### 语言： 中文 | [English](README_EN.md) | [Русский](README_RU.md) | [日本語](README_JP.md)
 
 <hr />
 
