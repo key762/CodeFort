@@ -112,11 +112,15 @@ CodeFort = Code + Fort，“Code”是代码的表示，Fort表示堡垒。CodeF
 | rsaPublicKey       |     远程控制公钥
 
 ### 运行说明
+
 如果正常打包的项目为 springdemo.jar,则会在通路下生成springdemo-encrypted.jar,运行下边的命令执行。
+
 ```bash
 java -javaagent:springdemo-encrypted.jar -jar springdemo-encrypted.jar
 ```
+
 输入密码后，如果配置了远程控制就可以在管理页面进行操作。
+
 ```
   _____        __    ____         __ 
  / ___/__  ___/ /__ / __/__  ____/ /_
@@ -131,11 +135,29 @@ java -javaagent:springdemo-encrypted.jar -jar springdemo-encrypted.jar
 [13:47:30.260-DEBUG] 连接成功
 [13:47:40.262-INFO] CodeFort 致力保卫您的代码安全, 联系QQ 2940397985
 ```
+
 如下所示就是成功连接上了控制台
+
 ![输入图片说明](codefort-img1.jpg)
+
 在控制台目前可以进行信息提示操作和强制下线操作,如下所示
+
 ![输入图片说明](codefort-img2.png)
+
 ```
 [13:48:13.754-INFO] 这个先关闭了,有啥事儿，再联系我
 [13:48:15.305-INFO] 此服务已被强制下线！如有疑问请联系管理员或开发者
+```
+
+### 远程配置
+如果要启用远程管理请注意codefort-web项目下的application.yml的codefort.port参数请注意和打包插件的端口一致,
+其次是coffee.lucks.codefort.unit.ServerConst.rsaKey的值是私钥,需要和打包时的rsaPublicKey公钥对应。
+```yml
+codefort:
+#  socket端口
+  port: 7007
+#  管理平台账号
+  user: admin
+#  管理平台密码
+  password: 123456
 ```
