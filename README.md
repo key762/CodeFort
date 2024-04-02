@@ -1,5 +1,5 @@
 <h1 align="center" style="text-align:center;">
-<img src="https://gitee.com/anoraks/codefort/raw/master/codefort.png" width="200" height="200" />
+<img src="https://gitee.com/anoraks/codefort/raw/master/codefort.png" width="250" height="250" />
 <br />
 CodeFort v1.0.5
 </h1>
@@ -25,7 +25,6 @@ CodeFort v1.0.5
     <a target="_blank" href='https://gitee.com/anoraks/codefort/stargazers'>
 		<img src='https://gitee.com/anoraks/codefort/badge/star.svg' alt='gitee star'/>
 	</a>
-   <a href="https://jq.qq.com/?_wv=1027&k=kjB5JNiC">
 	<img src="https://img.shields.io/badge/QQ-2940397985-orange"/></a>
 	</a>
 </p>
