@@ -88,7 +88,7 @@ CodeFort = Code + Fort，Code是代码的表示，Fort表示堡垒。CodeFort寓
 
 ### 提供bug反馈或建议
 
-提交问题反馈请说明正在使用的JDK版本呢、CodeFort版本和相关依赖库版本。
+提交问题反馈请说明正在使用的JDK版本、CodeFort版本和相关依赖库版本。
 
 - [Gitee issue](https://gitee.com/anoraks/codefort/issues)
 
