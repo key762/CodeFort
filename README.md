@@ -12,7 +12,8 @@ CodeFort v1.0.5
 
 <p align="center">
     <a target="_blank" href="https://central.sonatype.com/search?q=io.gitee.anoraks%3Acodefort-plugin">
-        <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" alt="Maven" />
+       <img src="https://img.shields.io/badge/Maven%20Central-v1.0.5-blue
+" alt="Maven" />
     </a>
     <a target="_blank" href="LICENSE">
 		<img src="https://img.shields.io/:License-Apache2-blue.svg" alt="Apache 2" />
@@ -21,19 +22,15 @@ CodeFort v1.0.5
 		<img src="https://img.shields.io/badge/JDK-8-green.svg" alt="jdk-8" />
 	</a>
     <br />
-    <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
-		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='gitee star'/>
+    <a target="_blank" href='https://gitee.com/anoraks/codefort/stargazers'>
+		<img src='https://gitee.com/anoraks/codefort/badge/star.svg' alt='gitee star'/>
 	</a>
-    <a target="_blank" href='https://github.com/noear/solon/stargazers'>
-		<img src="https://img.shields.io/github/stars/noear/solon.svg?logo=github" alt="github star"/>
+   <a href="https://jq.qq.com/?_wv=1027&k=kjB5JNiC">
+	<img src="https://img.shields.io/badge/QQ-2940397985-orange"/></a>
 	</a>
 </p>
 
 <br/>
-<p align="center">
-	<a href="https://jq.qq.com/?_wv=1027&k=kjB5JNiC">
-	<img src="https://img.shields.io/badge/QQ-2940397985-orange"/></a>
-</p>
 
 <hr />
 
