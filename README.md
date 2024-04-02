@@ -55,40 +55,34 @@ CodeFort = Code + Fort，“Code”是代码的表示，Fort表示堡垒。CodeF
 在项目的pom.xml的dependencies中加入以下内容:
 
 ```xml
-<build>
-        <plugins>
-            <plugin>
-                <!-- 插件groupid -->
+<plugin>
                 <groupId>io.gitee.anoraks</groupId>
-                <!-- 插件名称 -->
                 <artifactId>codefort-plugin</artifactId>
-                <version>1.0.3</version>
-                <!-- 将插件目标与maven生命周期进行绑定 -->
+                <version>1.0.5</version>
                 <configuration>
-<!--                    <password>123456</password>-->
-<!--                    <startTime>2017-03-01 22:33:23</startTime>-->
-<!--                    <endTime>2027-03-01 22:33:23</endTime>-->
+                    <password>123456</password>
+                    <startTime>2017-03-01 22:33:23</startTime>
+                    <endTime>2027-03-01 22:33:23</endTime>
+                    <biosMark>FVFKD2YM1WFY</biosMark>
+                    <availableTime>1000</availableTime>
                     <libs>license-client-2.0.jar</libs>
                     <packages>host.skiree.springdemo</packages>
+                    <excludes>host.skiree.springdemo.excludes</excludes>
                     <host>127.0.0.1</host>
                     <port>7007</port>
+                    <explain>示例项目</explain>
                     <isDebug>true</isDebug>
+                    <rsaPublicKey>RSA公钥</rsaPublicKey>
                 </configuration>
                 <executions>
                     <execution>
-                        <!-- 生命周期阶段 -->
                         <phase>package</phase>
-                        <!-- 要绑定的具体目标，可绑定多个 -->
                         <goals>
                             <goal>CodeFort</goal>
                         </goals>
                     </execution>
-
-
                 </executions>
             </plugin>
-        </plugins>
-    </build>
 ```
 -------------------------------------------------------------------------------
 
