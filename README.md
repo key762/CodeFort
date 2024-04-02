@@ -38,7 +38,7 @@ CodeFort v1.0.5
 
 ### CodeFort名称的由来
 
-CodeFort = Code + Fort，“Code”是代码的表示，Fort表示堡垒。CodeFort寓意保卫代码安全。
+CodeFort = Code + Fort，Code是代码的表示，Fort表示堡垒。CodeFort寓意保卫代码安全。
 ## 🛠️包含组件
 一个字节码加密的Maven插件，项目以下组件：
 
