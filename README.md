@@ -91,3 +91,23 @@ CodeFort = Code + Fort，“Code”是代码的表示，Fort表示堡垒。CodeF
 提交问题反馈请说明正在使用的JDK版本呢、CodeFort版本和相关依赖库版本。
 
 - [Gitee issue](https://gitee.com/anoraks/codefort/issues)
+
+## 使用
+### 参数说明
+
+| 参数                |     说明                                                                          |
+| -------------------|---------------------------------------------------------------------------------- |
+| password         |     加密密码(默认为：cfasy)                                              |
+| startTime |     开始时间                                                |
+| endTime       |     结束时间        
+| biosMark       |     CPU序列号
+| availableTime       |     剩余可用时间(单位：毫秒)
+| libs       |     需要加密的依赖包,若多个逗号分隔
+| packages       |     需要加密路径,若多个逗号分隔
+| excludes       |     加密排除路径,若多个逗号分隔
+| host       |     远程控制主机IP
+| port       |     远程控制主机端口
+| explain       |     项目说明
+| isDebug       |     是否开启Debug
+| rsaPublicKey       |     远程控制公钥
+                                                                     |
