@@ -52,7 +52,7 @@ CodeFort = Code + Fort，“Code”是代码的表示，Fort表示堡垒。CodeF
 ## 📦安装
 
 ### 🍊Maven
-在项目的pom.xml的dependencies中加入以下内容:
+在项目的pom.xml的plugins中加入以下内容:
 
 ```xml
 <plugin>
