@@ -30,6 +30,9 @@ sa-token:
   is-log: false
 
 codefort:
+#  socket端口
   port: 7007
+#  管理平台账号
   user: admin
+#  管理平台密码
   password: 123456
