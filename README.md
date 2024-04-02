@@ -1,10 +1,10 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.7.3
+CodeFort v1.0.5
 </h1>
 <p align="center">
-	<strong>Java 新的应用开发框架，更快、更小、更简单！</strong>
+	<strong>Java 字节码加密插件，配置简单、多种方式、远程管理！</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
