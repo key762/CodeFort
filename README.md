@@ -1,5 +1,5 @@
 <h1 align="center" style="text-align:center;">
-<img src="https://gitee.com/anoraks/codefort/raw/master/codefort.png" width="250" height="250" />
+<img src="./codefort.png" width="250" height="250" />
 <br />
 CodeFort v1.0.5
 </h1>
