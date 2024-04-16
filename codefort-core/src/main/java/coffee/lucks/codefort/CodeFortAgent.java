@@ -4,9 +4,7 @@ import coffee.lucks.codefort.embeds.arms.DateArm;
 import coffee.lucks.codefort.embeds.arms.MapArm;
 import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.arms.SysArm;
-import coffee.lucks.codefort.embeds.unit.FortBanner;
-import coffee.lucks.codefort.embeds.unit.FortLog;
-import coffee.lucks.codefort.embeds.unit.FortConst;
+import coffee.lucks.codefort.embeds.unit.*;
 import coffee.lucks.codefort.embeds.util.CmdLineUtil;
 import coffee.lucks.codefort.embeds.util.EncryptUtil;
 import coffee.lucks.codefort.embeds.util.SecurityUtil;
@@ -18,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class CodeFortAgent {
 
@@ -37,24 +34,36 @@ public class CodeFortAgent {
             cmdLine.parse(args.split(" "));
             pwd = cmdLine.getOptionValue("pwd", "");
         }
-        if (StrArm.isEmpty(pwd)) {
-            FortLog.info("无法在运行参数中获取密码,将会从系统参数获取");
-            pwd = System.getenv("pwd");
+        // 先尝试使用默认密码
+        byte[] encryptedFile = EncryptUtil.readEncryptedFile(new File(Objects.requireNonNull(StringUtil.getRootPath(null))), FortConst.CODE_FORT_INFO);
+        boolean flag = true;
+        try {
+            String fileStr = new String(SecurityUtil.decrypt(encryptedFile, FortConst.DEFAULT_PASSWORD), StandardCharsets.UTF_8);
+            if (!StrArm.isEmpty(fileStr) && fileStr.startsWith("{\"") && fileStr.endsWith("\"}")) {
+                flag = false;
+                pwd = FortConst.DEFAULT_PASSWORD;
+                FortLog.info("匹配至默认密码,即将启动");
+            }
+        } catch (Exception ignore) {
         }
-        if (StrArm.isEmpty(pwd)) {
-            Console console = System.console();
-            if (console != null) {
-                FortLog.info("无法在系统参数中获取密码,将会从控制台获取");
-                FortLog.info("提示: 如果未设置密码请直接回车键跳过");
-                pwd = new String(console.readPassword(FortLog.infoStr("请输入密码 :")));
+        if (flag) {
+            if (StrArm.isEmpty(pwd)) {
+                FortLog.info("无法在运行参数中获取密码,将会从系统参数获取");
+                pwd = System.getenv("pwd");
+            }
+            if (StrArm.isEmpty(pwd)) {
+                Console console = System.console();
+                if (console != null) {
+                    FortLog.info("无法在系统参数中获取密码,将会从控制台获取");
+                    FortLog.info("提示: 如果未设置密码请直接回车键跳过");
+                    pwd = new String(console.readPassword(FortLog.infoStr("请输入密码 :")));
+                }
+            }
+            if (StrArm.isEmpty(pwd)) {
+                pwd = FortConst.DEFAULT_PASSWORD;
             }
         }
-        if (StrArm.isEmpty(pwd)){
-            pwd = FortConst.DEFAULT_PASSWORD;
-        }
-        FortLog.debug("获取到了密码: " + pwd);
         // 正式处理之前先去获取配置的信息
-        byte[] encryptedFile = EncryptUtil.readEncryptedFile(new File(Objects.requireNonNull(StringUtil.getRootPath(null))), FortConst.CODE_FORT_INFO);
         String fileStr = "";
         try {
             fileStr = new String(SecurityUtil.decrypt(encryptedFile, pwd), StandardCharsets.UTF_8);
@@ -76,6 +85,13 @@ public class CodeFortAgent {
         for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
             FortLog.debug(entry.getKey() + " : " + entry.getValue());
         }
+        // 先检查agent程序是否被更改
+        String sign = EncryptUtil.verificationClass(new File(Objects.requireNonNull(StringUtil.getRootPath(null))));
+        if (!objectMap.get("verificationInfo").toString().equals(sign)) {
+            FortLog.info("Agent校验失败,即将退出");
+            System.exit(0);
+        }
+        FortLog.info("Agent校验成功,即将启动");
         // 时间区域
         if (!objectMap.get("timeJudge").toString().equals("no")) {
             // 先检查本地时间
@@ -114,13 +130,10 @@ public class CodeFortAgent {
             } catch (Exception ignore) {
             }
             // 1秒后开始，每隔10秒执行一次
-            new Timer().scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    FortSocket.getInstance().handle();
-                }
-            }, 1000, 10000);
+            new Timer().scheduleAtFixedRate(new SocketTask(), 1000, 10000);
         }
+        // 禁止程序被Attach
+        new Timer().scheduleAtFixedRate(new AttachTask(), 1000, 1000);
         AgentTransformer tran = new AgentTransformer(pwd);
         inst.addTransformer(tran);
     }

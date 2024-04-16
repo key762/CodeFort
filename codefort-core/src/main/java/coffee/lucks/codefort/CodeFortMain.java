@@ -14,7 +14,7 @@ public class CodeFortMain {
 
     private static String excludeClass = "";
 
-    private static String jarPath = "/Users/anorak/Documents/JavaProject/standalone/codefort/codefort-core/src/main/resources/demo.jar";
+    private static String jarPath = "/Users/anorak/Documents/JavaProject/standalone/codefort/file/demo.jar";
 
     private static String password = "123456";
 

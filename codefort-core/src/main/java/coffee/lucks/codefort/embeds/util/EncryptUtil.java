@@ -7,6 +7,11 @@ import coffee.lucks.codefort.embeds.unit.Guarder;
 import coffee.lucks.codefort.embeds.unit.FortConst;
 
 import java.io.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class EncryptUtil {
 
@@ -71,6 +76,30 @@ public class EncryptUtil {
             }
         }
         return bytes;
+    }
+
+    public static String verificationClass(File workDir) {
+        if (workDir.isFile()) {
+            Map<Integer, byte[]> fileMap = new HashMap<>();
+            try (ZipFile zipFile = new ZipFile(workDir)) {
+                Enumeration<?> entries = zipFile.entries();
+                while (entries.hasMoreElements()) {
+                    ZipEntry entry = (ZipEntry) entries.nextElement();
+                    String entryName = entry.getName();
+                    File file = new File(workDir, entry.getName());
+                    if (entryName.startsWith("coffee/lucks/codefort/") && entryName.endsWith(".class")) {
+                        if (!file.getName().contains("$")) {
+                            fileMap.put(file.getName().hashCode(), IoArm.readBytes(zipFile.getInputStream(entry)));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("解压Jar/War执行文件时出现异常", e);
+            }
+            return VerificationUtil.getVerificationInfo(fileMap);
+        } else {
+            return VerificationUtil.getVerificationInfo(workDir);
+        }
     }
 
 }

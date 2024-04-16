@@ -12,7 +12,7 @@
 
     <groupId>io.gitee.anoraks</groupId>
     <artifactId>codefort-plugin</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>maven-plugin</packaging>
     <name>codefort-plugin</name>
     <description>字节码加密控制程序</description>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>io.gitee.anoraks</groupId>
             <artifactId>codefort-core</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>

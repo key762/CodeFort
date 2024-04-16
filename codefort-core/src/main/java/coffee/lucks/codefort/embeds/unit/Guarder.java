@@ -6,13 +6,11 @@ import coffee.lucks.codefort.embeds.arms.StrArm;
 import coffee.lucks.codefort.embeds.arms.SysArm;
 import coffee.lucks.codefort.embeds.util.SecurityUtil;
 import coffee.lucks.codefort.embeds.util.StringUtil;
+import coffee.lucks.codefort.embeds.util.VerificationUtil;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Guarder extends FortUnit {
 
@@ -141,6 +139,8 @@ public class Guarder extends FortUnit {
         res.put("needBiosMark", "false");
         res.put("isDebug", this.isDebug);
         res.put("rsaPublicKey", this.rsaPublicKey);
+        // 设置此项目的校验信息
+        res.put("verificationInfo", VerificationUtil.getVerificationInfo(this.targetFile));
         // 设置
         res.put("timeJudge", "no");
         if (!StrArm.isEmpty(this.startTime) && !StrArm.isEmpty(this.endTime)) {

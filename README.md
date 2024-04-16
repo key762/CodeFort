@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="./codefort.png" width="250" height="250" />
 <br />
-CodeFort v1.0.5
+CodeFort v1.0.6
 </h1>
 <p align="center">
 	<strong>Java 字节码加密插件，配置简单、多种方式、远程管理！</strong>
@@ -12,7 +12,7 @@ CodeFort v1.0.5
 
 <p align="center">
     <a target="_blank" href="https://central.sonatype.com/search?q=io.gitee.anoraks%3Acodefort-plugin">
-       <img src="https://img.shields.io/badge/Maven%20Central-v1.0.5-blue
+       <img src="https://img.shields.io/badge/Maven%20Central-v1.0.6-blue
 " alt="Maven" />
     </a>
     <a target="_blank" href="LICENSE">
@@ -48,6 +48,11 @@ CodeFort = Code + Fort，Code是代码的表示，Fort表示堡垒。CodeFort寓
 | codefort-plugin |     加密插件模块                                                |
 | codefort-web       |     远程控制模块                                                                     |
 -------------------------------------------------------------------------------
+## 版本
+
+### 1.0.6
+ - 启动时默认密码自动匹配
+ - Attach侵入检测以及代码校验
 
 ## 安装
 
@@ -58,7 +63,7 @@ CodeFort = Code + Fort，Code是代码的表示，Fort表示堡垒。CodeFort寓
 <plugin>
     <groupId>io.gitee.anoraks</groupId>
     <artifactId>codefort-plugin</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <configuration>
         <password>123456</password>
         <startTime>2017-03-01 22:33:23</startTime>
