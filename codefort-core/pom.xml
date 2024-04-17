@@ -4,15 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>coffee.lucks</groupId>
-        <artifactId>codefort-parent</artifactId>
-        <version>1.0.0</version>
-    </parent>
-
     <groupId>io.gitee.anoraks</groupId>
     <artifactId>codefort-core</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <packaging>jar</packaging>
     <name>codefort-core</name>
     <description>字节码加密Core</description>

@@ -38,3 +38,4 @@ build/
 .DS_Store
 /.idea/
 /codefort-core/src/main/resources/
+/.idea/misc.xml
