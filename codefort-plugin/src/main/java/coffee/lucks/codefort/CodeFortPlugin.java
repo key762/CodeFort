@@ -126,7 +126,7 @@ public class CodeFortPlugin extends AbstractMojo {
         // 准备开始加密
         String res = FortCompile.fc.doEncrypt(fortUnit);
         logger.info(String.format("%s 加密完成", FileArm.getName(res)));
-        logger.info("\u001B[33m" + "联系QQ 2940397985" + "\u001B[0m");
+        logger.info("\u001B[33m" + "联系微信号: Anroak" + "\u001B[0m");
     }
 
 }

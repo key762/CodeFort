@@ -142,7 +142,7 @@ java -javaagent:springdemo-encrypted.jar -jar springdemo-encrypted.jar
 [13:45:07.220-INFO] 请输入密码 :
 [13:47:30.250-DEBUG] Socket服务器IP: 127.0.0.1,端口: 7007
 [13:47:30.260-DEBUG] 连接成功
-[13:47:40.262-INFO] CodeFort 致力保卫您的代码安全, 联系QQ 2940397985
+[13:47:40.262-INFO] CodeFort 致力保卫您的代码安全, 联系微信号: Anroak
 ```
 
 如下所示就是成功连接上了控制台

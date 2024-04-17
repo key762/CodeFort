@@ -42,7 +42,7 @@ public class SocketServer extends Thread {
         PrintWriter printStream = new PrintWriter(this.socket.getOutputStream(), true);
         Map<String,String> res = new HashMap<>();
         res.put("type", "info");
-        res.put("msg", "CodeFort 致力保卫您的代码安全, 联系QQ 2940397985");
+        res.put("msg", "CodeFort 致力保卫您的代码安全, 联系微信号: Anroak");
         printStream.println(" "+JSONUtil.toJsonStr(res));
         while (true) {
             String message = br.readLine();
