@@ -25,7 +25,7 @@ CodeFort v1.0.7
     <a target="_blank" href='https://gitee.com/anoraks/codefort/stargazers'>
 		<img src='https://gitee.com/anoraks/codefort/badge/star.svg' alt='gitee star'/>
 	</a>
-	<img src="https://img.shields.io/badge/QQ-2940397985-orange"/></a>
+	<img src="https://img.shields.io/badge/WeiXin-Anroak-orange"/></a>
 	</a>
 </p>
 <br/>
