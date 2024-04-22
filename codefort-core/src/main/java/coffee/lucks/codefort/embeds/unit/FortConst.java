@@ -60,12 +60,17 @@ public class FortConst {
     public static final String DEFAULT_PASSWORD = "cfasy";
 
     /**
+     * 代理处理引擎
+     */
+    public static final String AGENT_ENGINE = "CodeFortEngine";
+
+    /**
      * 需要嵌入的字节码文件
      */
     public static final String[] CODE_FORT_FILES = {
-            "VerificationUtil.class", "AttachTask.class", "SocketTask.class", "AgentTransformer.class",
-            "CodeFortAgent.class", "FortSocket.class", "RSAManualKeys.class", "ByteArm.class", "DateArm.class",
-            "FileArm.class", "IoArm.class", "MapArm.class", "StrArm.class", "SysArm.class", "FileType.class",
+            "FortLoader.class", "VerificationUtil.class", "AttachTask.class", "SocketTask.class",
+            "AgentTransformer.class", "CodeFortAgent.class", "FortSocket.class", "RSAManualKeys.class", "ByteArm.class",
+            "DateArm.class", "FileArm.class", "IoArm.class", "MapArm.class", "StrArm.class", "SysArm.class", "FileType.class",
             "FortBanner.class", "FortLog.class", "FortUnit.class", "Guarder.class", "FortConst.class",
             "CmdLineUtil.class", "EncryptUtil.class", "HandleUtil.class", "SecurityUtil.class", "StringUtil.class"};
 

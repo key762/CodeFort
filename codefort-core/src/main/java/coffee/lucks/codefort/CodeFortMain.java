@@ -10,15 +10,20 @@ import coffee.lucks.codefort.embeds.unit.FortConst;
  */
 public class CodeFortMain {
 
-    private static String packages = "host.skiree.springdemo";
+//    private static String packages = "host.skiree.springdemo";
+
+    private static String packages = "org.come.action";
 
     private static String excludeClass = "";
 
-    private static String jarPath = "/Users/anorak/Documents/JavaProject/standalone/codefort/file/demo.jar";
+    //    private static String jarPath = "/Users/anorak/Documents/JavaProject/standalone/codefort/file/demo.jar";
+    private static String jarPath = "/Users/anorak/Documents/JavaProject/standalone/codefort/file/dh_server-1.0.jar";
 
     private static String password = "123456";
 
-    private static String includeFiles = "license-client-2.0.jar";
+//    private static String includeFiles = "license-client-2.0.jar";
+
+    private static String includeFiles = "";
 
     public static void main(String[] args) {
         FortUnit fortUnit = new FortUnit();
@@ -32,12 +37,13 @@ public class CodeFortMain {
         fortUnit.setBiosMark(FortConst.DEFAULT_PASSWORD);
         fortUnit.setLibs(includeFiles);
         fortUnit.setPackages(packages);
-        fortUnit.setHost("127.0.0.1");
-        fortUnit.setPort(7007);
-        fortUnit.setDebug(true);
+//        fortUnit.setHost("127.0.0.1");
+//        fortUnit.setPort(7007);
+//        fortUnit.setDebug(true);
         fortUnit.setRsaPublicKey(FortConst.RSA_PUBLIC_KEY_FINAL);
         fortUnit.setExcludes(excludeClass);
 //        fortUnit.setBiosMark("123123");
+        fortUnit.setRelyLibPath("/Users/anorak/Documents/JavaProject/standalone/codefort/file/lib");
         String res = FortCompile.fc.doEncrypt(fortUnit);
         System.out.println(res);
     }

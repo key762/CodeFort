@@ -83,6 +83,11 @@ public class FortUnit {
      */
     public String rsaPublicKey;
 
+    /**
+     * 依赖外部lib路径
+     */
+    public String relyLibPath;
+
     public FortUnit() {
     }
 
@@ -102,6 +107,7 @@ public class FortUnit {
         this.availableTime = unit.availableTime;
         this.isDebug = unit.isDebug;
         this.rsaPublicKey = unit.rsaPublicKey;
+        this.relyLibPath = unit.relyLibPath;
     }
 
     public String getUnitPath() {
@@ -251,4 +257,13 @@ public class FortUnit {
     public void setRsaPublicKey(String rsaPublicKey) {
         this.rsaPublicKey = rsaPublicKey;
     }
+
+    public String getRelyLibPath() {
+        return relyLibPath;
+    }
+
+    public void setRelyLibPath(String relyLibPath) {
+        this.relyLibPath = relyLibPath;
+    }
+
 }

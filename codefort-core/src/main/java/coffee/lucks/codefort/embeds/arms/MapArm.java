@@ -91,7 +91,7 @@ public class MapArm {
      * @param ori 字符串
      * @return map
      */
-    private static List<Object> toList(String ori) {
+    public static List<Object> toList(String ori) {
         List<Object> list = new ArrayList<Object>();
         String[] manyMaps = splitToSingeMap(ori);
         for (String e : manyMaps) {
@@ -106,7 +106,7 @@ public class MapArm {
      * @param ori 字符串
      * @return map
      */
-    private static String[] splitToSingeMap(String ori) {
+    public static String[] splitToSingeMap(String ori) {
         if (ori == null) {
             return null;
         }
@@ -194,7 +194,7 @@ public class MapArm {
      * @param ori 字符串
      * @return map
      */
-    private static String removeBlack(String ori) {
+    public static String removeBlack(String ori) {
         if (ori == null) {
             return null;
         }

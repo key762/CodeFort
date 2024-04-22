@@ -18,20 +18,6 @@ public class DateArm {
     }
 
     /**
-     * 解析字符串时间对象
-     *
-     * @param str 时间字符串
-     * @return 时间对象
-     */
-    public static Date parseDateTime(String str) {
-        try {
-            return simpleDateFormat.parse(str);
-        } catch (Exception e) {
-            return new Date();
-        }
-    }
-
-    /**
      * 比较时间是否大于本地当前时间
      *
      * @param str 时间字符串
@@ -44,22 +30,6 @@ public class DateArm {
             return date.after(currentDate);
         } catch (Exception e) {
             return true;
-        }
-    }
-
-    /**
-     * 比较时间是否小于本地当前时间
-     *
-     * @param str 时间字符串
-     * @return 如果输入时间小于当前本地时间返回true，否则返回false
-     */
-    public static boolean compareLocalTimeBefore(String str) {
-        try {
-            Date date = simpleDateFormat.parse(str);
-            Date currentDate = new Date();
-            return date.before(currentDate);
-        } catch (Exception e) {
-            return false;
         }
     }
 

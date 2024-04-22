@@ -46,7 +46,15 @@ public class HandleUtil {
                 } else {
                     if (StrArm.isEmpty(guarder.getUnitPath())){
                         if (!fullPath.contains("META-INF")){
-                            IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
+                            // todo 处理加密引擎 必须在pom中打包
+                            if (fullPath.endsWith(FortConst.AGENT_ENGINE + FortConst.EXT_CLASS)) {
+                                byte[] bytes = IoArm.readBytes(zipFile.getInputStream(entry));
+                                File metaDir = new File(targetDir, "META-INF" + File.separator + FortConst.ENCRYPT_NAME);
+                                FileArm.mkDir(metaDir);
+                                IoArm.writeFromByte(SecurityUtil.encrypt(bytes, guarder.password), new File(metaDir, FortConst.AGENT_ENGINE));
+                            } else {
+                                IoArm.writeFromStream(zipFile.getInputStream(entry), new File(fullPath));
+                            }
                             guarder.getAllFile().add(fullPath);
                         }
                     }else {
@@ -56,7 +64,7 @@ public class HandleUtil {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("解压Jar/War执行文件时出现异常", e);
+            throw new RuntimeException(filePath+"/"+targetDir+"解压Jar/War执行文件时出现异常"+guarder, e);
         }
         return guarder;
     }

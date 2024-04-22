@@ -5,42 +5,17 @@ package coffee.lucks.codefort.embeds.unit;
  */
 public enum FileType {
 
-    JAR("jar", ".jar","BOOT-INF"),
-    WAR("war", ".war","WEB-INF");
+    JAR(".jar"),
+    WAR(".war");
 
-    FileType(String type, String fullType, String mark) {
-        this.type = type;
+    FileType(String fullType) {
         this.fullType = fullType;
-        this.mark = mark;
     }
 
-    private String type;
-
-    private String fullType;
-
-    private String mark;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    private final String fullType;
 
     public String getFullType() {
         return fullType;
     }
 
-    public void setFullType(String fullType) {
-        this.fullType = fullType;
-    }
-
-    public String getMark() {
-        return mark;
-    }
-
-    public void setMark(String mark) {
-        this.mark = mark;
-    }
 }

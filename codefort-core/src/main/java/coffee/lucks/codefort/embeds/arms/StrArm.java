@@ -11,12 +11,12 @@ public class StrArm {
     /**
      * 字符常量：斜杠
      */
-    private static char SLASH = '/';
+    public static char SLASH = '/';
 
     /**
      * 字符常量：反斜杠
      */
-    private static char BACKSLASH = '\\';
+    public static char BACKSLASH = '\\';
 
     /**
      * 被检测的字符串是否为空
@@ -98,64 +98,6 @@ public class StrArm {
         } else {
             return str1.toString().contentEquals(str2);
         }
-    }
-
-    /**
-     * 给定字符串是否以任何一个字符串开始
-     * 给定字符串和数组为空都返回false
-     *
-     * @param str      给定字符串
-     * @param prefixes 需要检测的开始字符串
-     * @return 给定字符串是否以任何一个字符串开始
-     */
-    public static boolean startWithAny(CharSequence str, CharSequence... prefixes) {
-        if (isEmpty(str) || prefixes == null || prefixes.length == 0) {
-            return false;
-        }
-        for (CharSequence suffix : prefixes) {
-            if (startWith(str, suffix, false)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 是否以指定字符串开头
-     * 如果给定的字符串和开头字符串都为null则返回true，否则任意一个值为null返回false
-     *
-     * @param str        被监测字符串
-     * @param prefix     开头字符串
-     * @param ignoreCase 是否忽略大小写
-     * @return 是否以指定字符串开头
-     */
-    public static boolean startWith(CharSequence str, CharSequence prefix, boolean ignoreCase) {
-        return startWith(str, prefix, ignoreCase, false);
-    }
-
-
-    /**
-     * 是否以指定字符串开头<br>
-     * 如果给定的字符串和开头字符串都为null则返回true，否则任意一个值为null返回false
-     *
-     * @param str          被监测字符串
-     * @param prefix       开头字符串
-     * @param ignoreCase   是否忽略大小写
-     * @param ignoreEquals 是否忽略字符串相等的情况
-     * @return 是否以指定字符串开头
-     */
-    public static boolean startWith(CharSequence str, CharSequence prefix, boolean ignoreCase, boolean ignoreEquals) {
-        if (null == str || null == prefix) {
-            if (ignoreEquals) {
-                return false;
-            }
-            return null == str && null == prefix;
-        }
-        boolean isStartWith = str.toString().regionMatches(ignoreCase, 0, prefix.toString(), 0, prefix.length());
-        if (isStartWith) {
-            return (false == ignoreEquals) || (false == equals(str, prefix, ignoreCase));
-        }
-        return false;
     }
 
     /**

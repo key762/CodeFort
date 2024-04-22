@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="./codefort.png" width="250" height="250" />
 <br />
-CodeFort v1.0.7
+CodeFort v1.0.9
 </h1>
 <p align="center">
 	<strong>Java 字节码加密插件，配置简单、多种方式、远程管理！</strong>
@@ -12,7 +12,7 @@ CodeFort v1.0.7
 
 <p align="center">
     <a target="_blank" href="https://central.sonatype.com/search?q=io.gitee.anoraks%3Acodefort-plugin">
-       <img src="https://img.shields.io/badge/Maven%20Central-v1.0.7-blue
+       <img src="https://img.shields.io/badge/Maven%20Central-v1.0.9-blue
 " alt="Maven" />
     </a>
     <a target="_blank" href="LICENSE">
@@ -50,6 +50,10 @@ CodeFort = Code + Fort，Code是代码的表示，Fort表示堡垒。CodeFort寓
 -------------------------------------------------------------------------------
 ## 版本
 
+### 1.0.9
+- 支持外部lib配置参数relyLibPath
+- 代理Agent加密配置,增加代理校验逻辑
+
 ### 1.0.7
 - 移除父项目pom继承
 
@@ -66,7 +70,7 @@ CodeFort = Code + Fort，Code是代码的表示，Fort表示堡垒。CodeFort寓
 <plugin>
     <groupId>io.gitee.anoraks</groupId>
     <artifactId>codefort-plugin</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.9</version>
     <configuration>
         <password>123456</password>
         <startTime>2017-03-01 22:33:23</startTime>
@@ -81,6 +85,7 @@ CodeFort = Code + Fort，Code是代码的表示，Fort表示堡垒。CodeFort寓
         <explain>示例项目</explain>
         <isDebug>true</isDebug>
         <rsaPublicKey>RSA公钥</rsaPublicKey>
+        <relyLibPath>外部依赖路径</relyLibPath>
     </configuration>
     <executions>
         <execution>
@@ -119,6 +124,7 @@ CodeFort = Code + Fort，Code是代码的表示，Fort表示堡垒。CodeFort寓
 | explain       |     项目说明
 | isDebug       |     是否开启Debug
 | rsaPublicKey       |     远程控制公钥
+| relyLibPath       |     外部lib依赖,若多个逗号分隔
 
 ### 运行说明
 

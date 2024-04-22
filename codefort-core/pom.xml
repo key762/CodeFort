@@ -6,7 +6,7 @@
 
     <groupId>io.gitee.anoraks</groupId>
     <artifactId>codefort-core</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.9</version>
     <packaging>jar</packaging>
     <name>codefort-core</name>
     <description>字节码加密Core</description>

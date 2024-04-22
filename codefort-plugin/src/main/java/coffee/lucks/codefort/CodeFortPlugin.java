@@ -100,6 +100,12 @@ public class CodeFortPlugin extends AbstractMojo {
     @Parameter(property = "rsaPublicKey", defaultValue = FortConst.RSA_PUBLIC_KEY_FINAL)
     private String rsaPublicKey;
 
+    /**
+     * 依赖外部lib路径
+     */
+    @Parameter(property = "relyLibPath", defaultValue = "")
+    private String relyLibPath;
+
     public void execute() {
         Log logger = getLog();
         logger.info("\u001B[34m" + "CodeFort 致力于保卫您的代码安全" + "\u001B[0m");
@@ -123,6 +129,7 @@ public class CodeFortPlugin extends AbstractMojo {
         fortUnit.setRsaPublicKey(rsaPublicKey);
         fortUnit.setHost(host);
         fortUnit.setPort(port);
+        fortUnit.setRelyLibPath(relyLibPath);
         // 准备开始加密
         String res = FortCompile.fc.doEncrypt(fortUnit);
         logger.info(String.format("%s 加密完成", FileArm.getName(res)));

@@ -41,7 +41,7 @@ public class FileArm {
      * @param endWith  文件后缀
      */
     public static void listFile(List<File> fileList, File dir, String endWith) {
-        if (!dir.exists()) throw new RuntimeException("目录[" + dir.getAbsolutePath() + "]不存在");
+        if (!dir.exists()) return;
         File[] files = dir.listFiles();
         if (files != null) {
             for (File f : files) {
@@ -135,7 +135,7 @@ public class FileArm {
      *
      * @param directory 文件目录
      */
-    private static void deleteDirectory(File directory) {
+    public static void deleteDirectory(File directory) {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {

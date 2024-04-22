@@ -8,6 +8,7 @@ import coffee.lucks.codefort.embeds.unit.Guarder;
 import coffee.lucks.codefort.embeds.unit.FileType;
 import coffee.lucks.codefort.embeds.unit.FortConst;
 import coffee.lucks.codefort.embeds.util.HandleUtil;
+import coffee.lucks.codefort.embeds.util.SecurityUtil;
 import coffee.lucks.codefort.embeds.util.StringUtil;
 import javassist.*;
 import javassist.bytecode.*;
@@ -36,6 +37,7 @@ public class ClassCompile {
                 List<String> includeFiles = Arrays.asList(FortConst.CODE_FORT_FILES);
                 Guarder guarder1 = new Guarder();
                 guarder1.setIncludeJars(includeFiles);
+                guarder1.setPassword(guarder.password);
                 guarder1.setAllFile(new ArrayList<>());
                 HandleUtil.decompression(thisJar, guarder.getTargetFile().getAbsolutePath(), guarder1);
             } else if (guarder.getType().equals(FileType.WAR) && thisJar.endsWith(FileType.JAR.getFullType())) {
@@ -54,10 +56,16 @@ public class ClassCompile {
                     } else if (StrArm.containsArray(file.getAbsolutePath(), FortConst.CODE_FORT_FILES)) {
                         byte[] bytes = FileArm.readBytes(file);
                         IoArm.writeFromByte(bytes, targetFile);
+                    } else if (file.getAbsolutePath().endsWith(FortConst.AGENT_ENGINE+FortConst.EXT_CLASS)) {
+                        byte[] bytes = FileArm.readBytes(file);
+                        File metaDir = new File(guarder.getTargetStr(), "META-INF" + File.separator + FortConst.ENCRYPT_NAME);
+                        FileArm.mkDir(metaDir);
+                        IoArm.writeFromByte(SecurityUtil.encrypt(bytes,guarder.password), new File(metaDir, FortConst.AGENT_ENGINE));
                     }
                 });
             }
         });
+        // 需要写入加密的class
         //把javaagent信息加入到MANIFEST.MF
         File manifest = new File(guarder.getTargetFile(), "META-INF/MANIFEST.MF");
         String preMain = "Premain-Class: " + CodeFortAgent.class.getName();
@@ -77,6 +85,10 @@ public class ClassCompile {
     public static void clearClassMethod(Guarder guarder) {
         ClassPool pool = ClassPool.getDefault();
         loadClassPath(pool, guarder.getTargetFile());
+        // 加载外部lib
+        for (String path : StrArm.toListByRegex(guarder.relyLibPath, ",")) {
+            try {loadClassPath(pool, new File(path));}catch (Exception ignore){}
+        }
         List<String> classPaths = new ArrayList<>();
         guarder.getEncryptClass().forEach(classFile -> {
             String classPath = StringUtil.resolveClassPath(classFile.getAbsolutePath(), false);

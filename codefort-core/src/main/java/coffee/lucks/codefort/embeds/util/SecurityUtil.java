@@ -3,7 +3,6 @@ package coffee.lucks.codefort.embeds.util;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -14,9 +13,6 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.zip.CRC32;
-import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 
 public class SecurityUtil {
 
@@ -150,54 +146,24 @@ public class SecurityUtil {
         return crc.getValue();
     }
 
+    /**
+     * 解密
+     * @param msg 字节码
+     * @param key 密码
+     * @return 字节码
+     */
     public static byte[] decrypt(byte[] msg, String key) {
-        return decryptAes(decompressByte(msg), digestMd5(key), digestMd5(key));
+        return decryptAes(msg, digestMd5(key), digestMd5(key));
     }
 
+    /**
+     * 加密
+     * @param bytes 字节码
+     * @param password 密码
+     * @return 字节码
+     */
     public static byte[] encrypt(byte[] bytes, String password) {
-        return compressByte(encryptAes(bytes, digestMd5(password), digestMd5(password)));
+        return encryptAes(bytes, digestMd5(password), digestMd5(password));
     }
 
-    /**
-     * 字节码压缩
-     *
-     * @param inputBytes 源字节码
-     * @return 字节码
-     */
-    private static byte[] compressByte(byte[] inputBytes) {
-        Deflater deflater = new Deflater();
-        deflater.setInput(inputBytes);
-        deflater.finish();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(inputBytes.length);
-        byte[] buffer = new byte[1024];
-        while (!deflater.finished()) {
-            int count = deflater.deflate(buffer);
-            outputStream.write(buffer, 0, count);
-        }
-        deflater.end();
-        return outputStream.toByteArray();
-    }
-
-    /**
-     * 字节码解压
-     *
-     * @param compressedData 源字节码
-     * @return 字节码
-     */
-    private static byte[] decompressByte(byte[] compressedData) {
-        Inflater inflater = new Inflater();
-        inflater.setInput(compressedData);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(compressedData.length);
-        byte[] buffer = new byte[1024];
-        try {
-            while (!inflater.finished()) {
-                int count = inflater.inflate(buffer);
-                outputStream.write(buffer, 0, count);
-            }
-        } catch (DataFormatException e) {
-            e.printStackTrace();
-        }
-        inflater.end();
-        return outputStream.toByteArray();
-    }
 }
